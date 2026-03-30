@@ -15,7 +15,7 @@ export interface CatalogDetailsModel {
 export async function getCatalogByCode(
   catalogCode: string
 ): Promise<CatalogDetailsModel> {
-  return apiClient(`app/catalog/show/${catalogCode.replace('chc-','')}`, {
+  return apiClient(`app/catalog/show/${catalogCode}`, {
     method: 'POST',
   });
 }

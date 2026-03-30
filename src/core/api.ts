@@ -3,8 +3,10 @@
  * Handles all HTTP requests with automatic apiToken header injection
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
-const API_TOKEN = import.meta.env.VITE_API_TOKEN || '';
+const API_BASE_URL =
+  process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || '';
+const API_TOKEN =
+  process.env.API_TOKEN || process.env.NEXT_PUBLIC_API_TOKEN || '';
 
 /**
  * Central API client with automatic header injection
@@ -23,6 +25,7 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
 
   try {
     const response = await fetch(url, {
+      cache: 'no-store',
       ...options,
       headers,
     });
@@ -35,6 +38,7 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
 
     return data;
   } catch (error) {
+      console.log(error);
     throw error;
   }
 }

@@ -1,41 +1,22 @@
-import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useProduct } from '../hooks/useProduct';
+import type { ProductDetailsModel } from '../api/productApi';
 
-export default function ProductPage() {
-  const params = useParams<{ productCode?: string }>();
+interface ProductPageProps {
+  productCode: string;
+  data?: ProductDetailsModel;
+  error?: string;
+}
 
-  const productCode = useMemo(() => {
-    const path = window.location.pathname;
-    console.log('[ProductPage] URL:', path);
-
-    if (params.productCode) {
-      console.log('[ProductPage] URL param productCode:', params.productCode);
-      return params.productCode;
-    }
-
-    const match = path.match(/\/product\/(\d+)/);
-    const code = match?.[1] ?? '';
-    console.log('[ProductPage] Parsed productCode:', code);
-    return code;
-  }, [params.productCode]);
-
-  const { data, isLoading, isError } = useProduct(productCode);
-
+export default function ProductPage({ productCode, data, error }: ProductPageProps) {
   if (!productCode) {
-    return <div>Invalid product code in URL</div>;
+    return <div>Error...</div>;
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error occurred</div>;
+  if (error) {
+    return <div>Error...</div>;
   }
 
   if (!data) {
-    return <div>No product data returned</div>;
+    return <div>Loading...</div>;
   }
 
   return (

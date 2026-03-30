@@ -23,7 +23,7 @@ export interface ProductDetailsModel {
 export async function getProductByCode(
   productCode: string
 ): Promise<ProductDetailsModel> {
-  return apiClient(`app/product/show/${productCode.replace('chp-','')}`, {
+  return apiClient(`app/product/show/${productCode}`, {
     method: 'POST',
   });
 }
