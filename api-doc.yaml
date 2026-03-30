@@ -1,0 +1,1280 @@
+openapi: 3.0.3
+info:
+  title: Chadisho Catalog API
+  description: API documentation for Chadisho Catalog mobile app
+  version: 1.0.0
+servers:
+  - url: https://api.chadisho.com/api/
+    description: Production server
+  - url: https://api.chadishow.ir/api/
+    description: Development server
+security:
+  - bearerAuth: []
+paths:
+  /app/auth/login:
+    post:
+      summary: Login
+      description: Send mobile number to receive OTP
+      parameters:
+        - name: cellphone
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Mobile phone number (Farsi numbers converted to English)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginModel'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/auth/check-otp:
+    post:
+      summary: Check OTP
+      description: Verify OTP and get authentication token
+      parameters:
+        - name: otp
+          in: query
+          required: true
+          schema:
+            type: string
+          description: One-time password
+        - name: loginToken
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Token from login response
+        - name: fcm_token
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Firebase Cloud Messaging token
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpModel'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /auth/resend-otp:
+    post:
+      summary: Resend OTP
+      description: Resend OTP for login
+      parameters:
+        - name: loginToken
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Token from login response
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  loginToken:
+                    type: string
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/cart/add-to-cart:
+    post:
+      summary: Add to Cart
+      description: Add product to cart
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Product ID
+        - name: variation_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Variation ID if product has variations
+        - name: quantity
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Quantity to add
+        - name: catalog_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Catalog ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/cart:
+    post:
+      summary: Get Cart
+      description: Get user's cart items
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartModel'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /app/cart/update-cart-item/{itemId}:
+    post:
+      summary: Update Cart Item Quantity
+      description: Update quantity of a cart item
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Cart item ID
+        - name: quantity
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: New quantity
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/cart/delete-cart-item/{itemId}:
+    post:
+      summary: Delete Cart Item
+      description: Remove item from cart
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Cart item ID
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /app/orders/new-order/{cartId}:
+    post:
+      summary: Register Order
+      description: Create order from cart
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Cart ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderCode:
+                    type: string
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/catalog/show/{code}:
+    post:
+      summary: Get Products in Catalog
+      description: Get catalog details and products
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Catalog code (extracted from URI)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDetailsModel'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/product/show/{code}:
+    post:
+      summary: Get Product Details
+      description: Get detailed product information
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Product code
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailsModel'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/orders/index:
+    post:
+      summary: Get Orders List
+      description: Get paginated list of user orders
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginationModel'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OrderModel'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /app/orders/show/{id}:
+    post:
+      summary: Get Order Details
+      description: Get details of a specific order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Order ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderProductModel'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /app/users/profile:
+    get:
+      summary: Fetch User Profile
+      description: Get user profile information
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileUserModel'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      summary: Edit User Profile
+      description: Update user profile information
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUserModel'
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+  /app/shop/profile/{slug}:
+    get:
+      summary: Fetch Shop Profile
+      description: Get shop information by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Shop slug
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopInformation'
+components:
+  schemas:
+    AddressModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        province:
+          type: string
+        postalCode:
+          type: string
+        type:
+          type: string
+        lat:
+          type: string
+        lon:
+          type: string
+        formatedAddress:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        preNumber:
+          type: string
+      required:
+        - id
+        - title
+        - address
+        - city
+        - province
+        - postalCode
+        - type
+        - phone
+        - preNumber
+    AuthModel:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+        - token
+    CartModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        totalAmount:
+          type: string
+        status:
+          type: string
+        getFrom:
+          type: string
+        paymentStatus:
+          type: string
+        paymentType:
+          type: string
+        listProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCartModel'
+      required:
+        - id
+        - status
+    CatalogDetailsModel:
+      type: object
+      properties:
+        catalogModel:
+          $ref: '#/components/schemas/CatalogModel'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SectionModel'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogImageModel'
+        shopInformation:
+          $ref: '#/components/schemas/ShopInformation'
+      required:
+        - sections
+        - images
+    CatalogImageModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        image:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        link:
+          type: string
+      required:
+        - id
+        - image
+    CatalogModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+        primaryImage:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        orderingStatus:
+          type: string
+        showPriceStatus:
+          type: string
+        language:
+          type: string
+      required:
+        - title
+    CategoryModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        subTitle:
+          type: string
+        parents:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - title
+    AttrModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        value:
+          type: string
+        type:
+          type: integer
+        unit:
+          type: string
+        isVariation:
+          type: boolean
+        isEdited:
+          type: boolean
+      required:
+        - id
+        - title
+    CategoryAndListAttrs:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/CategoryModel'
+        attrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttrModel'
+      required:
+        - category
+        - attrs
+    AttrByLisValuesModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        type:
+          type: integer
+        unit:
+          type: string
+        isVariation:
+          type: boolean
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttrModel'
+        selectedAttrForVariation:
+          type: integer
+      required:
+        - id
+        - title
+    CategoryAndAttrByListValue:
+      type: object
+      properties:
+        categoryModel:
+          $ref: '#/components/schemas/CategoryModel'
+        attrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttrByLisValuesModel'
+      required:
+        - categoryModel
+        - attrs
+    LoginModel:
+      type: object
+      properties:
+        loginToken:
+          type: string
+        isNewUser:
+          type: boolean
+      required:
+        - loginToken
+        - isNewUser
+    OrderModel:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        orderItemId:
+          type: integer
+        code:
+          type: string
+        totalAmount:
+          type: string
+        status:
+          type: string
+        getFrom:
+          type: string
+        quantity:
+          type: integer
+        orderItemPrice:
+          type: string
+        orderItemSubTotal:
+          type: string
+        catalogId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderProductModel'
+      required:
+        - orderId
+        - code
+    OrderProductModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        requestId:
+          type: integer
+        productId:
+          type: integer
+        variationId:
+          type: integer
+        quantity:
+          type: integer
+        price:
+          type: string
+        currency:
+          type: string
+        subtotal:
+          type: string
+        catalogId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        productName:
+          type: string
+        productImage:
+          type: string
+        productVariation:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVariation'
+        makingDuration:
+          type: string
+        onlineSaleQuantity:
+          type: integer
+      required:
+        - id
+        - requestId
+        - productId
+        - quantity
+        - price
+        - createdAt
+        - updatedAt
+        - productVariation
+    ProductVariation:
+      type: object
+      properties:
+        attributeId:
+          type: integer
+        value:
+          type: string
+        attribute:
+          $ref: '#/components/schemas/Attribute'
+      required:
+        - attributeId
+        - value
+    Attribute:
+      type: object
+      properties:
+        id:
+          type: integer
+        displayName:
+          type: string
+        type:
+          type: integer
+        unit:
+          type: string
+      required:
+        - id
+        - displayName
+    OtpModel:
+      type: object
+      properties:
+        token:
+          type: string
+        userRole:
+          type: string
+      required:
+        - token
+    PaginationModel:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        data:
+          type: object
+        from:
+          type: integer
+        lastPage:
+          type: integer
+        perPage:
+          type: integer
+        to:
+          type: integer
+        total:
+          type: integer
+      required:
+        - currentPage
+        - from
+        - lastPage
+        - perPage
+        - to
+        - total
+    ProductCartModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        requestId:
+          type: integer
+        productId:
+          type: integer
+        variationId:
+          type: integer
+        quantity:
+          type: integer
+        price:
+          type: string
+        subtotal:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        productName:
+          type: string
+        currency:
+          type: string
+        productImage:
+          type: string
+        unit:
+          type: string
+        productVariations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartAttr'
+        productPrice:
+          $ref: '#/components/schemas/CartProductPrice'
+        uri:
+          type: string
+      required:
+        - id
+        - requestId
+        - productId
+        - quantity
+        - price
+        - productName
+        - currency
+    CartAttr:
+      type: object
+      properties:
+        attributeId:
+          type: integer
+        value:
+          type: string
+        attribute:
+          $ref: '#/components/schemas/VariationAttributes'
+      required:
+        - attributeId
+    CartProductPrice:
+      type: object
+      properties:
+        price:
+          type: string
+        salePrice:
+          type: string
+    ProductDetailsModel:
+      type: object
+      properties:
+        variationAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariationAttributes'
+        variations:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariationModel'
+        productModel:
+          $ref: '#/components/schemas/ProductModel'
+        shopInformation:
+          $ref: '#/components/schemas/ShopInformation'
+      required:
+        - productModel
+    VariationAttributes:
+      type: object
+      properties:
+        id:
+          type: integer
+        displayName:
+          type: string
+        type:
+          type: integer
+        unit:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/Values'
+      required:
+        - id
+        - displayName
+    Values:
+      type: object
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        attributeId:
+          type: integer
+        value:
+          type: string
+        isVariation:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - productId
+        - attributeId
+    ProductModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        price:
+          type: string
+        coverImage:
+          type: string
+        coverImageHexCode:
+          type: string
+        inventory:
+          type: integer
+        permalink:
+          type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageProduct'
+        status:
+          type: string
+        verified:
+          type: integer
+        code:
+          type: string
+        currency:
+          type: string
+        shopId:
+          type: integer
+        categoryId:
+          type: integer
+        decadeStr:
+          type: string
+        stockType:
+          type: string
+        description:
+          type: string
+        makingDuration:
+          type: string
+        isCustomise:
+          type: integer
+        maker:
+          type: string
+        type:
+          type: string
+        uriSlug:
+          type: string
+        metadata:
+          type: string
+        category:
+          type: string
+        endType:
+          type: string
+        shippingId:
+          type: integer
+        customisation:
+          $ref: '#/components/schemas/ProductCustomisation'
+        notInStockStatus:
+          type: string
+        unit:
+          type: string
+        salePrice:
+          type: string
+        salePriceDateTo:
+          type: string
+          format: date-time
+        salePriceDateFrom:
+          type: string
+          format: date-time
+        errorMessage:
+          type: string
+        isWholeSale:
+          type: boolean
+        productionCapacity:
+          type: string
+        hasReturnConditions:
+          type: boolean
+        returnConditions:
+          type: string
+        sku:
+          type: string
+        uri:
+          type: string
+        attachment:
+          type: string
+        videos:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - title
+        - currency
+        - uri
+    ImageProduct:
+      type: object
+      properties:
+        src:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+    ProductCustomisation:
+      type: object
+      properties:
+        text:
+          type: string
+        charNumber:
+          type: string
+        isRequired:
+          type: boolean
+    ProfileUserModel:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserInfo'
+        company:
+          $ref: '#/components/schemas/Company'
+    UserInfo:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        fatherName:
+          type: string
+        nationalCode:
+          type: string
+        birthCertificateNumber:
+          type: string
+        cellphone:
+          type: string
+        gender:
+          type: integer
+        birthDate:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        foreigner:
+          type: integer
+        foreignerNumber:
+          type: string
+        birthDay:
+          type: integer
+        birthMonth:
+          type: integer
+        birthYear:
+          type: integer
+      required:
+        - cellphone
+    Company:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: integer
+        titleType:
+          type: string
+        nationalIdentityNumber:
+          type: string
+        registrationNumber:
+          type: string
+        economicNumber:
+          type: string
+        address:
+          type: string
+        telephone:
+          type: string
+        preNumber:
+          type: string
+        provinceId:
+          type: integer
+        cityId:
+          type: integer
+    ResponseModel:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        message:
+          type: string
+        options:
+          type: object
+        errors:
+          type: object
+      required:
+        - statusCode
+        - message
+    SectionModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - catalog
+            - product
+        values:
+          type: array
+          items:
+            type: object
+        title:
+          type: string
+        viewOption:
+          type: string
+      required:
+        - id
+        - type
+        - values
+    ShopInformation:
+      type: object
+      properties:
+        faName:
+          type: string
+        enName:
+          type: string
+        aboutUs:
+          type: string
+        avatar:
+          type: string
+        coverImage:
+          type: string
+        educationContent:
+          type: integer
+        workingDescription:
+          type: string
+        getFrom:
+          type: string
+        instagram:
+          type: string
+        whatsapp:
+          type: string
+        telegram:
+          type: string
+        website:
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressModel'
+    VariationModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        price:
+          type: string
+        salePrice:
+          type: string
+        sku:
+          type: string
+        stockType:
+          type: string
+        inventory:
+          type: integer
+        attrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttrModel'
+        image:
+          $ref: '#/components/schemas/ImageProduct'
+        sale_price_date_from:
+          type: string
+          format: date-time
+        sale_price_date_to:
+          type: string
+          format: date-time
+        weight:
+          type: string
+        length:
+          type: string
+        width:
+          type: string
+        height:
+          type: string
+        status:
+          type: integer
+      required:
+        - id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
