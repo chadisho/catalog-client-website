@@ -1,4 +1,6 @@
 import type { ProductDetailsModel } from '../api/productApi';
+import ErrorState from '../../../core/components/feedback/ErrorState';
+import LoadingState from '../../../core/components/feedback/LoadingState';
 
 interface ProductPageProps {
   productCode: string;
@@ -8,15 +10,15 @@ interface ProductPageProps {
 
 export default function ProductPage({ productCode, data, error }: ProductPageProps) {
   if (!productCode) {
-    return <div>Error...</div>;
+    return <ErrorState />;
   }
 
   if (error) {
-    return <div>Error...</div>;
+    return <ErrorState />;
   }
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <LoadingState />;
   }
 
   return (

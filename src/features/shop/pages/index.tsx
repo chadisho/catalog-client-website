@@ -1,4 +1,6 @@
 import type { ShopInformation } from '../api/shopApi';
+import ErrorState from '../../../core/components/feedback/ErrorState';
+import LoadingState from '../../../core/components/feedback/LoadingState';
 
 interface ShopPageProps {
   shopUsername: string;
@@ -8,15 +10,15 @@ interface ShopPageProps {
 
 export default function ShopPage({ shopUsername, data, error }: ShopPageProps) {
   if (!shopUsername) {
-    return <div>Error...</div>;
+    return <ErrorState />;
   }
 
   if (error) {
-    return <div>Error...</div>;
+    return <ErrorState />;
   }
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <LoadingState />;
   }
 
   return (

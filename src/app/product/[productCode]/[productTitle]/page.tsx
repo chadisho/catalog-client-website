@@ -1,5 +1,8 @@
 import ProductPage from '../../../../features/product/pages';
-import { getProductByCode } from '../../../../features/product/api/productApi';
+import {
+  getProductByCode,
+  type ProductDetailsModel,
+} from '../../../../features/product/api/productApi';
 
 interface ProductRouteParams {
   productCode: string;
@@ -11,15 +14,19 @@ interface ProductRoutePageProps {
 }
 
 export default async function Page({ params }: ProductRoutePageProps) {
-    const resolvedParams = await params;
-   
+  const resolvedParams = await params;
+
   const { productCode } = resolvedParams;
-  const normalizedProductCode = productCode.replace('chp-','');
+  const normalizedProductCode = productCode.replace('chp-', '');
+
+  let data: ProductDetailsModel | undefined;
+  let error: string | undefined;
 
   try {
-    const data = await getProductByCode(normalizedProductCode);
-    return <ProductPage productCode={normalizedProductCode} data={data} />;
+    data = await getProductByCode(normalizedProductCode);
   } catch {
-    return <ProductPage productCode={normalizedProductCode} error="Error..." />;
+    error = 'product_fetch_failed';
   }
+
+  return <ProductPage productCode={normalizedProductCode} data={data} error={error} />;
 }

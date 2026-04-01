@@ -1,6 +1,8 @@
 import type { CatalogDetailsModel } from '../api/catalogApi';
 import CatalogSection from '../components/CatalogSection';
 import CatalogHero from '../components/CatalogHero';
+import ErrorState from '../../../core/components/feedback/ErrorState';
+import LoadingState from '../../../core/components/feedback/LoadingState';
 import {
   getCatalogDirection,
   getCatalogTextAlignClass,
@@ -21,15 +23,15 @@ export default function CatalogPage({ catalogCode, data, error }: CatalogPagePro
   const textAlignClass = getCatalogTextAlignClass(locale);
 
   if (!catalogCode) {
-    return <div className="p-6 text-center text-sm text-rose-500">{t.errorOccurred}</div>;
+    return <ErrorState locale={locale} />;
   }
 
   if (error) {
-    return <div className="p-6 text-center text-sm text-rose-500">{t.errorOccurred}</div>;
+    return <ErrorState locale={locale} />;
   }
 
   if (!data) {
-    return <div className="p-6 text-center text-sm text-text/80">{t.loading}</div>;
+    return <LoadingState locale={locale} />;
   }
 
   const heroTitle = data.catalogModel?.title ?? 'نام کاتالوگ';

@@ -1,5 +1,5 @@
 import ShopPage from '../../../features/shop/pages';
-import { getShopBySlug } from '../../../features/shop/api/shopApi';
+import { getShopBySlug, type ShopInformation } from '../../../features/shop/api/shopApi';
 
 interface ShopRouteParams {
   shopUsername: string;
@@ -12,10 +12,14 @@ interface ShopRoutePageProps {
 export default async function Page({ params }: ShopRoutePageProps) {
   const { shopUsername } = await params;
 
+  let data: ShopInformation | undefined;
+  let error: string | undefined;
+
   try {
-    const data = await getShopBySlug(shopUsername);
-    return <ShopPage shopUsername={shopUsername} data={data} />;
+    data = await getShopBySlug(shopUsername);
   } catch {
-    return <ShopPage shopUsername={shopUsername} error="Error..." />;
+    error = 'shop_fetch_failed';
   }
+
+  return <ShopPage shopUsername={shopUsername} data={data} error={error} />;
 }
