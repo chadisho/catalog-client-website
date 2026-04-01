@@ -12,7 +12,7 @@ interface CatalogRoutePageProps {
 
 export default async function Page({ params }: CatalogRoutePageProps) {
     const resolvedParams = await params;
-    console.log('Resolved route params:', resolvedParams);
+
   const { catalogCode } = resolvedParams;
     const normalizedCatalogCode = catalogCode.replace('chc-', '');
   if (!normalizedCatalogCode) {

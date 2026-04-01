@@ -12,7 +12,7 @@ interface ProductRoutePageProps {
 
 export default async function Page({ params }: ProductRoutePageProps) {
     const resolvedParams = await params;
-    console.log('Resolved route params:', resolvedParams);
+   
   const { productCode } = resolvedParams;
   const normalizedProductCode = productCode.replace('chp-','');
 
