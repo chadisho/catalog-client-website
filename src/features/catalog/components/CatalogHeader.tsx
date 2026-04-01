@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Search, ShoppingCart, UserRound } from 'lucide-react';
 import { useTheme } from '../../../core/theme/useTheme';
 import type { CatalogLocale } from '../../../core/i18n/catalogLocale';
 import chadiLogo from '../../../assets/chadi-logo.png';
@@ -56,7 +57,7 @@ export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
               className="pointer-events-none absolute inset-y-0 start-3 flex items-center text-text/55 dark:text-white/55"
               aria-hidden
             >
-              🔎
+              <Search size={18} strokeWidth={2} />
             </span>
             <input
               type="search"
@@ -72,9 +73,7 @@ export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
           aria-label={t.cart}
           title={t.cart}
         >
-          <span className="text-lg" aria-hidden>
-            🛒
-          </span>
+          <ShoppingCart size={18} strokeWidth={2} aria-hidden />
         </button>
 
         <div className="flex items-center gap-2">
@@ -119,7 +118,7 @@ export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
             type="button"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
           >
-            <span aria-hidden>👤</span>
+            <UserRound size={18} strokeWidth={2} aria-hidden />
             <span>{t.login}</span>
           </button>
 
