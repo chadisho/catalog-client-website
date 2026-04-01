@@ -1,5 +1,3 @@
-import ThemeToggleButton from './ThemeToggleButton';
-
 interface CatalogHeroProps {
   title: string;
   description: string;
@@ -16,10 +14,6 @@ export default function CatalogHero({ title, description, imageUrl }: CatalogHer
       </div>
 
       <p className="text-sm leading-7 text-text/80">{description}</p>
-
-      <div className="flex justify-start">
-        <ThemeToggleButton />
-      </div>
     </aside>
   );
 }
