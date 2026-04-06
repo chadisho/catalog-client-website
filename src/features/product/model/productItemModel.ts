@@ -22,8 +22,23 @@ export type ProductItemModel = {
 };
 
 export const mapImageProduct = (data: any): ImageProductModel => {
+  if (typeof data === 'string') {
+    return {
+      src: data,
+      id: null,
+      name: null,
+    };
+  }
+
   return {
-    src: typeof data?.src === 'string' ? data.src : null,
+    src:
+      typeof data?.src === 'string'
+        ? data.src
+        : typeof data?.url === 'string'
+          ? data.url
+          : typeof data?.image === 'string'
+            ? data.image
+            : null,
     id: typeof data?.id === 'number' ? data.id : null,
     name: typeof data?.name === 'string' ? data.name : null,
   };
@@ -38,8 +53,8 @@ export const mapImageProducts = (data: any): ImageProductModel[] => {
 };
 
 export const mapProductItem = (data: any): ProductItemModel => {
-  const source = data?.sectionable ?? data;
-  const mapJson = source;
+  const source = data?.product ?? data;
+  const mapJson = data;
 
   return {
     id: typeof source?.id === 'number' ? source.id : null,
@@ -77,7 +92,25 @@ export const mapProductItem = (data: any): ProductItemModel => {
     images: mapImageProducts(mapJson?.images),
     videos: Array.isArray(mapJson?.videos)
       ? mapJson.videos
-          .map((item: any) => (typeof item?.name === 'string' ? item.name : null))
+          .map((item: any) => {
+            if (typeof item === 'string') {
+              return item;
+            }
+
+            if (typeof item?.name === 'string') {
+              return item.name;
+            }
+
+            if (typeof item?.src === 'string') {
+              return item.src;
+            }
+
+            if (typeof item?.url === 'string') {
+              return item.url;
+            }
+
+            return null;
+          })
           .filter((name: string | null): name is string => Boolean(name))
       : [],
   };

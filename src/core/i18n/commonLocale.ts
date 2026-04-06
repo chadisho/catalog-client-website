@@ -13,8 +13,31 @@ type HomeTranslations = {
   title: string;
 };
 
-type ProductTranslations = {
+export type ProductTranslations = {
   detailsTitle: string;
+  codeLabel: string;
+  descriptionLabel: string;
+  moreDescription: string;
+  lessDescription: string;
+  showSpecs: string;
+  hideSpecs: string;
+  variationLabel: string;
+  quantityLabel: string;
+  increaseQuantity: string;
+  decreaseQuantity: string;
+  addToCart: string;
+  confirmSelection: string;
+  technicalSpecsTitle: string;
+  priceLabel: string;
+  originalPriceLabel: string;
+  discountLabel: string;
+  noPrice: string;
+  stockWarning: string;
+  currencyToman: string;
+  mediaImageAlt: string;
+  mediaVideoAlt: string;
+  openSelectionSheet: string;
+  closeSelectionSheet: string;
 };
 
 type ShopTranslations = {

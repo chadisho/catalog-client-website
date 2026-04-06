@@ -30,7 +30,30 @@
     "currencyToman": "تومان"
   },
   "product": {
-    "detailsTitle": "جزئیات محصول"
+    "detailsTitle": "جزئیات محصول",
+    "codeLabel": "کد محصول",
+    "descriptionLabel": "توضیحات",
+    "moreDescription": "توضیحات بیشتر",
+    "lessDescription": "بستن توضیحات",
+    "showSpecs": "نمایش",
+    "hideSpecs": "بستن",
+    "variationLabel": "انتخاب تنوع",
+    "quantityLabel": "تعداد",
+    "increaseQuantity": "افزایش تعداد",
+    "decreaseQuantity": "کاهش تعداد",
+    "addToCart": "افزودن به سبد خرید",
+    "confirmSelection": "تایید",
+    "technicalSpecsTitle": "مشخصات فنی محصول",
+    "priceLabel": "قیمت",
+    "originalPriceLabel": "قیمت اصلی",
+    "discountLabel": "تخفیف",
+    "noPrice": "قیمت ثبت نشده",
+    "stockWarning": "تنها چند عدد موجود",
+    "currencyToman": "تومان",
+    "mediaImageAlt": "تصویر محصول",
+    "mediaVideoAlt": "ویدیوی محصول",
+    "openSelectionSheet": "باز کردن انتخاب خرید",
+    "closeSelectionSheet": "بستن انتخاب خرید"
   },
   "shop": {
     "profileTitle": "پروفایل فروشگاه"

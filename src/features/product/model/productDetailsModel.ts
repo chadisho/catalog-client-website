@@ -21,7 +21,7 @@ export interface ProductDetailsModel {
 }
 
 export const mapProductDetailsProduct = (data: any): ProductDetailsProductModel => {
-  const source = data?.sectionable ?? data;
+  const source = data?.product ?? data;
 
   return {
     ...mapProductItem(data),
@@ -69,10 +69,16 @@ export const mapProductDetails = (response: any): ProductDetailsModel => {
   const rawShopInformation =
     options?.shopInformation ?? options?.shopInformations ?? response?.shopInformation;
 
+    console.log('Mapping product details with options:', options);
   return {
     variationAttributes: mapVariationAttributes(options?.variation_attributes),
     variations: mapVariations(options?.variations),
-    productModel: mapProductDetailsProduct(options?.product),
+      productModel: mapProductDetailsProduct({
+          product: options?.product,
+        videos: options?.videos,
+        images: options?.images,
+
+    }),
     shopInformation: rawShopInformation
       ? mapProductShopInformation(rawShopInformation)
       : undefined,

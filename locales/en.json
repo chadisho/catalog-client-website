@@ -30,7 +30,30 @@
     "currencyToman": "toman"
   },
   "product": {
-    "detailsTitle": "Product Details"
+    "detailsTitle": "Product Details",
+    "codeLabel": "Product Code",
+    "descriptionLabel": "Description",
+    "moreDescription": "More details",
+    "lessDescription": "Show less",
+    "showSpecs": "Show",
+    "hideSpecs": "Hide",
+    "variationLabel": "Select variation",
+    "quantityLabel": "Quantity",
+    "increaseQuantity": "Increase quantity",
+    "decreaseQuantity": "Decrease quantity",
+    "addToCart": "Add to Cart",
+    "confirmSelection": "Confirm",
+    "technicalSpecsTitle": "Technical Specifications",
+    "priceLabel": "Price",
+    "originalPriceLabel": "Original",
+    "discountLabel": "off",
+    "noPrice": "Price unavailable",
+    "stockWarning": "Only a few left",
+    "currencyToman": "toman",
+    "mediaImageAlt": "Product image",
+    "mediaVideoAlt": "Product video",
+    "openSelectionSheet": "Open purchase selection",
+    "closeSelectionSheet": "Close purchase selection"
   },
   "shop": {
     "profileTitle": "Shop Profile"
