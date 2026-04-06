@@ -2,6 +2,7 @@ import ProductActions from '../components/ProductActions';
 import ProductGallery from '../components/ProductGallery';
 import ProductInfo from '../components/ProductInfo';
 import ProductSpecs from '../components/ProductSpecs';
+import Header from '../../../core/components/Header';
 import {
   resolveDisplayCurrency,
   resolveMediaItems,
@@ -11,6 +12,7 @@ import {
 import type { ProductDetailsModel } from '../model/productDetailsModel';
 import ErrorState from '../../../core/components/feedback/ErrorState';
 import LoadingState from '../../../core/components/feedback/LoadingState';
+import { getCatalogTranslations } from '../../../core/i18n/catalogLocale';
 import { getProductTranslations, resolveCommonLocale } from '../../../core/i18n/commonLocale';
 
 interface ProductPageProps {
@@ -22,6 +24,7 @@ interface ProductPageProps {
 export default function ProductPage({ productCode, data, error }: ProductPageProps) {
   const locale = resolveCommonLocale(data?.productModel?.language);
   const t = getProductTranslations(locale);
+  const headerT = getCatalogTranslations(locale);
 
   if (!productCode) {
     return <ErrorState locale={locale} />;
@@ -58,40 +61,44 @@ export default function ProductPage({ productCode, data, error }: ProductPagePro
   const currencyLabel = resolveDisplayCurrency(data.productModel.currency, t);
 
   return (
-    <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
-        <div className="lg:col-span-8">
-          <ProductGallery mediaItems={mediaItems} />
-        </div>
-        <div className="space-y-4 lg:col-span-4">
-          <ProductInfo
-            locale={locale}
-            t={t}
-            title={productTitle}
-            productCode={productCode}
-            description={data.productModel.description}
-            hasStockWarning={hasStockWarning}
-            price={data.productModel.price}
-            salePrice={data.productModel.salePrice}
-            currencyLabel={currencyLabel}
-          />
-          <ProductActions
-            locale={locale}
-            t={t}
-            variationOptions={variationOptions}
-            price={data.productModel.price}
-            salePrice={data.productModel.salePrice}
-            currencyLabel={currencyLabel}
-          />
-        </div>
-      </section>
+    <>
+      <Header locale={locale} t={headerT} hideSearchInput />
 
-      <ProductSpecs
-        title={t.technicalSpecsTitle}
-        showText={t.showSpecs}
-        hideText={t.hideSpecs}
-        specs={specs}
-      />
-    </main>
+      <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
+          <div className="lg:col-span-8">
+            <ProductGallery mediaItems={mediaItems} />
+          </div>
+          <div className="space-y-4 lg:col-span-4">
+            <ProductInfo
+              locale={locale}
+              t={t}
+              title={productTitle}
+              productCode={productCode}
+              description={data.productModel.description}
+              hasStockWarning={hasStockWarning}
+              price={data.productModel.price}
+              salePrice={data.productModel.salePrice}
+              currencyLabel={currencyLabel}
+            />
+            <ProductActions
+              locale={locale}
+              t={t}
+              variationOptions={variationOptions}
+              price={data.productModel.price}
+              salePrice={data.productModel.salePrice}
+              currencyLabel={currencyLabel}
+            />
+          </div>
+        </section>
+
+        <ProductSpecs
+          title={t.technicalSpecsTitle}
+          showText={t.showSpecs}
+          hideText={t.hideSpecs}
+          specs={specs}
+        />
+      </main>
+    </>
   );
 }

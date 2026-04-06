@@ -3,12 +3,12 @@
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, ShoppingCart, UserRound } from 'lucide-react';
-import { useTheme } from '../../../core/theme/useTheme';
-import type { CatalogLocale } from '../../../core/i18n/catalogLocale';
-import { LOCALE_COOKIE_KEY } from '../../../core/i18n/globalLocale';
-import chadiLogo from '../../../assets/chadi-logo.png';
+import { useTheme } from '../theme/useTheme';
+import type { CatalogLocale } from '../i18n/catalogLocale';
+import { LOCALE_COOKIE_KEY } from '../i18n/globalLocale';
+import chadiLogo from '../../assets/chadi-logo.png';
 
-type CatalogHeaderTranslations = {
+type HeaderTranslations = {
   searchPlaceholder: string;
   login: string;
   cart: string;
@@ -22,12 +22,13 @@ type CatalogHeaderTranslations = {
   brand: string;
 };
 
-interface CatalogHeaderProps {
+interface HeaderProps {
   locale: CatalogLocale;
-  t: CatalogHeaderTranslations;
+  t: HeaderTranslations;
+  hideSearchInput?: boolean;
 }
 
-export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
+export default function Header({ locale, t, hideSearchInput = false }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -55,19 +56,21 @@ export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
             <span className="text-2xl font-semibold">{t.brand}</span>
           </div>
 
-          <div className="relative flex-1">
-            <span
-              className="pointer-events-none absolute inset-y-0 start-3 flex items-center text-text/55 dark:text-white/55"
-              aria-hidden
-            >
-              <Search size={18} strokeWidth={2} />
-            </span>
-            <input
-              type="search"
-              placeholder={t.searchPlaceholder}
-              className="h-12 w-full appearance-none rounded-full border border-secondary/40 bg-background/80 px-11 text-sm text-text outline-none ring-primary transition placeholder:text-text/55 focus:ring-2 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder:text-white/55 dark:[color-scheme:dark]"
-            />
-          </div>
+          {!hideSearchInput ? (
+            <div className="relative flex-1">
+              <span
+                className="pointer-events-none absolute inset-y-0 start-3 flex items-center text-text/55 dark:text-white/55"
+                aria-hidden
+              >
+                <Search size={18} strokeWidth={2} />
+              </span>
+              <input
+                type="search"
+                placeholder={t.searchPlaceholder}
+                className="h-12 w-full appearance-none rounded-full border border-secondary/40 bg-background/80 px-11 text-sm text-text outline-none ring-primary transition placeholder:text-text/55 focus:ring-2 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder:text-white/55 dark:[color-scheme:dark]"
+              />
+            </div>
+          ) : null}
         </div>
 
         <button
@@ -124,8 +127,6 @@ export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
             <UserRound size={18} strokeWidth={2} aria-hidden />
             <span>{t.login}</span>
           </button>
-
-      
         </div>
       </div>
     </header>

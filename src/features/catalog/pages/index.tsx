@@ -1,7 +1,7 @@
 import type { CatalogDetailsModel } from '../api/catalogApi';
 import CatalogSection from '../components/CatalogSection';
 import CatalogHero from '../components/CatalogHero';
-import CatalogHeader from '../components/CatalogHeader';
+import Header from '../../../core/components/Header';
 import ErrorState from '../../../core/components/feedback/ErrorState';
 import LoadingState from '../../../core/components/feedback/LoadingState';
 import {
@@ -49,7 +49,7 @@ export default function CatalogPage({
 
   return (
     <div dir={direction} className={`min-h-screen bg-background text-text ${textAlignClass}`}>
-      <CatalogHeader locale={locale} t={t} />
+      <Header locale={locale} t={t} />
 
       <div className="mx-auto grid w-full max-w-[1400px] gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
         <main className="space-y-10">
