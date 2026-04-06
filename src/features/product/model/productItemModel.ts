@@ -16,6 +16,7 @@ export type ProductItemModel = {
   salePrice?: string | null;
   attachment?: string | null;
   unit?: string | null;
+  uri?: string | null;
   images: ImageProductModel[];
   videos: string[];
 };
@@ -71,7 +72,8 @@ export const mapProductItem = (data: any): ProductItemModel => {
           ? source.salePrice
           : null,
     attachment: typeof source?.attachment === 'string' ? source.attachment : null,
-    unit: typeof source?.unit === 'string' ? source.unit : null,
+      unit: typeof source?.unit === 'string' ? source.unit : null,
+    uri: typeof source?.uri === 'string' ? source.uri : null,
     images: mapImageProducts(mapJson?.images),
     videos: Array.isArray(mapJson?.videos)
       ? mapJson.videos

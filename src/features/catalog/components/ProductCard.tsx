@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { ProductItemModel } from '../../product/model/productItemModel';
 import {
   getCatalogTextAlignClass,
@@ -71,6 +72,52 @@ function resolveProductCode(product: ProductItemModel): string | null {
   return null;
 }
 
+function slugifyTitle(value: string): string {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return 'product';
+  }
+
+  return trimmedValue
+    .replace(/\s+/g, '-')
+    .replace(/[^\p{L}\p{N}-]/gu, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase();
+}
+
+function resolveProductHref(product: ProductItemModel): string | null {
+  if (typeof product.uri === 'string' && product.uri.trim().length > 0) {
+    const normalizedUri = product.uri.trim();
+
+    try {
+      const parsedUrl = new URL(normalizedUri, 'http://localhost');
+      const segments = parsedUrl.pathname.split('/').filter(Boolean);
+
+      if (segments.length >= 3 && segments[0] === 'product') {
+        const [, productCode, ...titleSegments] = segments;
+        const productTitle = titleSegments.join('-');
+
+        if (productCode && productTitle) {
+          return `/product/${encodeURIComponent(productCode)}/${encodeURIComponent(productTitle)}`;
+        }
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  const fallbackProductCode = resolveProductCode(product);
+  const fallbackProductTitle = slugifyTitle(product.title ?? '');
+
+  if (!fallbackProductCode) {
+    return null;
+  }
+
+  return `/product/${encodeURIComponent(fallbackProductCode)}/${encodeURIComponent(fallbackProductTitle)}`;
+}
+
 function DiscountBadge({ text }: DiscountBadgeProps) {
   return (
     <span className="absolute left-2 top-2 rounded-md bg-rose-500 px-2 py-1 text-[11px] font-medium leading-none text-white shadow-sm shadow-rose-800/30">
@@ -105,7 +152,7 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
 
   const title = product.title ?? t.defaultProductTitle;
   const imageUrl = product.coverImage ?? '';
-  const productCode = resolveProductCode(product);
+  const productHref = resolveProductHref(product);
   const priceValue = product.salePrice ?? product.price;
 
   const formattedPrice =
@@ -129,7 +176,7 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
 
   const currency = getLocalizedCurrencyLabel(product.currency ?? 'toman', locale);
 
-  return (
+  const content = (
     <article
       className={`w-full max-w-[220px] overflow-hidden rounded-2xl border border-border/70 bg-surface p-2 text-text shadow-sm shadow-black/10 transition-colors dark:border-border/40 dark:bg-black dark:shadow-black/30 ${textAlignClass}`}
     >
@@ -146,5 +193,15 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
         {hasLowStockWarning ? <StockWarning text={stockWarningText} /> : null}
       </div>
     </article>
+  );
+
+  if (!productHref) {
+    return content;
+  }
+
+  return (
+    <Link href={productHref} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60">
+      {content}
+    </Link>
   );
 }

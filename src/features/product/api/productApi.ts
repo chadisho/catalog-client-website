@@ -1,19 +1,7 @@
 import { apiClient } from '../../../core/api';
+import { mapProductDetails, type ProductDetailsModel } from '../model/productDetailsModel';
 
-export interface ProductDetailsModel {
-  variationAttributes?: Array<any>;
-  variations?: Array<any>;
-  productModel: {
-    id: number;
-    title: string;
-    price: string;
-    coverImage: string;
-    currency: string;
-    uri: string;
-    [key: string]: any;
-  };
-  shopInformation?: Record<string, any>;
-}
+export type { ProductDetailsModel };
 
 /**
  * Fetch product details by product code
@@ -23,7 +11,9 @@ export interface ProductDetailsModel {
 export async function getProductByCode(
   productCode: string
 ): Promise<ProductDetailsModel> {
-  return apiClient(`app/product/show/${productCode}`, {
+  const response = await apiClient(`app/product/show/${productCode}`, {
     method: 'POST',
   });
+
+  return mapProductDetails(response);
 }
