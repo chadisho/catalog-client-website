@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, ShoppingCart, UserRound } from 'lucide-react';
 import { useTheme } from '../../../core/theme/useTheme';
 import type { CatalogLocale } from '../../../core/i18n/catalogLocale';
+import { LOCALE_COOKIE_KEY } from '../../../core/i18n/globalLocale';
 import chadiLogo from '../../../assets/chadi-logo.png';
 
 type CatalogHeaderTranslations = {
@@ -33,6 +34,8 @@ export default function CatalogHeader({ locale, t }: CatalogHeaderProps) {
   const searchParams = useSearchParams();
 
   const handleLocaleChange = (nextLocale: CatalogLocale) => {
+    document.cookie = `${LOCALE_COOKIE_KEY}=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
+
     const nextSearchParams = new URLSearchParams(searchParams.toString());
     nextSearchParams.set('lang', nextLocale);
     router.replace(`${pathname}?${nextSearchParams.toString()}`);
