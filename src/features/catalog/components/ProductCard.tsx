@@ -114,8 +114,8 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
   const discountPercent = resolveDiscountPercent(product.price, product.salePrice);
   const discountText = discountPercent
     ? locale === 'fa'
-      ? `${discountPercent}% تخفیف`
-      : `${discountPercent}% off`
+      ? `${discountPercent}% ${t.discountLabel}`
+      : `${discountPercent}% ${t.discountLabel}`
     : null;
 
   const inventory = typeof product.inventory === 'number' ? product.inventory : null;
@@ -125,7 +125,7 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
     product.stockType === 'few' ||
     product.stockType === 'limited';
 
-  const stockWarningText = locale === 'fa' ? 'تنها چند عدد موجود' : 'Only a few left';
+  const stockWarningText = t.lowStockWarning;
 
   const currency = getLocalizedCurrencyLabel(product.currency ?? 'toman', locale);
 

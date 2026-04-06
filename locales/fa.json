@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "در حال بارگذاری...",
+    "errorTitle": "خطایی رخ داده است",
+    "errorDescription": "لطفاً دوباره تلاش کنید.",
+    "retry": "تلاش مجدد"
+  },
+  "catalog": {
+    "defaultProductTitle": "محصول",
+    "defaultCatalogTitle": "نام کاتالوگ",
+    "noUnit": "بدون واحد",
+    "hasDiscount": "دارای تخفیف",
+    "outOfStock": "فعلا ناموجود",
+    "errorOccurred": "خطایی رخ داده است",
+    "loading": "در حال بارگذاری...",
+    "noContent": "محتوایی برای نمایش وجود ندارد.",
+    "searchPlaceholder": "جستجوی محصولات",
+    "login": "ورود به حساب کاربری",
+    "cart": "سبد خرید",
+    "language": "زبان",
+    "languageFa": "فارسی",
+    "languageEn": "English",
+    "theme": "پوسته",
+    "themeSystem": "سیستم",
+    "themeLight": "روشن",
+    "themeDark": "تیره",
+    "brand": "چادیشو",
+    "discountLabel": "تخفیف",
+    "lowStockWarning": "تنها چند عدد موجود",
+    "currencyToman": "تومان"
+  },
+  "product": {
+    "detailsTitle": "جزئیات محصول"
+  },
+  "shop": {
+    "profileTitle": "پروفایل فروشگاه"
+  },
+  "home": {
+    "title": "صفحه اصلی"
+  },
+  "theme": {
+    "light": "روشن",
+    "dark": "تیره"
+  }
+}

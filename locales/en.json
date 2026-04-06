@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "errorTitle": "Something went wrong",
+    "errorDescription": "Please try again.",
+    "retry": "Try again"
+  },
+  "catalog": {
+    "defaultProductTitle": "Product",
+    "defaultCatalogTitle": "Catalog",
+    "noUnit": "No unit",
+    "hasDiscount": "Discounted",
+    "outOfStock": "Out of stock",
+    "errorOccurred": "Error occurred",
+    "loading": "Loading...",
+    "noContent": "No content available to display.",
+    "searchPlaceholder": "Search products",
+    "login": "Sign in",
+    "cart": "Cart",
+    "language": "Language",
+    "languageFa": "فارسی",
+    "languageEn": "English",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "brand": "Chadisho",
+    "discountLabel": "off",
+    "lowStockWarning": "Only a few left",
+    "currencyToman": "toman"
+  },
+  "product": {
+    "detailsTitle": "Product Details"
+  },
+  "shop": {
+    "profileTitle": "Shop Profile"
+  },
+  "home": {
+    "title": "Home Page"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  }
+}

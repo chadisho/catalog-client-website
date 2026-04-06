@@ -1,3 +1,5 @@
+import { getMessages } from './messages';
+
 export type CommonLocale = 'fa' | 'en';
 
 type CommonTranslations = {
@@ -7,19 +9,21 @@ type CommonTranslations = {
   retry: string;
 };
 
-const commonTranslations: Record<CommonLocale, CommonTranslations> = {
-  fa: {
-    loading: 'در حال بارگذاری...',
-    errorTitle: 'خطایی رخ داده است',
-    errorDescription: 'لطفاً دوباره تلاش کنید.',
-    retry: 'تلاش مجدد',
-  },
-  en: {
-    loading: 'Loading...',
-    errorTitle: 'Something went wrong',
-    errorDescription: 'Please try again.',
-    retry: 'Try again',
-  },
+type HomeTranslations = {
+  title: string;
+};
+
+type ProductTranslations = {
+  detailsTitle: string;
+};
+
+type ShopTranslations = {
+  profileTitle: string;
+};
+
+type ThemeTranslations = {
+  light: string;
+  dark: string;
 };
 
 export function resolveCommonLocale(language?: string | null): CommonLocale {
@@ -27,9 +31,25 @@ export function resolveCommonLocale(language?: string | null): CommonLocale {
 }
 
 export function getCommonTranslations(locale: CommonLocale): CommonTranslations {
-  return commonTranslations[locale];
+  return getMessages(locale).common;
 }
 
 export function getCommonDirection(locale: CommonLocale): 'rtl' | 'ltr' {
   return locale === 'fa' ? 'rtl' : 'ltr';
+}
+
+export function getHomeTranslations(locale: CommonLocale): HomeTranslations {
+  return getMessages(locale).home;
+}
+
+export function getProductTranslations(locale: CommonLocale): ProductTranslations {
+  return getMessages(locale).product;
+}
+
+export function getShopTranslations(locale: CommonLocale): ShopTranslations {
+  return getMessages(locale).shop;
+}
+
+export function getThemeTranslations(locale: CommonLocale): ThemeTranslations {
+  return getMessages(locale).theme;
 }

@@ -158,6 +158,11 @@ Rules:
   - `fa`
   - `en`
 - Keep translations organized in a dedicated i18n structure.
+- For this project, translation source files are mandatory and must be used for all next implementations:
+  - `locales/en.json`
+  - `locales/fa.json`
+- New translation keys must be added to both locale files together.
+- i18n helpers/components must read user-facing strings from these JSON files, not inline constants.
 - Use semantic translation keys, not raw sentence-like keys.
 
 Example key style:
