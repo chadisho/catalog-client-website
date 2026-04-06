@@ -15,7 +15,7 @@ export default function CatalogSection({ section, locale }: CatalogSectionProps)
       <SectionTitle title={section.title} />
 
       {section.sectionable_type === 'product' ? (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-1 md:grid-cols-3 lg:grid-cols-4">
           {section.values.map((item, index) => (
             <ProductCard key={`product-${item.id ?? index}`} product={item} locale={locale} />
           ))}
