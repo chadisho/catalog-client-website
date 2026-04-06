@@ -12,6 +12,7 @@ import {
 import type { ProductDetailsModel } from '../model/productDetailsModel';
 import ErrorState from '../../../core/components/feedback/ErrorState';
 import LoadingState from '../../../core/components/feedback/LoadingState';
+import type { AppLocale } from '../../../core/i18n/globalLocale';
 import { getCatalogTranslations } from '../../../core/i18n/catalogLocale';
 import { getProductTranslations, resolveCommonLocale } from '../../../core/i18n/commonLocale';
 
@@ -19,10 +20,11 @@ interface ProductPageProps {
   productCode: string;
   data?: ProductDetailsModel;
   error?: string;
+  localeOverride?: AppLocale;
 }
 
-export default function ProductPage({ productCode, data, error }: ProductPageProps) {
-  const locale = resolveCommonLocale(data?.productModel?.language);
+export default function ProductPage({ productCode, data, error, localeOverride }: ProductPageProps) {
+  const locale = localeOverride ?? resolveCommonLocale(data?.productModel?.language);
   const t = getProductTranslations(locale);
   const headerT = getCatalogTranslations(locale);
 

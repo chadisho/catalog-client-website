@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Search, ShoppingCart, UserRound } from 'lucide-react';
 import { useTheme } from '../theme/useTheme';
 import type { CatalogLocale } from '../i18n/catalogLocale';
@@ -31,15 +31,10 @@ interface HeaderProps {
 export default function Header({ locale, t, hideSearchInput = false }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const handleLocaleChange = (nextLocale: CatalogLocale) => {
     document.cookie = `${LOCALE_COOKIE_KEY}=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
-
-    const nextSearchParams = new URLSearchParams(searchParams.toString());
-    nextSearchParams.set('lang', nextLocale);
-    router.replace(`${pathname}?${nextSearchParams.toString()}`);
+    router.refresh();
   };
 
   return (
