@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
 import ProductPriceBlock from './ProductPriceBlock';
+import ProductDescription from './ProductDescription';
 
 type ProductInfoProps = {
   locale: CommonLocale;
@@ -31,11 +32,6 @@ export default function ProductInfo({
 
   const trimmedDescription = description?.trim();
   const hasDescription = Boolean(trimmedDescription);
-  const hasLongDescription = Boolean(trimmedDescription && trimmedDescription.length > 180);
-  const descriptionText =
-    hasDescription && !expanded && hasLongDescription
-      ? `${trimmedDescription?.slice(0, 180)}...`
-      : trimmedDescription;
 
   return (
     <section className="rounded-2xl border border-secondary/25 bg-background p-5 shadow-sm">
@@ -50,16 +46,13 @@ export default function ProductInfo({
         {hasDescription ? (
           <div className="space-y-2 rounded-xl border border-secondary/25 bg-secondary/5 p-4">
             <p className="text-sm font-medium text-text/80">{t.descriptionLabel}</p>
-            <p className="text-sm leading-7 text-text/85">{descriptionText}</p>
-            {hasLongDescription ? (
-              <button
-                type="button"
-                onClick={() => setExpanded((prev) => !prev)}
-                className="text-sm font-semibold text-primary"
-              >
-                {expanded ? t.lessDescription : t.moreDescription}
-              </button>
-            ) : null}
+            <ProductDescription
+              description={trimmedDescription ?? ''}
+              expanded={expanded}
+              onToggle={() => setExpanded((prev) => !prev)}
+              moreLabel={t.moreDescription}
+              lessLabel={t.lessDescription}
+            />
           </div>
         ) : null}
 
