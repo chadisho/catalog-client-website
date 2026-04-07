@@ -24,6 +24,28 @@ type CatalogTranslations = {
   discountLabel: string;
   lowStockWarning: string;
   currencyToman: string;
+  profile: string;
+  logout: string;
+  loginSheetTitle: string;
+  loginSheetDescription: string;
+  mobileLabel: string;
+  mobilePlaceholder: string;
+  sendOtp: string;
+  otpLabel: string;
+  otpPlaceholder: string;
+  verifyOtp: string;
+  resendOtp: string;
+  backToMobile: string;
+  close: string;
+  authInvalidCellphone: string;
+  authInvalidOtp: string;
+  authGenericError: string;
+  profilePageTitle: string;
+  profileNotAuthenticated: string;
+  profileFirstName: string;
+  profileLastName: string;
+  profileCellphone: string;
+  profileCompany: string;
 };
 
 export function resolveCatalogLocale(language?: string | null): CatalogLocale {

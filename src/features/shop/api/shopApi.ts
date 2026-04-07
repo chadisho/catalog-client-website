@@ -25,7 +25,7 @@ export interface ShopInformation {
 export async function getShopBySlug(
   shopUsername: string
 ): Promise<ShopInformation> {
-  return apiClient(`app/shop/profile/${shopUsername}`, {
+  return (await apiClient(`app/shop/profile/${shopUsername}`, {
     method: 'GET',
-  });
+  })) as ShopInformation;
 }

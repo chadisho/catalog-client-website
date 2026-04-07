@@ -19,9 +19,9 @@ export interface CatalogDetailsModel {
 export async function getCatalogByCode(
   catalogCode: string
 ): Promise<CatalogDetailsModel> {
-  const response = await apiClient(`app/catalog/show/${catalogCode}`, {
+  const response = (await apiClient(`app/catalog/show/${catalogCode}`, {
     method: 'POST',
-  });
+  })) as Record<string, any>;
 
   return {
     catalogModel: response?.options?.catalog ? mapCatalog(response?.options?.catalog) : undefined,

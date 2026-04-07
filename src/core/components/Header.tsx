@@ -1,12 +1,16 @@
 "use client";
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { Search, ShoppingCart, UserRound } from 'lucide-react';
 import { useTheme } from '../theme/useTheme';
 import type { CatalogLocale } from '../i18n/catalogLocale';
 import { LOCALE_COOKIE_KEY } from '../i18n/globalLocale';
 import chadiLogo from '../../assets/chadi-logo.png';
+import { getAuthSession, logout } from '../../features/auth/api/authClientApi';
+import LoginSheet from '../../features/auth/components/LoginSheet';
 
 type HeaderTranslations = {
   searchPlaceholder: string;
@@ -20,6 +24,22 @@ type HeaderTranslations = {
   themeLight: string;
   themeDark: string;
   brand: string;
+  profile: string;
+  logout: string;
+  loginSheetTitle: string;
+  loginSheetDescription: string;
+  mobileLabel: string;
+  mobilePlaceholder: string;
+  sendOtp: string;
+  otpLabel: string;
+  otpPlaceholder: string;
+  verifyOtp: string;
+  resendOtp: string;
+  backToMobile: string;
+  close: string;
+  authInvalidCellphone: string;
+  authInvalidOtp: string;
+  authGenericError: string;
 };
 
 interface HeaderProps {
@@ -31,9 +51,46 @@ interface HeaderProps {
 export default function Header({ locale, t, hideSearchInput = false }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const { data: session } = useQuery({
+    queryKey: ['auth-session'],
+    queryFn: getAuthSession,
+  });
+
+  const isAuthenticated = Boolean(session?.isAuthenticated);
+
+  useEffect(() => {
+    if (!isProfileMenuOpen) {
+      return;
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!profileMenuRef.current) {
+        return;
+      }
+
+      if (!profileMenuRef.current.contains(event.target as Node)) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('mousedown', handleClickOutside);
+    return () => window.removeEventListener('mousedown', handleClickOutside);
+  }, [isProfileMenuOpen]);
 
   const handleLocaleChange = (nextLocale: CatalogLocale) => {
     document.cookie = `${LOCALE_COOKIE_KEY}=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
+    router.refresh();
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    setIsProfileMenuOpen(false);
+    await queryClient.invalidateQueries({ queryKey: ['auth-session'] });
     router.refresh();
   };
 
@@ -115,15 +172,62 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
             </option>
           </select>
 
-          <button
-            type="button"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
-          >
-            <UserRound size={18} strokeWidth={2} aria-hidden />
-            <span>{t.login}</span>
-          </button>
+          {isAuthenticated ? (
+            <div ref={profileMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
+              >
+                <UserRound size={18} strokeWidth={2} aria-hidden />
+                <span>{t.profile}</span>
+              </button>
+
+              {isProfileMenuOpen ? (
+                <div className="absolute end-0 top-[calc(100%+0.5rem)] z-30 min-w-[168px] rounded-xl border border-secondary/35 bg-background p-1.5 shadow-lg dark:bg-black">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      router.push('/profile');
+                    }}
+                    className="w-full rounded-lg px-3 py-2 text-start text-sm text-text transition hover:bg-secondary/20 dark:text-white"
+                  >
+                    {t.profile}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full rounded-lg px-3 py-2 text-start text-sm text-danger transition hover:bg-danger/10"
+                  >
+                    {t.logout}
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsLoginSheetOpen(true)}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
+            >
+              <UserRound size={18} strokeWidth={2} aria-hidden />
+              <span>{t.login}</span>
+            </button>
+          )}
         </div>
       </div>
+
+      <LoginSheet
+        isOpen={isLoginSheetOpen}
+        locale={locale}
+        t={t}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onLoginSuccess={async () => {
+          await queryClient.invalidateQueries({ queryKey: ['auth-session'] });
+          router.refresh();
+        }}
+      />
     </header>
   );
 }
