@@ -13,7 +13,7 @@ function VideoPlayer({ src, title }: { src: string; title: string }) {
       controls
       playsInline
       preload="metadata"
-      className="h-full w-full rounded-2xl bg-black object-contain"
+      className="h-full w-full rounded-2xl bg-neutral object-contain"
       title={title}
     >
       <source src={src} />
@@ -31,16 +31,16 @@ export default function ProductGallery({ mediaItems }: ProductGalleryProps) {
 
   if (!activeItem) {
     return (
-      <section className="rounded-2xl border border-secondary/25 bg-background p-6 shadow-sm">
+      <section className="rounded-2xl border border-border bg-background p-6 shadow-sm">
         <div className="aspect-square w-full rounded-2xl bg-secondary/10" />
       </section>
     );
   }
 
   return (
-    <section className="rounded-2xl border border-secondary/25 bg-background p-4 shadow-sm lg:p-5">
+    <section className="rounded-2xl border border-border bg-background p-4 shadow-sm lg:p-5">
       <div className="flex flex-col gap-4 lg:flex-row-reverse">
-        <div className="w-full overflow-hidden rounded-2xl bg-black/5 lg:flex-1 dark:bg-white/5">
+        <div className="w-full overflow-hidden rounded-2xl bg-muted lg:flex-1">
           <div className="aspect-square w-full">
             {activeItem.type === 'video' ? (
               <VideoPlayer src={activeItem.src} title={activeItem.alt} />
@@ -67,11 +67,11 @@ export default function ProductGallery({ mediaItems }: ProductGalleryProps) {
                   }`}
                 >
                   {item.type === 'video' ? (
-                    <div className="relative h-full w-full bg-black/75">
+                    <div className="relative h-full w-full bg-overlay">
                       <video className="h-full w-full object-cover opacity-80" muted>
                         <source src={item.src} />
                       </video>
-                      <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-white">
+                      <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-primary-content">
                         ▶
                       </span>
                     </div>

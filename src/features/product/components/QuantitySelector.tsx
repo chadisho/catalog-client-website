@@ -20,7 +20,7 @@ export default function QuantitySelector({
   return (
     <section className="space-y-3">
       <p className="text-sm font-medium text-text/80">{label}</p>
-      <div className="inline-flex items-center rounded-xl border border-secondary/40 bg-background">
+      <div className="inline-flex items-center rounded-xl border border-border bg-background">
         <button
           type="button"
           onClick={onIncrease}

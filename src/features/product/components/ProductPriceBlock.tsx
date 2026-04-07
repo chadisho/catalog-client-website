@@ -33,7 +33,7 @@ export default function ProductPriceBlock({
   const discountPercent = resolveDiscountPercent(price, salePrice);
 
   return (
-    <section className="space-y-2 rounded-2xl border border-secondary/30 bg-secondary/5 p-4">
+    <section className="space-y-2 rounded-2xl border border-border bg-secondary/5 p-4">
       {showLabel ? <p className="text-xs font-medium text-text/75">{label}</p> : null}
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-xl font-bold text-text">
@@ -48,7 +48,7 @@ export default function ProductPriceBlock({
         ) : null}
 
         {discountPercent ? (
-          <span className="rounded-full bg-rose-500 px-2 py-1 text-xs font-semibold text-white">
+          <span className="rounded-full bg-error px-2 py-1 text-xs font-semibold text-error-content">
             {discountTextPrefix ? `${discountPercent}% ${discountTextPrefix}` : `${discountPercent}%`}
           </span>
         ) : null}

@@ -95,7 +95,7 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
   };
 
   return (
-    <header className="border-b border-secondary/30 bg-background px-4 py-4 text-text dark:bg-black dark:text-white">
+    <header className="border-b border-border bg-background px-4 py-4 text-text">
       <div className="mx-auto flex w-full max-w-[1400px] flex-wrap items-center gap-3 lg:flex-nowrap">
         <div className="flex min-w-0 flex-1 items-center gap-3">
           <div className="hidden items-center gap-2 ps-3 sm:flex">
@@ -111,7 +111,7 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
           {!hideSearchInput ? (
             <div className="relative flex-1">
               <span
-                className="pointer-events-none absolute inset-y-0 start-3 flex items-center text-text/55 dark:text-white/55"
+                className="pointer-events-none absolute inset-y-0 start-3 flex items-center text-text/70"
                 aria-hidden
               >
                 <Search size={18} strokeWidth={2} />
@@ -119,7 +119,7 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
               <input
                 type="search"
                 placeholder={t.searchPlaceholder}
-                className="h-12 w-full appearance-none rounded-full border border-secondary/40 bg-background/80 px-11 text-sm text-text outline-none ring-primary transition placeholder:text-text/55 focus:ring-2 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder:text-white/55 dark:[color-scheme:dark]"
+                className="h-12 w-full appearance-none rounded-full border border-border bg-surface px-11 text-sm text-text outline-none ring-primary transition placeholder:text-text/70 focus:ring-2"
               />
             </div>
           ) : null}
@@ -127,7 +127,7 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-text/20 bg-text/5"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface"
           aria-label={t.cart}
           title={t.cart}
         >
@@ -142,15 +142,15 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
             id="catalog-theme-select"
             value={theme}
             onChange={(event) => setTheme(event.target.value as 'light' | 'dark' | 'system')}
-            className="h-10 appearance-none rounded-full border border-secondary/40 bg-background/80 px-3 text-xs text-text outline-none dark:border-white/15 dark:bg-white/5 dark:text-white dark:[color-scheme:dark]"
+            className="h-10 appearance-none rounded-full border border-border bg-surface px-3 text-xs text-text outline-none"
           >
-            <option className="text-black" value="system">
+            <option className="text-text" value="system">
               {t.themeSystem}
             </option>
-            <option className="text-black" value="light">
+            <option className="text-text" value="light">
               {t.themeLight}
             </option>
-            <option className="text-black" value="dark">
+            <option className="text-text" value="dark">
               {t.themeDark}
             </option>
           </select>
@@ -162,12 +162,12 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
             id="catalog-language-select"
             value={locale}
             onChange={(event) => handleLocaleChange(event.target.value as CatalogLocale)}
-            className="h-10 appearance-none rounded-full border border-secondary/40 bg-background/80 px-3 text-xs text-text outline-none dark:border-white/15 dark:bg-white/5 dark:text-white dark:[color-scheme:dark]"
+            className="h-10 appearance-none rounded-full border border-border bg-surface px-3 text-xs text-text outline-none"
           >
-            <option className="text-black" value="fa">
+            <option className="text-text" value="fa">
               {t.languageFa}
             </option>
-            <option className="text-black" value="en">
+            <option className="text-text" value="en">
               {t.languageEn}
             </option>
           </select>
@@ -184,14 +184,14 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
               </button>
 
               {isProfileMenuOpen ? (
-                <div className="absolute end-0 top-[calc(100%+0.5rem)] z-30 min-w-[168px] rounded-xl border border-secondary/35 bg-background p-1.5 shadow-lg dark:bg-black">
+                <div className="absolute end-0 top-[calc(100%+0.5rem)] z-30 min-w-[168px] rounded-xl border border-border bg-surface p-1.5 shadow-lg">
                   <button
                     type="button"
                     onClick={() => {
                       setIsProfileMenuOpen(false);
                       router.push('/profile');
                     }}
-                    className="w-full rounded-lg px-3 py-2 text-start text-sm text-text transition hover:bg-secondary/20 dark:text-white"
+                    className="w-full rounded-lg px-3 py-2 text-start text-sm text-text transition hover:bg-muted"
                   >
                     {t.profile}
                   </button>

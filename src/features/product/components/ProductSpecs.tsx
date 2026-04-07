@@ -17,13 +17,13 @@ export default function ProductSpecs({ title, showText, hideText, specs }: Produ
   }
 
   return (
-    <section className="rounded-2xl border border-secondary/25 bg-background p-5 shadow-sm">
+    <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-text">{title}</h2>
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="rounded-full border border-secondary/35 px-3 py-1 text-xs font-semibold text-primary"
+          className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-primary"
         >
           {isOpen ? hideText : showText}
         </button>

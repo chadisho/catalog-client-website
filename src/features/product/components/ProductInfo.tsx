@@ -34,7 +34,7 @@ export default function ProductInfo({
   const hasDescription = Boolean(trimmedDescription);
 
   return (
-    <section className="rounded-2xl border border-secondary/25 bg-background p-5 shadow-sm">
+    <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
       <div className="space-y-4">
         <div>
           <h1 className="text-2xl font-bold leading-8 text-text lg:text-3xl">{title}</h1>
@@ -44,7 +44,7 @@ export default function ProductInfo({
         </div>
 
         {hasDescription ? (
-          <div className="space-y-2 rounded-xl border border-secondary/25 bg-secondary/5 p-4">
+          <div className="space-y-2 rounded-xl border border-border bg-secondary/5 p-4">
             <p className="text-sm font-medium text-text/80">{t.descriptionLabel}</p>
             <ProductDescription
               description={trimmedDescription ?? ''}
@@ -69,8 +69,8 @@ export default function ProductInfo({
         ) : null}
 
         {hasStockWarning ? (
-          <div className="inline-flex items-center gap-2 rounded-full bg-rose-100/90 px-3 py-1 text-xs font-semibold text-rose-700 dark:bg-rose-900/35 dark:text-rose-300">
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-rose-500" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-error-soft px-3 py-1 text-xs font-semibold text-error">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-error" />
             <span>{t.stockWarning}</span>
           </div>
         ) : null}

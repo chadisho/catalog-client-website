@@ -120,7 +120,7 @@ function resolveProductHref(product: ProductItemModel): string | null {
 
 function DiscountBadge({ text }: DiscountBadgeProps) {
   return (
-    <span className="absolute left-2 top-2 rounded-md bg-rose-500 px-2 py-1 text-[11px] font-medium leading-none text-white shadow-sm shadow-rose-800/30">
+    <span className="absolute left-2 top-2 rounded-md bg-error px-2 py-1 text-[11px] font-medium leading-none text-error-content shadow-sm">
       {text}
     </span>
   );
@@ -139,8 +139,8 @@ function PriceSection({ amount, currency, locale }: PriceSectionProps) {
 
 function StockWarning({ text }: StockWarningProps) {
   return (
-    <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-rose-100/80 px-3 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/35 dark:text-rose-300">
-      <span aria-hidden="true" className="h-2 w-2 rounded-full bg-rose-500" />
+    <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-error-soft px-3 py-1 text-xs font-medium text-error">
+      <span aria-hidden="true" className="h-2 w-2 rounded-full bg-error" />
       <span>{text}</span>
     </div>
   );
@@ -178,7 +178,7 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
 
   const content = (
     <article
-      className={`w-full max-w-[220px] overflow-hidden rounded-2xl border border-border/70 bg-surface p-2 text-text shadow-sm shadow-black/10 transition-colors dark:border-border/40 dark:bg-black dark:shadow-black/30 ${textAlignClass}`}
+      className={`w-full max-w-[220px] overflow-hidden rounded-2xl border border-border bg-surface p-2 text-text shadow-sm transition-colors ${textAlignClass}`}
     >
       <div className="relative overflow-hidden rounded-xl bg-muted/20">
         {imageUrl ? <img src={imageUrl} alt={title} className="h-50 w-full rounded-xl object-cover" loading="lazy" /> : null}

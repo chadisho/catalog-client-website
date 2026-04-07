@@ -11,7 +11,7 @@ export default function ErrorState({ locale = 'en', onRetry }: ErrorStateProps) 
 
   return (
     <div dir={direction} className="flex min-h-[40vh] items-center justify-center bg-background p-6 text-text">
-      <div className="w-full max-w-md rounded-xl border border-secondary/30 bg-background px-6 py-5 text-center">
+      <div className="w-full max-w-md rounded-xl border border-border bg-background px-6 py-5 text-center">
         <p className="text-base font-semibold text-text">{t.errorTitle}</p>
         <p className="mt-2 text-sm text-text/80">{t.errorDescription}</p>
         {onRetry ? (

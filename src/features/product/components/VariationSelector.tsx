@@ -26,7 +26,7 @@ export default function VariationSelector({ label, options, selected, onSelect }
               onClick={() => onSelect(option)}
               className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
                 isSelected
-                  ? 'border-primary bg-primary text-white'
+                  ? 'border-primary bg-primary text-primary-content'
                   : 'border-secondary/40 bg-background text-text hover:border-primary/50'
               }`}
             >

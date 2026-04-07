@@ -66,19 +66,19 @@ export default function ProductActions({
 
   return (
     <>
-      <aside className="hidden rounded-2xl border border-secondary/25 bg-background p-5 shadow-sm lg:block">
+      <aside className="hidden rounded-2xl border border-border bg-background p-5 shadow-sm lg:block">
         <div className="space-y-5">
           {panelContent}
           <button
             type="button"
-            className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content transition-opacity hover:opacity-90"
           >
             {t.addToCart}
           </button>
         </div>
       </aside>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-secondary/30 bg-background/95 p-3 backdrop-blur lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex w-full max-w-3xl items-center gap-3">
           {hasPrice ? (
             <div className="flex-1">
@@ -99,7 +99,7 @@ export default function ProductActions({
             type="button"
             onClick={() => setIsSelectionModalOpen(true)}
             aria-label={t.openSelectionSheet}
-            className="h-12 rounded-xl bg-primary px-5 text-sm font-semibold text-white"
+            className="h-12 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-content"
           >
             {t.addToCart}
           </button>
@@ -107,21 +107,21 @@ export default function ProductActions({
       </div>
 
       {isSelectionModalOpen ? (
-        <div className="fixed inset-0 z-40 flex items-end bg-black/40 lg:hidden" role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-40 flex items-end bg-overlay lg:hidden" role="dialog" aria-modal="true">
           <button
             type="button"
             onClick={() => setIsSelectionModalOpen(false)}
             aria-label={t.closeSelectionSheet}
             className="absolute inset-0"
           />
-          <div className="relative w-full rounded-t-3xl border border-secondary/25 bg-background p-4 shadow-2xl">
+          <div className="relative w-full rounded-t-3xl border border-border bg-background p-4 shadow-2xl">
             <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-secondary/40" />
             <div className="space-y-5">
               {panelContent}
               <button
                 type="button"
                 onClick={() => setIsSelectionModalOpen(false)}
-                className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white"
+                className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content"
               >
                 {t.confirmSelection}
               </button>
