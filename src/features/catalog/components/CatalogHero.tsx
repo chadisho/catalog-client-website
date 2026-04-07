@@ -6,7 +6,7 @@ interface CatalogHeroProps {
 
 export default function CatalogHero({ title, description, imageUrl }: CatalogHeroProps) {
   return (
-    <aside className="space-y-4 rounded-2xl border border-border bg-background/80 p-4">
+    <aside className="space-y-4 rounded-2xl border border-border bg-surface p-4">
       <div className="relative overflow-hidden rounded-2xl bg-secondary/25">
         {imageUrl ? <img src={imageUrl} alt={title} className="h-52 w-full object-cover" /> : null}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-overlay via-transparent to-transparent" />

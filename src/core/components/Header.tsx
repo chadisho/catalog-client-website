@@ -127,6 +127,7 @@ export default function Header({ locale, t, hideSearchInput = false }: HeaderPro
 
         <button
           type="button"
+          onClick={() => router.push('/cart')}
           className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface"
           aria-label={t.cart}
           title={t.cart}
