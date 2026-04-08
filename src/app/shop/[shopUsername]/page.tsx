@@ -1,5 +1,6 @@
 import ShopPage from '../../../features/shop/pages';
-import { getShopBySlug, type ShopInformation } from '../../../features/shop/api/shopApi';
+import { getShopBySlug } from '../../../features/shop/api/shopApi';
+import type { ShopInformationModel } from '../../../features/shop/model/shopInformationModel';
 
 interface ShopRouteParams {
   shopUsername: string;
@@ -12,7 +13,7 @@ interface ShopRoutePageProps {
 export default async function Page({ params }: ShopRoutePageProps) {
   const { shopUsername } = await params;
 
-  let data: ShopInformation | undefined;
+  let data: ShopInformationModel | undefined;
   let error: string | undefined;
 
   try {

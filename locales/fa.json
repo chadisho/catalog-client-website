@@ -109,7 +109,19 @@
     "back": "بازگشت"
   },
   "shop": {
-    "profileTitle": "پروفایل فروشگاه"
+    "profileTitle": "پروفایل فروشگاه",
+    "aboutTitle": "درباره ما",
+    "contactTitle": "راه‌های ارتباطی",
+    "addressesTitle": "آدرس‌ها",
+    "moreDescription": "بیشتر",
+    "lessDescription": "کمتر",
+    "instagram": "اینستاگرام",
+    "whatsapp": "واتساپ",
+    "telegram": "تلگرام",
+    "website": "وب‌سایت",
+    "call": "تماس",
+    "emptyContacts": "اطلاعات ارتباطی ثبت نشده است.",
+    "emptyDescription": "توضیحاتی برای این فروشگاه ثبت نشده است."
   },
   "home": {
     "title": "صفحه اصلی"

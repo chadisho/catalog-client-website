@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import type { ShopInformation } from '../api/shopApi';
 import { getShopBySlug } from '../api/shopApi';
+import type { ShopInformationModel } from '../model/shopInformationModel';
 
 interface UseShopReturn {
-  data: ShopInformation | undefined;
+  data: ShopInformationModel | undefined;
   isLoading: boolean;
   isError: boolean;
   error: Error | null;

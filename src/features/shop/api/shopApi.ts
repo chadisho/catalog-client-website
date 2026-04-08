@@ -1,4 +1,5 @@
 import { apiClient } from '../../../core/api';
+import { mapShopInformation, type ShopInformationModel } from '../model/shopInformationModel';
 
 export interface ShopInformation {
   faName?: string;
@@ -24,8 +25,10 @@ export interface ShopInformation {
  */
 export async function getShopBySlug(
   shopUsername: string
-): Promise<ShopInformation> {
-  return (await apiClient(`app/shop/profile/${shopUsername}`, {
+): Promise<ShopInformationModel> {
+  const response = (await apiClient(`app/shop/profile/${shopUsername}`, {
     method: 'GET',
-  })) as ShopInformation;
+  })) as Record<string, unknown>;
+
+  return mapShopInformation(response?.options ?? response);
 }

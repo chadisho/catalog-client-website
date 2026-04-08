@@ -109,7 +109,19 @@
     "back": "Back"
   },
   "shop": {
-    "profileTitle": "Shop Profile"
+    "profileTitle": "Shop Profile",
+    "aboutTitle": "About us",
+    "contactTitle": "Contact",
+    "addressesTitle": "Addresses",
+    "moreDescription": "More",
+    "lessDescription": "Less",
+    "instagram": "Instagram",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "website": "Website",
+    "call": "Call",
+    "emptyContacts": "No contact details available.",
+    "emptyDescription": "No description provided."
   },
   "home": {
     "title": "Home Page"

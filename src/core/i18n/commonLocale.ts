@@ -42,6 +42,18 @@ export type ProductTranslations = {
 
 type ShopTranslations = {
   profileTitle: string;
+  aboutTitle: string;
+  contactTitle: string;
+  addressesTitle: string;
+  moreDescription: string;
+  lessDescription: string;
+  instagram: string;
+  whatsapp: string;
+  telegram: string;
+  website: string;
+  call: string;
+  emptyContacts: string;
+  emptyDescription: string;
 };
 
 type ThemeTranslations = {
