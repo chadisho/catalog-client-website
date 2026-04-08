@@ -49,7 +49,8 @@ export default function CatalogPage({
 
   return (
     <div dir={direction} className={`min-h-screen bg-background text-text ${textAlignClass}`}>
-      <Header locale={locale} t={t} />
+          <Header locale={locale} t={t} headerTitle={data.shopInformation?.faName ?? undefined}
+              headerImage={data.shopInformation?.avatar ?? undefined} shopSlug={ data.shopInformation?.enName??undefined} />
 
       <div className="mx-auto grid w-full max-w-[1400px] gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
         <main className="space-y-10">

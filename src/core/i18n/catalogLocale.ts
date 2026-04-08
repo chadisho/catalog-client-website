@@ -26,6 +26,8 @@ type CatalogTranslations = {
   currencyToman: string;
   profile: string;
   logout: string;
+  openMenu: string;
+  closeMenu: string;
   loginSheetTitle: string;
   loginSheetDescription: string;
   mobileLabel: string;

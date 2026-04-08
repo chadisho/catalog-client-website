@@ -30,6 +30,8 @@
     "currencyToman": "تومان",
     "profile": "پروفایل",
     "logout": "خروج",
+    "openMenu": "باز کردن منو",
+    "closeMenu": "بستن منو",
     "loginSheetTitle": "ورود به حساب کاربری",
     "loginSheetDescription": "لطفا برای خرید این محصول ابتدا وارد حساب کاربری خود شوید.",
     "mobileLabel": "شماره موبایل",

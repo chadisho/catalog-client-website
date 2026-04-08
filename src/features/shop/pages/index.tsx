@@ -10,6 +10,8 @@ import {
 import ShopAboutCard from '../components/ShopAboutCard';
 import ShopContactCard from '../components/ShopContactCard';
 import ShopProfileHero from '../components/ShopProfileHero';
+import Header from '../../../core/components/Header';
+import { getCatalogTranslations } from '../../../core/i18n/catalogLocale';
 
 interface ShopPageProps {
   shopUsername: string;
@@ -35,7 +37,8 @@ function resolveShopLocale(data?: ShopInformationModel): CommonLocale {
 
 export default function ShopPage({ shopUsername, data, error }: ShopPageProps) {
   const locale = resolveShopLocale(data);
-  const t = getShopTranslations(locale);
+    const t = getShopTranslations(locale);
+  const headerT = getCatalogTranslations(locale);
   const direction = getCommonDirection(locale);
   const textAlignClass = locale === 'fa' ? 'text-right' : 'text-left';
 
@@ -61,11 +64,20 @@ export default function ShopPage({ shopUsername, data, error }: ShopPageProps) {
     { key: 'website', label: t.website, value: data.website },
   ].filter((item) => typeof item.value === 'string' && item.value.trim().length > 0);
 
-  return (
+    return (
+        <>
+        
+        <Header
+                locale={locale} t={headerT} hideSearchInput={true} 
+                headerTitle={data?.faName ?? undefined}
+              headerImage={data?.avatar ?? undefined}
+          
+          />
     <main
       dir={direction}
       className={`mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-16 pt-4 ${textAlignClass}`}
-    >
+      >
+        
       <ShopProfileHero
         shopUsername={shopUsername}
         profileTitle={t.profileTitle}
@@ -94,6 +106,7 @@ export default function ShopPage({ shopUsername, data, error }: ShopPageProps) {
         }))}
         addresses={addresses}
       />
-    </main>
+            </main>
+            </>
   );
 }

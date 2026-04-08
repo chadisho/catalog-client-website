@@ -30,6 +30,8 @@
     "currencyToman": "toman",
     "profile": "Profile",
     "logout": "Logout",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
     "loginSheetTitle": "Sign in to your account",
     "loginSheetDescription": "Please sign in before purchasing this product.",
     "mobileLabel": "Mobile number",
