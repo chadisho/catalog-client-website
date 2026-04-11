@@ -42,6 +42,16 @@ export default function ProductPage({ productCode, data, error, localeOverride }
 
   const mediaItems = resolveMediaItems(data, t);
   const variationOptions = resolveVariationOptions(data);
+  const variationItems = (data.variations ?? [])
+    .map((variation) => ({
+      id: variation.id,
+      label: variation.attrs
+        .filter((attr) => attr.isVariation !== false)
+        .map((attr) => attr.value)
+        .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+        .join(' / '),
+    }))
+    .filter((item): item is { id: number; label: string } => Boolean(item.id && item.label.trim().length > 0));
   const hasStockWarning = resolveStockWarning(data);
   const specs = [
     ...(data.variationAttributes ?? []).map((attribute) => ({
@@ -89,7 +99,9 @@ export default function ProductPage({ productCode, data, error, localeOverride }
             <ProductActions
               locale={locale}
               t={t}
+              productId={data.productModel.id}
               variationOptions={variationOptions}
+              variationItems={variationItems}
               price={data.productModel.price}
               salePrice={data.productModel.salePrice}
               currencyLabel={currencyLabel}

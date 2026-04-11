@@ -77,7 +77,9 @@
     "mediaImageAlt": "تصویر محصول",
     "mediaVideoAlt": "ویدیوی محصول",
     "openSelectionSheet": "باز کردن انتخاب خرید",
-    "closeSelectionSheet": "بستن انتخاب خرید"
+    "closeSelectionSheet": "بستن انتخاب خرید",
+    "addToCartSuccess": "محصول با موفقیت به سبد خرید اضافه شد.",
+    "addToCartError": "افزودن محصول به سبد خرید امکان‌پذیر نیست."
   },
   "cart": {
     "title": "سبد خرید",
@@ -108,7 +110,12 @@
     "collapseGroup": "بستن گروه",
     "expandGroup": "باز کردن گروه",
     "alertLabel": "هشدار",
-    "back": "بازگشت"
+    "back": "بازگشت",
+    "updateItemError": "به‌روزرسانی تعداد آیتم انجام نشد.",
+    "deleteItemError": "حذف آیتم انجام نشد.",
+    "authRequiredTitle": "نیاز به ورود",
+    "authRequiredDescription": "برای مشاهده و مدیریت سبد خرید، لطفاً وارد حساب کاربری شوید.",
+    "authRequiredAction": "ورود به حساب کاربری"
   },
   "shop": {
     "profileTitle": "پروفایل فروشگاه",

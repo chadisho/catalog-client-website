@@ -32,6 +32,11 @@ export type CartTranslations = {
   expandGroup: string;
   alertLabel: string;
   back: string;
+  updateItemError: string;
+  deleteItemError: string;
+  authRequiredTitle: string;
+  authRequiredDescription: string;
+  authRequiredAction: string;
 };
 
 export function getCartTranslations(locale: CartLocale): CartTranslations {

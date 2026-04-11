@@ -2,14 +2,22 @@
 
 import { useMemo, useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
+import { addToCart } from '../../cart/api/cartApi';
 import ProductPriceBlock from './ProductPriceBlock';
 import QuantitySelector from './QuantitySelector';
 import VariationSelector from './VariationSelector';
 
+type ProductVariationOption = {
+  id: number;
+  label: string;
+};
+
 type ProductActionsProps = {
   locale: CommonLocale;
   t: ProductTranslations;
+  productId?: number | null;
   variationOptions: string[];
+  variationItems?: ProductVariationOption[];
   price?: string | null;
   salePrice?: string | null;
   currencyLabel: string;
@@ -18,7 +26,9 @@ type ProductActionsProps = {
 export default function ProductActions({
   locale,
   t,
+  productId,
   variationOptions,
+  variationItems = [],
   price,
   salePrice,
   currencyLabel,
@@ -26,8 +36,39 @@ export default function ProductActions({
   const [quantity, setQuantity] = useState(1);
   const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const hasPrice = Boolean(price || salePrice);
+
+  const selectedVariationId = useMemo(() => {
+    const matched = variationItems.find((item) => item.label === selectedVariation);
+    return matched?.id;
+  }, [selectedVariation, variationItems]);
+
+  const handleAddToCart = async () => {
+    if (!productId || isSubmitting) {
+      return;
+    }
+
+    setStatusMessage(null);
+    setIsSubmitting(true);
+
+    try {
+      await addToCart({
+        productId,
+        quantity,
+        variationId: selectedVariationId,
+      });
+
+      setStatusMessage(t.addToCartSuccess);
+      setIsSelectionModalOpen(false);
+    } catch {
+      setStatusMessage(t.addToCartError);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const panelContent = useMemo(
     () => (
@@ -69,8 +110,11 @@ export default function ProductActions({
       <aside className="hidden rounded-2xl border border-border bg-background p-5 shadow-sm lg:block">
         <div className="space-y-5">
           {panelContent}
+          {statusMessage ? <p className="text-sm text-text/80">{statusMessage}</p> : null}
           <button
             type="button"
+            onClick={handleAddToCart}
+            disabled={!productId || isSubmitting}
             className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content transition-opacity hover:opacity-90"
           >
             {t.addToCart}
@@ -118,9 +162,11 @@ export default function ProductActions({
             <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-secondary/40" />
             <div className="space-y-5">
               {panelContent}
+              {statusMessage ? <p className="text-sm text-text/80">{statusMessage}</p> : null}
               <button
                 type="button"
-                onClick={() => setIsSelectionModalOpen(false)}
+                onClick={handleAddToCart}
+                disabled={!productId || isSubmitting}
                 className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content"
               >
                 {t.confirmSelection}

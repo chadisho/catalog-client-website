@@ -6,7 +6,6 @@ export type CartGroup = {
   title: string;
   subtitle: string;
   items: CartItemModel[];
-  showAddItemButton?: boolean;
   showViewProductFooter?: boolean;
 };
 
@@ -40,46 +39,29 @@ export function formatItemVariation(item: CartItemModel): string {
 }
 
 export function resolveGroups(t: CartTranslations, list: CartItemModel[]): CartGroup[] {
-  const firstThree = list.slice(0, 3);
-  const fourth = list.slice(3, 4);
-  const fifth = list.slice(4, 5);
-  const sixth = list.slice(5, 6);
+  const groupedMap = new Map<string, CartItemModel[]>();
 
-  return [
-    {
-      id: 'limited',
-      title: t.limitedCount,
-      subtitle: t.productCodeLabel,
-      items: firstThree,
-      showAddItemButton: true,
-    },
-    {
-      id: 'all-variations',
-      title: t.allVariations,
-      subtitle: t.productCodeLabel,
-      items: fourth,
-    },
-    {
-      id: 'single-each-variant',
-      title: t.singleByEachVariant,
-      subtitle: t.productCodeLabel,
-      items: fifth,
-      showAddItemButton: true,
-    },
-    {
-      id: 'single-variation',
-      title: t.singleVariation,
-      subtitle: t.productCodeLabel,
-      items: sixth,
-      showViewProductFooter: true,
-    },
-    {
-      id: 'closed-product',
-      title: t.closedProduct,
-      subtitle: t.productCodeLabel,
-      items: [],
-    },
-  ];
+  list.forEach((item, index) => {
+    const groupKey =
+      item.productId !== null && item.productId !== undefined
+        ? `product-${item.productId}`
+        : `product-unknown-${index}`;
+
+    const current = groupedMap.get(groupKey);
+    if (current) {
+      current.push(item);
+      return;
+    }
+
+    groupedMap.set(groupKey, [item]);
+  });
+
+  return Array.from(groupedMap.entries()).map(([id, items]) => ({
+    id,
+    title: items[0]?.productName ?? t.readyItemsTitle,
+    subtitle: t.productCodeLabel,
+    items,
+  }));
 }
 
 export function calculateTotals(items: CartItemModel[]) {

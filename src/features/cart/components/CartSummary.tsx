@@ -1,4 +1,3 @@
-import { Plus } from 'lucide-react';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 import { formatPrice } from './cartViewUtils';
 
@@ -69,11 +68,6 @@ export function CartSummaryDesktop(props: CartSummaryProps) {
   return (
     <aside className="hidden rounded-3xl border border-border bg-surface p-5 lg:block">
       <SummaryContent {...props} />
-
-      <button type="button" className="mt-4 inline-flex w-full items-center justify-center gap-2 text-xl font-medium text-primary">
-        <span>{props.t.addItem}</span>
-        <Plus className="h-5 w-5" />
-      </button>
     </aside>
   );
 }

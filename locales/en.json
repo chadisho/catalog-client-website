@@ -77,7 +77,9 @@
     "mediaImageAlt": "Product image",
     "mediaVideoAlt": "Product video",
     "openSelectionSheet": "Open purchase selection",
-    "closeSelectionSheet": "Close purchase selection"
+    "closeSelectionSheet": "Close purchase selection",
+    "addToCartSuccess": "Added to cart successfully.",
+    "addToCartError": "Could not add this item to cart."
   },
   "cart": {
     "title": "Shopping Cart",
@@ -108,7 +110,12 @@
     "collapseGroup": "Collapse group",
     "expandGroup": "Expand group",
     "alertLabel": "Alert",
-    "back": "Back"
+    "back": "Back",
+    "updateItemError": "Could not update item quantity.",
+    "deleteItemError": "Could not remove this item.",
+    "authRequiredTitle": "Sign in required",
+    "authRequiredDescription": "Please sign in to view and manage your cart.",
+    "authRequiredAction": "Sign in"
   },
   "shop": {
     "profileTitle": "Shop Profile",

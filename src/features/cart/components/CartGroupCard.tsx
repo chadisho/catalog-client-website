@@ -1,4 +1,4 @@
-import { AlertCircle, ChevronDown, ChevronUp, Minus, Pencil, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, LoaderCircle, Minus, Pencil, Plus, Trash2 } from 'lucide-react';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 import type { CartItemModel } from '../model/cartModel';
 import { formatItemVariation, formatPrice, toNumber, type CartGroup } from './cartViewUtils';
@@ -11,6 +11,7 @@ type CartGroupCardProps = {
   onToggleCollapse: () => void;
   onDeleteItem: (id: number | null) => void;
   onChangeQuantity: (id: number | null, delta: number) => void;
+  isItemPending: (id: number | null) => boolean;
 };
 
 function CartItemRow({
@@ -19,12 +20,14 @@ function CartItemRow({
   t,
   onDelete,
   onChangeQuantity,
+  isPending,
 }: {
   item: CartItemModel;
   locale: CartLocale;
   t: CartTranslations;
   onDelete: (id: number | null) => void;
   onChangeQuantity: (id: number | null, delta: number) => void;
+  isPending: boolean;
 }) {
   const rowPrice = formatPrice(locale, toNumber(item.productPrice?.salePrice ?? item.price));
 
@@ -37,11 +40,12 @@ function CartItemRow({
         <button
           type="button"
           onClick={() => onDelete(item.id)}
+          disabled={isPending}
           className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-text/80"
           aria-label={t.deleteItem}
           title={t.deleteItem}
         >
-          <Trash2 className="h-4 w-4" />
+          {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
         </button>
 
         <button
@@ -67,6 +71,7 @@ function CartItemRow({
           <button
             type="button"
             onClick={() => onChangeQuantity(item.id, -1)}
+            disabled={isPending}
             className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-text/80"
             aria-label={t.decreaseQuantity}
           >
@@ -80,6 +85,7 @@ function CartItemRow({
           <button
             type="button"
             onClick={() => onChangeQuantity(item.id, 1)}
+            disabled={isPending}
             className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-text/80"
             aria-label={t.increaseQuantity}
           >
@@ -99,7 +105,9 @@ export default function CartGroupCard({
   onToggleCollapse,
   onDeleteItem,
   onChangeQuantity,
+  isItemPending,
 }: CartGroupCardProps) {
+    const groupImage = group.items[0]?.productImage;
   return (
     <article className="rounded-[28px] border border-border bg-surface p-3 shadow-sm lg:p-4">
       <div className="flex items-start justify-between gap-3">
@@ -117,9 +125,18 @@ export default function CartGroupCard({
           <p className="mt-1 text-xs text-text/60">{group.subtitle}</p>
         </div>
 
-        <div className="h-12 w-12 overflow-hidden rounded-full bg-muted">
-          <div className="h-full w-full bg-gradient-to-b from-primary/60 to-transparent" />
-        </div>
+        {groupImage ? (
+          <img
+            src={groupImage}
+            alt={group.title}
+            className="h-12 w-12 rounded-full border border-border object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="h-12 w-12 overflow-hidden rounded-full bg-muted">
+            <div className="h-full w-full bg-gradient-to-b from-primary/60 to-transparent" />
+          </div>
+        )}
       </div>
 
       {!isCollapsed ? (
@@ -132,30 +149,11 @@ export default function CartGroupCard({
               t={t}
               onDelete={onDeleteItem}
               onChangeQuantity={onChangeQuantity}
+              isPending={isItemPending(item.id)}
             />
           ))}
-
-          {group.showAddItemButton ? (
-            <div className="pt-2 text-center">
-              <button type="button" className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-                <span>{t.addItem}</span>
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-          ) : null}
         </div>
       ) : null}
-
-      <div className="mt-3 flex items-center justify-between px-1 text-danger">
-        <button type="button" className="inline-flex items-center" aria-label={t.deleteItem}>
-          <Trash2 className="h-5 w-5" />
-        </button>
-
-        <div className="inline-flex items-center gap-2 text-text">
-          <AlertCircle className="h-5 w-5" />
-          {group.showViewProductFooter ? <span className="text-base">{t.viewProduct}</span> : null}
-        </div>
-      </div>
     </article>
   );
 }

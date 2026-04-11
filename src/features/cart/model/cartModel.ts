@@ -19,16 +19,16 @@ type CartApiProductPrice = {
 type CartApiItem = {
   id?: number;
   requestId?: number;
-  productId?: number;
+  product_id?: number;
   variationId?: number | null;
   quantity?: number;
-  price?: string;
+ 
   subtotal?: string;
   createdAt?: string;
   updatedAt?: string;
-  productName?: string;
+  product_name?: string;
   currency?: string;
-  productImage?: string;
+  product_image?: string;
   unit?: string;
   productVariations?: CartApiAttr[];
   productPrice?: CartApiProductPrice;
@@ -67,10 +67,12 @@ export type CartProductPriceModel = {
 export type CartItemModel = {
   id: number | null;
   requestId: number | null;
-  productId: number | null;
+    productId: number | null;
+  productCode: string|null
   variationId: number | null;
   quantity: number;
-  price: string | null;
+    price: string | null;
+   salePrice: string | null;
   subtotal: string | null;
   createdAt: string | null;
   updatedAt: string | null;
@@ -122,20 +124,22 @@ function mapCartProductPrice(source: CartApiProductPrice | undefined): CartProdu
   };
 }
 
-function mapCartItem(source: CartApiItem): CartItemModel {
+function mapCartItem(source: any): CartItemModel {
   return {
     id: typeof source?.id === 'number' ? source.id : null,
-    requestId: typeof source?.requestId === 'number' ? source.requestId : null,
-    productId: typeof source?.productId === 'number' ? source.productId : null,
+    requestId: typeof source?.request_id === 'number' ? source.request_id : null,
+      productId: typeof source?.product_id === 'number' ? source.product_id : null,
+     productCode: typeof source?.product_code === 'number' ? source.product_code : null,
     variationId: typeof source?.variationId === 'number' ? source.variationId : null,
     quantity: typeof source?.quantity === 'number' ? source.quantity : 1,
-    price: typeof source?.price === 'string' ? source.price : null,
+      price: typeof source?.product_price.price === 'string' ? source?.product_price.price : null,
+    salePrice: typeof source?.product_price.sale_price === 'string' ? source?.product_price.sale_price : null,
     subtotal: typeof source?.subtotal === 'string' ? source.subtotal : null,
     createdAt: typeof source?.createdAt === 'string' ? source.createdAt : null,
-    updatedAt: typeof source?.updatedAt === 'string' ? source.updatedAt : null,
-    productName: typeof source?.productName === 'string' ? source.productName : null,
+    updatedAt: typeof source?.updated_at === 'string' ? source.updated_at : null,
+    productName: typeof source?.product_name === 'string' ? source.product_name : null,
     currency: typeof source?.currency === 'string' ? source.currency : 'toman',
-    productImage: typeof source?.productImage === 'string' ? source.productImage : null,
+    productImage: typeof source?.product_image === 'string' ? source.product_image : null,
     unit: typeof source?.unit === 'string' ? source.unit : null,
     productVariations: Array.isArray(source?.productVariations)
       ? source.productVariations.map(mapCartAttr)
@@ -145,15 +149,17 @@ function mapCartItem(source: CartApiItem): CartItemModel {
   };
 }
 
-export function mapCart(source: CartApiResponse): CartModel {
+export function mapCart(json: any): CartModel {
+    const source = json.options.cart ?? {};
+
   return {
     id: typeof source?.id === 'number' ? source.id : null,
     code: typeof source?.code === 'string' ? source.code : null,
-    totalAmount: typeof source?.totalAmount === 'string' ? source.totalAmount : null,
+    totalAmount: typeof source?.total_amount === 'string' ? source.total_amount : null,
     status: typeof source?.status === 'string' ? source.status : null,
     getFrom: typeof source?.getFrom === 'string' ? source.getFrom : null,
     paymentStatus: typeof source?.paymentStatus === 'string' ? source.paymentStatus : null,
     paymentType: typeof source?.paymentType === 'string' ? source.paymentType : null,
-    listProducts: Array.isArray(source?.listProducts) ? source.listProducts.map(mapCartItem) : [],
+    listProducts: Array.isArray(source?.order_items) ? source.order_items.map(mapCartItem) : [],
   };
 }

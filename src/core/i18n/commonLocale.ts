@@ -38,6 +38,8 @@ export type ProductTranslations = {
   mediaVideoAlt: string;
   openSelectionSheet: string;
   closeSelectionSheet: string;
+  addToCartSuccess: string;
+  addToCartError: string;
 };
 
 type ShopTranslations = {

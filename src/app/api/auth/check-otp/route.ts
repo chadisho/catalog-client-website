@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     otp?: string;
     loginToken?: string;
   } | null;
-
+   
   const otp = (body?.otp ?? '').trim();
   const loginToken = (body?.loginToken ?? '').trim();
 
