@@ -69,7 +69,6 @@ export const mapProductDetails = (response: any): ProductDetailsModel => {
   const rawShopInformation =
     options?.shopInformation ?? options?.shopInformations ?? response?.shopInformation;
 
-    console.log('Mapping product details with options:', options);
   return {
     variationAttributes: mapVariationAttributes(options?.variation_attributes),
     variations: mapVariations(options?.variations),

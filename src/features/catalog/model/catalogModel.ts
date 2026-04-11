@@ -4,7 +4,7 @@
 export type CatalogModel = {
   id?: number | null;
   title: string;
-  url?: string | null;
+  uri?: string | null;
   image?: string | null;
   description?: string | null;
   createdAt?: string | null;
@@ -18,7 +18,7 @@ export const mapCatalog = (data: any): CatalogModel => {
   return {
     id: typeof data?.id === 'number' ? data.id : null,
     title: typeof data?.title === 'string' ? data.title : '',
-    url: typeof data?.url === 'string' ? data.url : null,
+    uri: typeof data?.uri === 'string' ? data.uri : null,
     image:
       typeof data?.image === 'string'
         ? data.image
