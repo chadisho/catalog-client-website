@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
-import { addToCart } from '../../cart/api/cartApi';
+import { useCartStore } from '../../cart/store/cartStore';
 import ProductPriceBlock from './ProductPriceBlock';
 import QuantitySelector from './QuantitySelector';
 import VariationSelector from './VariationSelector';
@@ -36,8 +36,10 @@ export default function ProductActions({
   const [quantity, setQuantity] = useState(1);
   const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const addToCart = useCartStore((state) => state.addToCart);
+  const isSubmitting = useCartStore((state) => state.isAddPending);
+  const cartErrorType = useCartStore((state) => state.errorType);
 
   const hasPrice = Boolean(price || salePrice);
 
@@ -51,8 +53,7 @@ export default function ProductActions({
       return;
     }
 
-    setStatusMessage(null);
-    setIsSubmitting(true);
+    setShowSuccessMessage(false);
 
     try {
       await addToCart({
@@ -61,14 +62,16 @@ export default function ProductActions({
         variationId: selectedVariationId,
       });
 
-      setStatusMessage(t.addToCartSuccess);
+      setShowSuccessMessage(true);
       setIsSelectionModalOpen(false);
-    } catch {
-      setStatusMessage(t.addToCartError);
-    } finally {
-      setIsSubmitting(false);
-    }
+    } catch {}
   };
+
+  const statusMessage = showSuccessMessage
+    ? t.addToCartSuccess
+    : cartErrorType === 'ADD'
+      ? t.addToCartError
+      : null;
 
   const panelContent = useMemo(
     () => (

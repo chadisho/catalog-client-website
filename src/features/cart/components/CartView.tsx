@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
-import type { CartItemModel, CartModel } from '../model/cartModel';
-import { deleteCartItem, updateCartItemQuantity } from '../api/cartApi';
+import { useCartStore } from '../store/cartStore';
 import CartHeaderBlock from './CartHeaderBlock';
 import CartGroupCard from './CartGroupCard';
 import { CartSummaryDesktop, CartSummaryMobile } from './CartSummary';
@@ -12,14 +11,16 @@ import { calculateTotals, resolveGroups } from './cartViewUtils';
 type CartViewProps = {
   locale: CartLocale;
   t: CartTranslations;
-  cart: CartModel;
 };
 
-export default function CartView({ locale, t, cart }: CartViewProps) {
-  const [items, setItems] = useState<CartItemModel[]>(cart.listProducts);
+export default function CartView({ locale, t }: CartViewProps) {
+  const cart = useCartStore((state) => state.cart);
+  const items = cart?.listProducts ?? [];
+  const pendingByItemId = useCartStore((state) => state.pendingByItemId);
+  const errorType = useCartStore((state) => state.errorType);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeItem = useCartStore((state) => state.removeItem);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
-  const [pendingByItemId, setPendingByItemId] = useState<Record<number, boolean>>({});
-  const [actionError, setActionError] = useState<string | null>(null);
 
   const groups = useMemo(() => resolveGroups(t, items), [items, t]);
   const { computedTotal, originalTotal, discountPercent, profit } = useMemo(
@@ -27,20 +28,12 @@ export default function CartView({ locale, t, cart }: CartViewProps) {
     [items]
   );
 
-  const setItemPending = (id: number, isPending: boolean) => {
-    setPendingByItemId((current) => {
-      if (isPending) {
-        return {
-          ...current,
-          [id]: true,
-        };
-      }
-
-      const next = { ...current };
-      delete next[id];
-      return next;
-    });
-  };
+  const actionError =
+    errorType === 'UPDATE'
+      ? t.updateItemError
+      : errorType === 'DELETE'
+        ? t.deleteItemError
+        : null;
 
   const handleChangeQuantity = async (id: number | null, delta: number) => {
     if (id === null) {
@@ -57,32 +50,9 @@ export default function CartView({ locale, t, cart }: CartViewProps) {
       return;
     }
 
-    setActionError(null);
-    setItemPending(id, true);
-
     try {
-      await updateCartItemQuantity({
-        itemId: id,
-        quantity: nextQuantity,
-      });
-
-      setItems((currentItems) =>
-        currentItems.map((item) => {
-          if (item.id !== id) {
-            return item;
-          }
-
-          return {
-            ...item,
-            quantity: nextQuantity,
-          };
-        })
-      );
-    } catch {
-      setActionError(t.updateItemError);
-    } finally {
-      setItemPending(id, false);
-    }
+      await updateQuantity(id, nextQuantity);
+    } catch {}
   };
 
   const handleDeleteItem = async (id: number | null) => {
@@ -90,18 +60,9 @@ export default function CartView({ locale, t, cart }: CartViewProps) {
       return;
     }
 
-    setActionError(null);
-    setItemPending(id, true);
-
     try {
-      await deleteCartItem(id);
-
-      setItems((currentItems) => currentItems.filter((item) => item.id !== id));
-    } catch {
-      setActionError(t.deleteItemError);
-    } finally {
-      setItemPending(id, false);
-    }
+      await removeItem(id);
+    } catch {}
   };
 
   if (items.length === 0) {

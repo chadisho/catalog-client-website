@@ -11,6 +11,7 @@ import { LOCALE_COOKIE_KEY } from '../i18n/globalLocale';
 import chadiLogo from '../../assets/chadi-logo.png';
 import { getAuthSession, logout } from '../../features/auth/api/authClientApi';
 import LoginSheet from '../../features/auth/components/LoginSheet';
+import { useCartStore } from '../../features/cart/store/cartStore';
 
 type HeaderTranslations = {
   searchPlaceholder: string;
@@ -72,6 +73,11 @@ export default function Header({
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
   const drawerToggleButtonRef = useRef<HTMLButtonElement | null>(null);
   const drawerCloseButtonRef = useRef<HTMLButtonElement | null>(null);
+  const hydrateCartStore = useCartStore((state) => state.hydrate);
+  const hasCartHydrated = useCartStore((state) => state.hasHydrated);
+  const cart = useCartStore((state) => state.cart);
+  const prefetchCartIfNeeded = useCartStore((state) => state.prefetchCartIfNeeded);
+  const resetCart = useCartStore((state) => state.resetCart);
 
   const { data: session } = useQuery({
     queryKey: ['auth-session'],
@@ -79,6 +85,24 @@ export default function Header({
   });
 
   const isAuthenticated = Boolean(session?.isAuthenticated);
+  const cartItemsCount = (cart?.listProducts ?? []).length;
+
+  useEffect(() => {
+    hydrateCartStore();
+  }, [hydrateCartStore]);
+
+  useEffect(() => {
+    if (!hasCartHydrated) {
+      return;
+    }
+
+    if (!isAuthenticated) {
+      resetCart();
+      return;
+    }
+
+    void prefetchCartIfNeeded();
+  }, [hasCartHydrated, isAuthenticated, prefetchCartIfNeeded, resetCart]);
 
   useEffect(() => {
     if (!isProfileMenuOpen) {
@@ -137,6 +161,7 @@ export default function Header({
 
   const handleLogout = async () => {
     await logout();
+    resetCart();
     setIsProfileMenuOpen(false);
     await queryClient.invalidateQueries({ queryKey: ['auth-session'] });
     router.refresh();
@@ -216,11 +241,16 @@ export default function Header({
         <button
           type="button"
           onClick={() => router.push('/cart')}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface"
+          className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface"
           aria-label={t.cart}
           title={t.cart}
         >
           <ShoppingCart size={18} strokeWidth={2} aria-hidden />
+          {hasCartHydrated && cartItemsCount > 0 ? (
+            <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-content">
+              {cartItemsCount}
+            </span>
+          ) : null}
         </button>
 
         <button
