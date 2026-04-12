@@ -2,6 +2,7 @@ import { getCatalogTranslations } from '../../../../core/i18n/catalogLocale';
 import type { AppLocale } from '../../../../core/i18n/globalLocale';
 import ErrorState from '../../../../core/components/feedback/ErrorState';
 import { getProfile } from '../../api/profileApi';
+import Link from 'next/link';
 
 type ProfilePageProps = {
   locale: AppLocale;
@@ -48,10 +49,19 @@ export default async function ProfilePage({ locale, isAuthenticated }: ProfilePa
               <p className="mt-1 font-medium text-text">{profile.companyName || '-'}</p>
             </div>
           </div>
+
+          <Link
+            href="/profile/orders"
+            className="mt-5 inline-flex h-10 items-center justify-center rounded-lg border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
+          >
+            {t.profileViewOrders}
+          </Link>
         </section>
       </main>
     );
-  } catch {
+  } catch (e) {
+      console.log("EERR");
+      console.log(e);
     return <ErrorState locale={locale} />;
   }
 }

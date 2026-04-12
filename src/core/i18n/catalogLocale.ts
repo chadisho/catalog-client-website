@@ -25,6 +25,7 @@ type CatalogTranslations = {
   lowStockWarning: string;
   currencyToman: string;
   profile: string;
+  profileOrders: string;
   logout: string;
   openMenu: string;
   closeMenu: string;
@@ -48,6 +49,25 @@ type CatalogTranslations = {
   profileLastName: string;
   profileCellphone: string;
   profileCompany: string;
+  profileViewOrders: string;
+  ordersPageTitle: string;
+  ordersNotAuthenticated: string;
+  ordersEmptyTitle: string;
+  ordersEmptyDescription: string;
+  orderCode: string;
+  orderStatus: string;
+  orderDate: string;
+  orderTotalAmount: string;
+  orderItemsCount: string;
+  orderProductFallback: string;
+  orderStatusPending: string;
+  orderStatusCompleted: string;
+  orderStatusCanceled: string;
+  orderStatusReturned: string;
+  orderStatusUnknown: string;
+  paginationPrevious: string;
+  paginationNext: string;
+  paginationPageLabel: string;
 };
 
 export function resolveCatalogLocale(language?: string | null): CatalogLocale {

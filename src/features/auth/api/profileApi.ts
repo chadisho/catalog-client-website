@@ -5,6 +5,6 @@ export async function getProfile(): Promise<ProfileModel> {
   const response = (await apiClient('app/users/profile', {
     method: 'GET',
   })) as ProfileApiResponse;
-
+    console.log(response);
   return mapProfileResponse(response);
 }
