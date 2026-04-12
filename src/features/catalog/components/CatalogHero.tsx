@@ -43,9 +43,10 @@ export default function CatalogHero({
   }, [fallbackImageUrl, images]);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isThumbnailHovering, setIsThumbnailHovering] = useState(false);
 
   useEffect(() => {
-    if (normalizedImages.length <= 1) {
+    if (normalizedImages.length <= 1 || isThumbnailHovering) {
       return;
     }
 
@@ -54,7 +55,7 @@ export default function CatalogHero({
     }, autoPlayIntervalMs);
 
     return () => window.clearInterval(timer);
-  }, [autoPlayIntervalMs, normalizedImages.length]);
+  }, [autoPlayIntervalMs, isThumbnailHovering, normalizedImages.length]);
 
   const safeActiveIndex =
     normalizedImages.length === 0 ? 0 : activeIndex % normalizedImages.length;
@@ -97,7 +98,11 @@ export default function CatalogHero({
       <p className="text-sm leading-7 text-text/80">{description}</p>
 
       {normalizedImages.length > 1 ? (
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div
+          className="flex gap-2 overflow-x-auto pb-1"
+          onMouseEnter={() => setIsThumbnailHovering(true)}
+          onMouseLeave={() => setIsThumbnailHovering(false)}
+        >
           {normalizedImages.map((image, index) => {
             const isActive = index === safeActiveIndex;
 
@@ -106,6 +111,7 @@ export default function CatalogHero({
                 key={`${image.id}-${index}`}
                 type="button"
                 onClick={() => setActiveIndex(index)}
+                onMouseEnter={() => setActiveIndex(index)}
                 className={`h-14 w-14 flex-none overflow-hidden rounded-lg border transition ${
                   isActive ? 'border-primary ring-2 ring-primary/25' : 'border-border hover:border-primary/50'
                 }`}
