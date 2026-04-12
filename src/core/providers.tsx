@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import AppToaster from './components/feedback/AppToaster';
 import { ThemeProvider } from './theme/ThemeProvider';
 
 interface ProvidersProps {
@@ -14,7 +15,10 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <AppToaster />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
+import { toastError, toastSuccess } from '../../../core/lib/toast';
 import { useCartStore } from '../store/cartStore';
 import CartHeaderBlock from './CartHeaderBlock';
 import CartGroupCard from './CartGroupCard';
@@ -17,7 +18,6 @@ export default function CartView({ locale, t }: CartViewProps) {
   const cart = useCartStore((state) => state.cart);
   const items = cart?.listProducts ?? [];
   const pendingByItemId = useCartStore((state) => state.pendingByItemId);
-  const errorType = useCartStore((state) => state.errorType);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
@@ -28,12 +28,6 @@ export default function CartView({ locale, t }: CartViewProps) {
     [items]
   );
 
-  const actionError =
-    errorType === 'UPDATE'
-      ? t.updateItemError
-      : errorType === 'DELETE'
-        ? t.deleteItemError
-        : null;
 
   const handleChangeQuantity = async (id: number | null, delta: number) => {
     if (id === null) {
@@ -52,7 +46,10 @@ export default function CartView({ locale, t }: CartViewProps) {
 
     try {
       await updateQuantity(id, nextQuantity);
-    } catch {}
+      toastSuccess(t.updateItemToastSuccess);
+    } catch {
+      toastError(t.updateItemToastError);
+    }
   };
 
   const handleDeleteItem = async (id: number | null) => {
@@ -62,7 +59,10 @@ export default function CartView({ locale, t }: CartViewProps) {
 
     try {
       await removeItem(id);
-    } catch {}
+      toastSuccess(t.deleteItemToastSuccess);
+    } catch {
+      toastError(t.deleteItemToastError);
+    }
   };
 
   if (items.length === 0) {
@@ -71,7 +71,6 @@ export default function CartView({ locale, t }: CartViewProps) {
         <section className="rounded-3xl border border-border bg-surface p-8 text-center">
           <p className="text-lg font-semibold text-text">{t.emptyTitle}</p>
           <p className="mt-2 text-sm text-text/70">{t.emptyDescription}</p>
-          {actionError ? <p className="mt-3 text-sm text-danger">{actionError}</p> : null}
         </section>
       </main>
     );
@@ -83,11 +82,6 @@ export default function CartView({ locale, t }: CartViewProps) {
 
       <div className="mt-2 grid gap-4 lg:grid-cols-[1fr_340px] lg:gap-6">
         <section className="space-y-4">
-          {actionError ? (
-            <div className="rounded-xl border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
-              {actionError}
-            </div>
-          ) : null}
 
           <div className="space-y-4">
             <h2 className="text-base font-semibold text-text">{t.readyItemsTitle}</h2>

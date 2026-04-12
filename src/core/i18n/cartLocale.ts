@@ -34,6 +34,10 @@ export type CartTranslations = {
   back: string;
   updateItemError: string;
   deleteItemError: string;
+  updateItemToastSuccess: string;
+  updateItemToastError: string;
+  deleteItemToastSuccess: string;
+  deleteItemToastError: string;
   authRequiredTitle: string;
   authRequiredDescription: string;
   authRequiredAction: string;

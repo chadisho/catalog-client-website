@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
+import { toastError, toastSuccess } from '../../../core/lib/toast';
 import { useCartStore } from '../../cart/store/cartStore';
 import ProductPriceBlock from './ProductPriceBlock';
 import QuantitySelector from './QuantitySelector';
@@ -36,10 +37,8 @@ export default function ProductActions({
   const [quantity, setQuantity] = useState(1);
   const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
   const isSubmitting = useCartStore((state) => state.isAddPending);
-  const cartErrorType = useCartStore((state) => state.errorType);
 
   const hasPrice = Boolean(price || salePrice);
 
@@ -53,7 +52,6 @@ export default function ProductActions({
       return;
     }
 
-    setShowSuccessMessage(false);
 
     try {
       await addToCart({
@@ -61,17 +59,14 @@ export default function ProductActions({
         quantity,
         variationId: selectedVariationId,
       });
-
-      setShowSuccessMessage(true);
+      toastSuccess(t.addToCartToastSuccess);
       setIsSelectionModalOpen(false);
-    } catch {}
+    } catch {
+      toastError(t.addToCartToastError);
+    }
   };
 
-  const statusMessage = showSuccessMessage
-    ? t.addToCartSuccess
-    : cartErrorType === 'ADD'
-      ? t.addToCartError
-      : null;
+
 
   const panelContent = useMemo(
     () => (
@@ -113,7 +108,6 @@ export default function ProductActions({
       <aside className="hidden rounded-2xl border border-border bg-background p-5 shadow-sm lg:block">
         <div className="space-y-5">
           {panelContent}
-          {statusMessage ? <p className="text-sm text-text/80">{statusMessage}</p> : null}
           <button
             type="button"
             onClick={handleAddToCart}
@@ -165,7 +159,6 @@ export default function ProductActions({
             <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-secondary/40" />
             <div className="space-y-5">
               {panelContent}
-              {statusMessage ? <p className="text-sm text-text/80">{statusMessage}</p> : null}
               <button
                 type="button"
                 onClick={handleAddToCart}

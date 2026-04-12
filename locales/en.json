@@ -79,7 +79,9 @@
     "openSelectionSheet": "Open purchase selection",
     "closeSelectionSheet": "Close purchase selection",
     "addToCartSuccess": "Added to cart successfully.",
-    "addToCartError": "Could not add this item to cart."
+    "addToCartError": "Could not add this item to cart.",
+    "addToCartToastSuccess": "Item added to cart successfully.",
+    "addToCartToastError": "Adding item to cart failed."
   },
   "cart": {
     "title": "Shopping Cart",
@@ -113,6 +115,10 @@
     "back": "Back",
     "updateItemError": "Could not update item quantity.",
     "deleteItemError": "Could not remove this item.",
+    "updateItemToastSuccess": "Item quantity updated successfully.",
+    "updateItemToastError": "Item quantity update failed.",
+    "deleteItemToastSuccess": "Item removed from cart.",
+    "deleteItemToastError": "Removing item failed.",
     "authRequiredTitle": "Sign in required",
     "authRequiredDescription": "Please sign in to view and manage your cart.",
     "authRequiredAction": "Sign in"

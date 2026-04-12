@@ -150,7 +150,8 @@ function mapCartItem(source: any): CartItemModel {
 }
 
 export function mapCart(json: any): CartModel {
-    const source = json.options.cart ?? {};
+    console.log(json);
+    const source = json.options?.cart ?? {};
 
   return {
     id: typeof source?.id === 'number' ? source.id : null,

@@ -40,6 +40,8 @@ export type ProductTranslations = {
   closeSelectionSheet: string;
   addToCartSuccess: string;
   addToCartError: string;
+  addToCartToastSuccess: string;
+  addToCartToastError: string;
 };
 
 type ShopTranslations = {

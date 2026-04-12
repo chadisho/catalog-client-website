@@ -79,7 +79,9 @@
     "openSelectionSheet": "باز کردن انتخاب خرید",
     "closeSelectionSheet": "بستن انتخاب خرید",
     "addToCartSuccess": "محصول با موفقیت به سبد خرید اضافه شد.",
-    "addToCartError": "افزودن محصول به سبد خرید امکان‌پذیر نیست."
+    "addToCartError": "افزودن محصول به سبد خرید امکان‌پذیر نیست.",
+    "addToCartToastSuccess": "محصول با موفقیت به سبد خرید اضافه شد.",
+    "addToCartToastError": "افزودن محصول به سبد خرید ناموفق بود."
   },
   "cart": {
     "title": "سبد خرید",
@@ -113,6 +115,10 @@
     "back": "بازگشت",
     "updateItemError": "به‌روزرسانی تعداد آیتم انجام نشد.",
     "deleteItemError": "حذف آیتم انجام نشد.",
+    "updateItemToastSuccess": "تعداد آیتم با موفقیت به‌روزرسانی شد.",
+    "updateItemToastError": "به‌روزرسانی تعداد آیتم ناموفق بود.",
+    "deleteItemToastSuccess": "آیتم از سبد خرید حذف شد.",
+    "deleteItemToastError": "حذف آیتم از سبد خرید ناموفق بود.",
     "authRequiredTitle": "نیاز به ورود",
     "authRequiredDescription": "برای مشاهده و مدیریت سبد خرید، لطفاً وارد حساب کاربری شوید.",
     "authRequiredAction": "ورود به حساب کاربری"
