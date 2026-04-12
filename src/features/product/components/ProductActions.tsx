@@ -1,10 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
+import type { ProductTranslations } from '../../../core/i18n/commonLocale';
 import { toastError, toastSuccess } from '../../../core/lib/toast';
 import { useCartStore } from '../../cart/store/cartStore';
-import ProductPriceBlock from './ProductPriceBlock';
 import QuantitySelector from './QuantitySelector';
 import VariationSelector from './VariationSelector';
 
@@ -14,33 +13,23 @@ type ProductVariationOption = {
 };
 
 type ProductActionsProps = {
-  locale: CommonLocale;
   t: ProductTranslations;
   productId?: number | null;
   variationOptions: string[];
   variationItems?: ProductVariationOption[];
-  price?: string | null;
-  salePrice?: string | null;
-  currencyLabel: string;
 };
 
 export default function ProductActions({
-  locale,
   t,
   productId,
   variationOptions,
   variationItems = [],
-  price,
-  salePrice,
-  currencyLabel,
 }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
   const isSubmitting = useCartStore((state) => state.isAddPending);
-
-  const hasPrice = Boolean(price || salePrice);
 
   const selectedVariationId = useMemo(() => {
     const matched = variationItems.find((item) => item.label === selectedVariation);
@@ -86,21 +75,9 @@ export default function ProductActions({
           onIncrease={() => setQuantity((prev) => prev + 1)}
           onDecrease={() => setQuantity((prev) => Math.max(1, prev - 1))}
         />
-
-        {hasPrice ? (
-          <ProductPriceBlock
-            locale={locale}
-            label={t.priceLabel}
-            originalLabel={t.originalPriceLabel}
-            currencyLabel={currencyLabel}
-            price={price}
-            salePrice={salePrice}
-            discountTextPrefix={t.discountLabel}
-          />
-        ) : null}
       </>
     ),
-    [currencyLabel, hasPrice, locale, price, quantity, salePrice, selectedVariation, t, variationOptions]
+    [quantity, selectedVariation, t, variationOptions]
   );
 
   return (
@@ -112,8 +89,14 @@ export default function ProductActions({
             type="button"
             onClick={handleAddToCart}
             disabled={!productId || isSubmitting}
-            className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content transition-opacity hover:opacity-90"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
           >
+            {isSubmitting ? (
+              <span
+                aria-hidden="true"
+                className="h-4 w-4 animate-spin rounded-full border-2 border-primary-content/30 border-t-primary-content"
+              />
+            ) : null}
             {t.addToCart}
           </button>
         </div>
@@ -121,27 +104,19 @@ export default function ProductActions({
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex w-full max-w-3xl items-center gap-3">
-          {hasPrice ? (
-            <div className="flex-1">
-              <ProductPriceBlock
-                locale={locale}
-                label={t.priceLabel}
-                originalLabel={t.originalPriceLabel}
-                currencyLabel={currencyLabel}
-                price={price}
-                salePrice={salePrice}
-                showLabel={false}
-                discountTextPrefix={t.discountLabel}
-              />
-            </div>
-          ) : null}
-
           <button
             type="button"
             onClick={() => setIsSelectionModalOpen(true)}
             aria-label={t.openSelectionSheet}
-            className="h-12 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-content"
+            disabled={!productId || isSubmitting}
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-content disabled:cursor-not-allowed disabled:opacity-70"
           >
+            {isSubmitting ? (
+              <span
+                aria-hidden="true"
+                className="h-4 w-4 animate-spin rounded-full border-2 border-primary-content/30 border-t-primary-content"
+              />
+            ) : null}
             {t.addToCart}
           </button>
         </div>
@@ -163,8 +138,14 @@ export default function ProductActions({
                 type="button"
                 onClick={handleAddToCart}
                 disabled={!productId || isSubmitting}
-                className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content disabled:cursor-not-allowed disabled:opacity-70"
               >
+                {isSubmitting ? (
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-4 animate-spin rounded-full border-2 border-primary-content/30 border-t-primary-content"
+                  />
+                ) : null}
                 {t.confirmSelection}
               </button>
             </div>

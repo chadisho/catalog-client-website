@@ -81,7 +81,7 @@ export default function ProductPage({ productCode, data, error, localeOverride }
 
       <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 lg:sticky lg:top-4 lg:self-start">
             <ProductGallery mediaItems={mediaItems} />
           </div>
           <div className="space-y-4 lg:col-span-4">
@@ -97,24 +97,19 @@ export default function ProductPage({ productCode, data, error, localeOverride }
               currencyLabel={currencyLabel}
             />
             <ProductActions
-              locale={locale}
               t={t}
               productId={data.productModel.id}
               variationOptions={variationOptions}
               variationItems={variationItems}
-              price={data.productModel.price}
-              salePrice={data.productModel.salePrice}
-              currencyLabel={currencyLabel}
+            />
+            <ProductSpecs
+              title={t.technicalSpecsTitle}
+              showText={t.showSpecs}
+              hideText={t.hideSpecs}
+              specs={specs}
             />
           </div>
         </section>
-
-        <ProductSpecs
-          title={t.technicalSpecsTitle}
-          showText={t.showSpecs}
-          hideText={t.hideSpecs}
-          specs={specs}
-        />
       </main>
     </>
   );

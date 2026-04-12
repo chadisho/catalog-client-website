@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { Play } from 'lucide-react';
 import type { ProductMediaItem } from './productUiUtils';
 
 type ProductGalleryProps = {
@@ -54,25 +55,34 @@ export default function ProductGallery({ mediaItems }: ProductGalleryProps) {
           <div className="flex gap-2 overflow-x-auto pb-1 lg:max-h-[28rem] lg:flex-col lg:overflow-y-auto lg:overflow-x-visible">
             {mediaItems.map((item) => {
               const isActive = item.id === activeItem.id;
+              const isVideo = item.type === 'video';
 
               return (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => setActiveId(item.id)}
+                  onMouseEnter={() => setActiveId(item.id)}
+                  onFocus={() => setActiveId(item.id)}
                   className={`relative h-20 w-20 flex-none overflow-hidden rounded-xl border transition-all lg:h-24 lg:w-24 ${
                     isActive
-                      ? 'border-primary ring-2 ring-primary/25'
-                      : 'border-secondary/35 hover:border-primary/45'
+                      ? isVideo
+                        ? 'border-warning ring-2 ring-warning/30'
+                        : 'border-primary ring-2 ring-primary/25'
+                      : isVideo
+                        ? 'border-warning/50 bg-warning/10 hover:border-warning'
+                        : 'border-secondary/35 hover:border-primary/45'
                   }`}
                 >
-                  {item.type === 'video' ? (
+                  {isVideo ? (
                     <div className="relative h-full w-full bg-overlay">
-                      <video className="h-full w-full object-cover opacity-80" muted>
+                      <video className="h-full w-full object-cover opacity-70" muted>
                         <source src={item.src} />
                       </video>
-                      <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-primary-content">
-                        ▶
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/35 text-primary-content">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-background/85 text-warning shadow-sm">
+                          <Play className="h-6 w-6 fill-current" aria-hidden="true" />
+                        </span>
                       </span>
                     </div>
                   ) : (
