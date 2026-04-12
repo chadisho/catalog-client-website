@@ -78,7 +78,7 @@ export default function CartView({ locale, t }: CartViewProps) {
 
   return (
     <main className="mx-auto w-full max-w-[1280px] px-3 pb-24 pt-4 lg:px-4 lg:pb-6">
-      <CartHeaderBlock t={t} />
+      {/*<CartHeaderBlock t={t} />*/}
 
       <div className="mt-2 grid gap-4 lg:grid-cols-[1fr_340px] lg:gap-6">
         <section className="space-y-4">

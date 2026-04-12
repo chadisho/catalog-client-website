@@ -21,7 +21,6 @@ function SummaryContent({
 }: CartSummaryProps & { compact?: boolean }) {
   return (
     <>
-      <div className="rounded-xl bg-info/15 px-3 py-2 text-xs text-info-content">{t.summaryInfo}</div>
 
       <div className={compact ? 'mt-3' : 'mt-6 border-t border-border pt-5'}>
         <div className="flex items-center justify-between">
