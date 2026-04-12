@@ -71,7 +71,19 @@
     "orderStatusUnknown": "Unknown",
     "paginationPrevious": "Previous",
     "paginationNext": "Next",
-    "paginationPageLabel": "Page"
+    "paginationPageLabel": "Page",
+    "orderDetailsTitle": "Order details",
+    "orderDetailsIdLabel": "Order ID",
+    "orderDetailsBack": "Back to orders list",
+    "orderDetailsEmptyTitle": "No items found for this order",
+    "orderDetailsEmptyDescription": "There are currently no products registered for this order.",
+    "orderDetailsQtyPrice": "Qty × unit price",
+    "orderDetailsSubtotal": "Subtotal",
+    "orderDetailsVariationFallback": "Variation",
+    "orderDetailsProductFallback": "Product",
+    "orderDetailsMakingDuration": "Making duration",
+    "orderDetailsTotal": "Order total",
+    "orderViewDetails": "View details"
   },
   "product": {
     "detailsTitle": "Product Details",

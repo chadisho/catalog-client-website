@@ -13,7 +13,7 @@ type OrderProductApi = {
 };
 
 type OrderApi = {
-  orderId?: unknown;
+  id?: unknown;
   order_id?: unknown;
   code?: unknown;
   totalAmount?: unknown;
@@ -147,11 +147,11 @@ function mapOrderItems(data: unknown): OrderItemModel[] {
   return data.map(mapOrderItem);
 }
 
-function mapOrder(data: unknown): OrderModel {
+export function mapOrder(data: unknown): OrderModel {
   const source = (data ?? {}) as OrderApi;
 
   return {
-    orderId: toSafeNullableNumber(source.orderId ?? source.order_id),
+    orderId: toSafeNullableNumber(source.id ?? source.order_id),
     code: toSafeString(source.code),
     totalAmount: toSafeString(source.totalAmount ?? source.total_amount),
     status: normalizeOrderStatus(source.status),

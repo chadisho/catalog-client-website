@@ -68,6 +68,18 @@ type CatalogTranslations = {
   paginationPrevious: string;
   paginationNext: string;
   paginationPageLabel: string;
+  orderDetailsTitle: string;
+  orderDetailsIdLabel: string;
+  orderDetailsBack: string;
+  orderDetailsEmptyTitle: string;
+  orderDetailsEmptyDescription: string;
+  orderDetailsQtyPrice: string;
+  orderDetailsSubtotal: string;
+  orderDetailsVariationFallback: string;
+  orderDetailsProductFallback: string;
+  orderDetailsMakingDuration: string;
+  orderDetailsTotal: string;
+  orderViewDetails: string;
 };
 
 export function resolveCatalogLocale(language?: string | null): CatalogLocale {

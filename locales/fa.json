@@ -71,7 +71,19 @@
     "orderStatusUnknown": "نامشخص",
     "paginationPrevious": "قبلی",
     "paginationNext": "بعدی",
-    "paginationPageLabel": "صفحه"
+    "paginationPageLabel": "صفحه",
+    "orderDetailsTitle": "جزئیات سفارش",
+    "orderDetailsIdLabel": "شناسه سفارش",
+    "orderDetailsBack": "بازگشت به لیست سفارش‌ها",
+    "orderDetailsEmptyTitle": "آیتمی برای این سفارش وجود ندارد",
+    "orderDetailsEmptyDescription": "در حال حاضر محصولی برای این سفارش ثبت نشده است.",
+    "orderDetailsQtyPrice": "تعداد × قیمت واحد",
+    "orderDetailsSubtotal": "مجموع",
+    "orderDetailsVariationFallback": "متغیر",
+    "orderDetailsProductFallback": "محصول",
+    "orderDetailsMakingDuration": "زمان آماده‌سازی",
+    "orderDetailsTotal": "جمع کل سفارش",
+    "orderViewDetails": "مشاهده جزئیات"
   },
   "product": {
     "detailsTitle": "جزئیات محصول",
