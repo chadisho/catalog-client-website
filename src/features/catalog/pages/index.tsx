@@ -49,12 +49,15 @@ export default function CatalogPage({
   const sections = data.sections ?? [];
 
   return (
-    <div dir={direction} className={`min-h-screen bg-background text-text ${textAlignClass}`}>
+    <div
+      dir={direction}
+      className={`min-h-screen overflow-x-hidden bg-background text-text ${textAlignClass}`}
+    >
           <Header locale={locale} t={t} headerTitle={data.shopInformation?.faName ?? undefined}
               headerImage={data.shopInformation?.avatar ?? undefined} shopSlug={ data.shopInformation?.enName??undefined} />
 
-      <div className="mx-auto grid w-full max-w-[1400px] gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
-        <div className="order-1 lg:order-2 lg:sticky lg:top-4 lg:self-start">
+      <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
+        <div className="order-1 min-w-0 lg:order-2 lg:sticky lg:top-4 lg:self-start">
           <CatalogHero
             title={heroTitle}
             description={heroDescription}
@@ -64,7 +67,7 @@ export default function CatalogPage({
           />
         </div>
 
-        <main className="order-2 space-y-10 lg:order-1">
+        <main className="order-2 min-w-0 space-y-10 lg:order-1">
           {sections.length === 0 ? (
             <div className="rounded-2xl border border-secondary/30 bg-background/70 p-6 text-center text-sm text-text/70">
               {t.noContent}
