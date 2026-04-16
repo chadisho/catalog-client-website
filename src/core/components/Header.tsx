@@ -4,7 +4,19 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Languages, Menu, Palette, Search, ShoppingCart, UserRound, X } from 'lucide-react';
+import {
+  ChevronDown,
+  Languages,
+  Menu,
+  Monitor,
+  Moon,
+  Palette,
+  Search,
+  ShoppingCart,
+  Sun,
+  UserRound,
+  X,
+} from 'lucide-react';
 import { useTheme } from '../theme/useTheme';
 import type { CatalogLocale } from '../i18n/catalogLocale';
 import { LOCALE_COOKIE_KEY } from '../i18n/globalLocale';
@@ -55,6 +67,8 @@ interface HeaderProps {
   shopSlug?: string;
 }
 
+type ThemeOption = 'light' | 'dark' | 'system';
+
 export default function Header({
   locale,
   t,
@@ -68,10 +82,18 @@ export default function Header({
   const queryClient = useQueryClient();
   const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isMobileThemeMenuOpen, setIsMobileThemeMenuOpen] = useState(false);
+  const [isMobileLanguageMenuOpen, setIsMobileLanguageMenuOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [loadedHeaderImageSrc, setLoadedHeaderImageSrc] = useState<string | null>(null);
   const [failedHeaderImageSrc, setFailedHeaderImageSrc] = useState<string | null>(null);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
+  const themeMenuRef = useRef<HTMLDivElement | null>(null);
+  const languageMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileThemeMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileLanguageMenuRef = useRef<HTMLDivElement | null>(null);
   const drawerToggleButtonRef = useRef<HTMLButtonElement | null>(null);
   const drawerCloseButtonRef = useRef<HTMLButtonElement | null>(null);
   const hydrateCartStore = useCartStore((state) => state.hydrate);
@@ -106,38 +128,81 @@ export default function Header({
   }, [hasCartHydrated, isAuthenticated, prefetchCartIfNeeded, resetCart]);
 
   useEffect(() => {
-    if (!isProfileMenuOpen) {
+    if (
+      !isProfileMenuOpen &&
+      !isThemeMenuOpen &&
+      !isLanguageMenuOpen &&
+      !isMobileThemeMenuOpen &&
+      !isMobileLanguageMenuOpen
+    ) {
       return;
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (!profileMenuRef.current) {
+      const target = event.target as Node;
+      const menuRefs = [
+        profileMenuRef.current,
+        themeMenuRef.current,
+        languageMenuRef.current,
+        mobileThemeMenuRef.current,
+        mobileLanguageMenuRef.current,
+      ];
+      const isInsideMenu = menuRefs.some((menuRef) => menuRef?.contains(target));
+
+      if (isInsideMenu) {
         return;
       }
 
-      if (!profileMenuRef.current.contains(event.target as Node)) {
-        setIsProfileMenuOpen(false);
-      }
+      setIsProfileMenuOpen(false);
+      setIsThemeMenuOpen(false);
+      setIsLanguageMenuOpen(false);
+      setIsMobileThemeMenuOpen(false);
+      setIsMobileLanguageMenuOpen(false);
     };
 
     window.addEventListener('mousedown', handleClickOutside);
     return () => window.removeEventListener('mousedown', handleClickOutside);
-  }, [isProfileMenuOpen]);
+  }, [
+    isProfileMenuOpen,
+    isThemeMenuOpen,
+    isLanguageMenuOpen,
+    isMobileThemeMenuOpen,
+    isMobileLanguageMenuOpen,
+  ]);
 
   useEffect(() => {
-    if (!isMobileDrawerOpen) {
+    if (
+      !isMobileDrawerOpen &&
+      !isProfileMenuOpen &&
+      !isThemeMenuOpen &&
+      !isLanguageMenuOpen &&
+      !isMobileThemeMenuOpen &&
+      !isMobileLanguageMenuOpen
+    ) {
       return;
     }
 
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsMobileDrawerOpen(false);
+        setIsProfileMenuOpen(false);
+        setIsThemeMenuOpen(false);
+        setIsLanguageMenuOpen(false);
+        setIsMobileThemeMenuOpen(false);
+        setIsMobileLanguageMenuOpen(false);
       }
     };
 
     window.addEventListener('keydown', handleEscapeKey);
     return () => window.removeEventListener('keydown', handleEscapeKey);
-  }, [isMobileDrawerOpen]);
+  }, [
+    isMobileDrawerOpen,
+    isProfileMenuOpen,
+    isThemeMenuOpen,
+    isLanguageMenuOpen,
+    isMobileThemeMenuOpen,
+    isMobileLanguageMenuOpen,
+  ]);
 
   useEffect(() => {
     if (isMobileDrawerOpen) {
@@ -173,6 +238,19 @@ export default function Header({
   const isHeaderImageLoaded = Boolean(headerImage) && loadedHeaderImageSrc === headerImage;
   const normalizedShopSlug = shopSlug?.trim();
   const drawerHiddenTranslateClass = locale === 'fa' ? 'translate-x-full' : '-translate-x-full';
+  const CurrentThemeIcon = theme === 'system' ? Monitor : theme === 'light' ? Sun : Moon;
+
+  const handleThemeSelect = (nextTheme: ThemeOption) => {
+    setTheme(nextTheme);
+    setIsThemeMenuOpen(false);
+    setIsMobileThemeMenuOpen(false);
+  };
+
+  const handleLanguageSelect = (nextLocale: CatalogLocale) => {
+    setIsLanguageMenuOpen(false);
+    setIsMobileLanguageMenuOpen(false);
+    handleLocaleChange(nextLocale);
+  };
 
   const handleBrandClick = () => {
     if (!normalizedShopSlug) {
@@ -268,42 +346,126 @@ export default function Header({
         </button>
 
         <div className="hidden items-center gap-2 md:flex">
-          <label className="sr-only" htmlFor="catalog-theme-select">
-            {t.theme}
-          </label>
-          <select
-            id="catalog-theme-select"
-            value={theme}
-            onChange={(event) => setTheme(event.target.value as 'light' | 'dark' | 'system')}
-            className="h-10 appearance-none rounded-full border border-border bg-surface px-3 text-xs text-text outline-none"
-          >
-            <option className="text-text" value="system">
-              {t.themeSystem}
-            </option>
-            <option className="text-text" value="light">
-              {t.themeLight}
-            </option>
-            <option className="text-text" value="dark">
-              {t.themeDark}
-            </option>
-          </select>
+          <div ref={themeMenuRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setIsThemeMenuOpen((prev) => !prev);
+                setIsLanguageMenuOpen(false);
+              }}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-text transition hover:bg-muted"
+              aria-label={t.theme}
+              title={t.theme}
+              aria-haspopup="menu"
+              aria-expanded={isThemeMenuOpen}
+              aria-controls="catalog-theme-menu"
+            >
+              <CurrentThemeIcon size={16} strokeWidth={2} aria-hidden />
+            </button>
 
-          <label className="sr-only" htmlFor="catalog-language-select">
-            {t.language}
-          </label>
-          <select
-            id="catalog-language-select"
-            value={locale}
-            onChange={(event) => handleLocaleChange(event.target.value as CatalogLocale)}
-            className="h-10 appearance-none rounded-full border border-border bg-surface px-3 text-xs text-text outline-none"
-          >
-            <option className="text-text" value="fa">
-              {t.languageFa}
-            </option>
-            <option className="text-text" value="en">
-              {t.languageEn}
-            </option>
-          </select>
+            {isThemeMenuOpen ? (
+              <div
+                id="catalog-theme-menu"
+                role="menu"
+                className="absolute end-0 top-[calc(100%+0.5rem)] z-30 rounded-xl border border-border bg-surface p-1.5 shadow-lg"
+              >
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => handleThemeSelect('system')}
+                    className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-muted ${
+                      theme === 'system' ? 'bg-muted text-primary' : 'text-text'
+                    }`}
+                    title={t.themeSystem}
+                    aria-label={t.themeSystem}
+                    role="menuitem"
+                  >
+                    <Monitor size={16} strokeWidth={2} aria-hidden />
+                    <span className="sr-only">{t.themeSystem}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleThemeSelect('light')}
+                    className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-muted ${
+                      theme === 'light' ? 'bg-muted text-primary' : 'text-text'
+                    }`}
+                    title={t.themeLight}
+                    aria-label={t.themeLight}
+                    role="menuitem"
+                  >
+                    <Sun size={16} strokeWidth={2} aria-hidden />
+                    <span className="sr-only">{t.themeLight}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleThemeSelect('dark')}
+                    className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-muted ${
+                      theme === 'dark' ? 'bg-muted text-primary' : 'text-text'
+                    }`}
+                    title={t.themeDark}
+                    aria-label={t.themeDark}
+                    role="menuitem"
+                  >
+                    <Moon size={16} strokeWidth={2} aria-hidden />
+                    <span className="sr-only">{t.themeDark}</span>
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <div ref={languageMenuRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setIsLanguageMenuOpen((prev) => !prev);
+                setIsThemeMenuOpen(false);
+              }}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-text transition hover:bg-muted"
+              aria-label={t.language}
+              title={t.language}
+              aria-haspopup="menu"
+              aria-expanded={isLanguageMenuOpen}
+              aria-controls="catalog-language-menu"
+            >
+              <Languages size={16} strokeWidth={2} aria-hidden />
+            </button>
+
+            {isLanguageMenuOpen ? (
+              <div
+                id="catalog-language-menu"
+                role="menu"
+                className="absolute end-0 top-[calc(100%+0.5rem)] z-30 rounded-xl border border-border bg-surface p-1.5 shadow-lg"
+              >
+                <div className="flex flex-col gap-1">
+                  <button
+                    type="button"
+                    onClick={() => handleLanguageSelect('fa')}
+                    className={`inline-flex h-9 min-w-[72px] items-center justify-center rounded-lg px-2 transition hover:bg-muted ${
+                      locale === 'fa' ? 'bg-muted text-primary' : 'text-text'
+                    }`}
+                    title={t.languageFa}
+                    aria-label={t.languageFa}
+                    role="menuitem"
+                  >
+                    <span className="text-xs font-medium">{t.languageFa}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleLanguageSelect('en')}
+                    className={`inline-flex h-9 min-w-[72px] items-center justify-center rounded-lg px-2 transition hover:bg-muted ${
+                      locale === 'en' ? 'bg-muted text-primary' : 'text-text'
+                    }`}
+                    title={t.languageEn}
+                    aria-label={t.languageEn}
+                    role="menuitem"
+                  >
+                    <span className="text-xs font-medium">{t.languageEn}</span>
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
 
           {isAuthenticated ? (
             <div ref={profileMenuRef} className="relative">
@@ -412,46 +574,132 @@ export default function Header({
                 <Palette size={16} strokeWidth={2} aria-hidden />
                 <span>{t.theme}</span>
               </div>
-              <label className="sr-only" htmlFor="catalog-theme-select-mobile">
-                {t.theme}
-              </label>
-              <select
-                id="catalog-theme-select-mobile"
-                value={theme}
-                onChange={(event) => setTheme(event.target.value as 'light' | 'dark' | 'system')}
-                className="h-10 w-full appearance-none rounded-full border border-border bg-background px-3 text-xs text-text outline-none"
-              >
-                <option className="text-text" value="system">
-                  {t.themeSystem}
-                </option>
-                <option className="text-text" value="light">
-                  {t.themeLight}
-                </option>
-                <option className="text-text" value="dark">
-                  {t.themeDark}
-                </option>
-              </select>
+              <div ref={mobileThemeMenuRef} className="relative">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileThemeMenuOpen((prev) => !prev);
+                    setIsMobileLanguageMenuOpen(false);
+                  }}
+                  className="inline-flex h-10 w-full items-center justify-between rounded-full border border-border bg-background px-3 text-text transition hover:bg-muted"
+                  aria-label={t.theme}
+                  title={t.theme}
+                  aria-haspopup="menu"
+                  aria-expanded={isMobileThemeMenuOpen}
+                  aria-controls="catalog-theme-menu-mobile"
+                >
+                  <CurrentThemeIcon size={16} strokeWidth={2} aria-hidden />
+                  <ChevronDown size={16} strokeWidth={2} aria-hidden />
+                </button>
+
+                {isMobileThemeMenuOpen ? (
+                  <div
+                    id="catalog-theme-menu-mobile"
+                    role="menu"
+                    className="absolute start-0 top-[calc(100%+0.5rem)] z-[60] rounded-xl border border-border bg-surface p-1.5 shadow-lg"
+                  >
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleThemeSelect('system')}
+                        className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-muted ${
+                          theme === 'system' ? 'bg-muted text-primary' : 'text-text'
+                        }`}
+                        title={t.themeSystem}
+                        aria-label={t.themeSystem}
+                        role="menuitem"
+                      >
+                        <Monitor size={16} strokeWidth={2} aria-hidden />
+                        <span className="sr-only">{t.themeSystem}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleThemeSelect('light')}
+                        className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-muted ${
+                          theme === 'light' ? 'bg-muted text-primary' : 'text-text'
+                        }`}
+                        title={t.themeLight}
+                        aria-label={t.themeLight}
+                        role="menuitem"
+                      >
+                        <Sun size={16} strokeWidth={2} aria-hidden />
+                        <span className="sr-only">{t.themeLight}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleThemeSelect('dark')}
+                        className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition hover:bg-muted ${
+                          theme === 'dark' ? 'bg-muted text-primary' : 'text-text'
+                        }`}
+                        title={t.themeDark}
+                        aria-label={t.themeDark}
+                        role="menuitem"
+                      >
+                        <Moon size={16} strokeWidth={2} aria-hidden />
+                        <span className="sr-only">{t.themeDark}</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
 
               <div className="flex items-center gap-2 text-sm font-medium text-text">
                 <Languages size={16} strokeWidth={2} aria-hidden />
                 <span>{t.language}</span>
               </div>
-              <label className="sr-only" htmlFor="catalog-language-select-mobile">
-                {t.language}
-              </label>
-              <select
-                id="catalog-language-select-mobile"
-                value={locale}
-                onChange={(event) => handleLocaleChange(event.target.value as CatalogLocale)}
-                className="h-10 w-full appearance-none rounded-full border border-border bg-background px-3 text-xs text-text outline-none"
-              >
-                <option className="text-text" value="fa">
-                  {t.languageFa}
-                </option>
-                <option className="text-text" value="en">
-                  {t.languageEn}
-                </option>
-              </select>
+              <div ref={mobileLanguageMenuRef} className="relative">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileLanguageMenuOpen((prev) => !prev);
+                    setIsMobileThemeMenuOpen(false);
+                  }}
+                  className="inline-flex h-10 w-full items-center justify-between rounded-full border border-border bg-background px-3 text-text transition hover:bg-muted"
+                  aria-label={t.language}
+                  title={t.language}
+                  aria-haspopup="menu"
+                  aria-expanded={isMobileLanguageMenuOpen}
+                  aria-controls="catalog-language-menu-mobile"
+                >
+                  <Languages size={16} strokeWidth={2} aria-hidden />
+                  <ChevronDown size={16} strokeWidth={2} aria-hidden />
+                </button>
+
+                {isMobileLanguageMenuOpen ? (
+                  <div
+                    id="catalog-language-menu-mobile"
+                    role="menu"
+                    className="absolute start-0 top-[calc(100%+0.5rem)] z-[60] rounded-xl border border-border bg-surface p-1.5 shadow-lg"
+                  >
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleLanguageSelect('fa')}
+                        className={`inline-flex h-9 min-w-[72px] items-center justify-center rounded-lg px-2 transition hover:bg-muted ${
+                          locale === 'fa' ? 'bg-muted text-primary' : 'text-text'
+                        }`}
+                        title={t.languageFa}
+                        aria-label={t.languageFa}
+                        role="menuitem"
+                      >
+                        <span className="text-xs font-medium">{t.languageFa}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleLanguageSelect('en')}
+                        className={`inline-flex h-9 min-w-[72px] items-center justify-center rounded-lg px-2 transition hover:bg-muted ${
+                          locale === 'en' ? 'bg-muted text-primary' : 'text-text'
+                        }`}
+                        title={t.languageEn}
+                        aria-label={t.languageEn}
+                        role="menuitem"
+                      >
+                        <span className="text-xs font-medium">{t.languageEn}</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
 
               {isAuthenticated ? (
                 <div className="space-y-2">
