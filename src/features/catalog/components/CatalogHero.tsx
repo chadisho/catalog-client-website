@@ -74,7 +74,7 @@ export default function CatalogHero({
 
   return (
     <aside className="space-y-4 rounded-2xl border border-border bg-surface p-4">
-      <div className="relative overflow-hidden rounded-2xl bg-secondary/25">
+      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-secondary/25">
         {activeImage ? (
           activeImage.link ? (
             <a
@@ -83,10 +83,10 @@ export default function CatalogHero({
               rel={isExternalUrl(activeImage.link) ? 'noreferrer' : undefined}
               className="block"
             >
-              <img src={activeImage.image} alt={activeImage.title ?? title} className="h-52 w-full object-cover" />
+              <img src={activeImage.image} alt={activeImage.title ?? title} className="h-full w-full object-cover" />
             </a>
           ) : (
-            <img src={activeImage.image} alt={activeImage.title ?? title} className="h-52 w-full object-cover" />
+            <img src={activeImage.image} alt={activeImage.title ?? title} className="h-full w-full object-cover" />
           )
         ) : null}
 

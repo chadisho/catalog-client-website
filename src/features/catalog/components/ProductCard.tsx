@@ -193,10 +193,10 @@ export default function ProductCard({
 
   const content = (
     <article
-      className={`w-full max-w-[220px] overflow-hidden rounded-2xl border border-border bg-surface p-2 text-text shadow-sm transition-colors ${textAlignClass}`}
+      className={`w-full overflow-hidden rounded-2xl border border-border bg-surface p-2 text-text shadow-sm transition-colors ${textAlignClass}`}
     >
-      <div className="relative overflow-hidden rounded-xl bg-muted/20">
-        {imageUrl ? <img src={imageUrl} alt={title} className="h-50 w-full rounded-xl object-cover" loading="lazy" /> : null}
+      <div className="relative aspect-[1] overflow-hidden rounded-xl bg-muted/20">
+        {imageUrl ? <img src={imageUrl} alt={title} className="h-full w-full rounded-xl object-cover" loading="lazy" /> : null}
         {shouldShowPrice && discountText ? <DiscountBadge text={discountText} /> : null}
       </div>
 
