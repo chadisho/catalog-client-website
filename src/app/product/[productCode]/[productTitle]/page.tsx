@@ -13,12 +13,22 @@ interface ProductRouteParams {
 
 interface ProductRoutePageProps {
   params: Promise<ProductRouteParams>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function Page({ params }: ProductRoutePageProps) {
+function resolveShouldShowPrice(searchParams?: Record<string, string | string[] | undefined>): boolean {
+  const rawValue = searchParams?.shouldShowPrice;
+  const value = Array.isArray(rawValue) ? rawValue[0] : rawValue;
+
+  return value !== 'false';
+}
+
+export default async function Page({ params, searchParams }: ProductRoutePageProps) {
   const resolvedParams = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const cookieStore = await cookies();
   const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value);
+  const shouldShowPrice = resolveShouldShowPrice(resolvedSearchParams);
 
   const { productCode } = resolvedParams;
   const normalizedProductCode = productCode.replace('chp-', '');
@@ -38,6 +48,7 @@ export default async function Page({ params }: ProductRoutePageProps) {
       data={data}
       error={error}
       localeOverride={localeOverride}
+      shouldShowPrice={shouldShowPrice}
     />
   );
 }

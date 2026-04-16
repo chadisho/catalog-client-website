@@ -47,6 +47,8 @@ export default function CatalogPage({
   const heroImage = data.catalogModel?.image ?? data.images?.[0]?.image;
   const heroImages = data.images ?? [];
   const sections = data.sections ?? [];
+  const shouldShowProductPrice =
+    data.catalogModel?.showProductPriceStatus?.trim().toLowerCase() !== 'inactive';
 
   return (
     <div
@@ -74,7 +76,12 @@ export default function CatalogPage({
             </div>
           ) : (
             sections.map((section) => (
-              <CatalogSection key={section.id} section={section} locale={locale} />
+              <CatalogSection
+                key={section.id}
+                section={section}
+                locale={locale}
+                shouldShowProductPrice={shouldShowProductPrice}
+              />
             ))
           )}
         </main>

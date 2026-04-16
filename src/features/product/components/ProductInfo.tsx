@@ -10,6 +10,7 @@ type ProductInfoProps = {
   t: ProductTranslations;
   title: string;
   productCode: string;
+  shouldShowPrice?: boolean;
   description?: string | null;
   hasStockWarning: boolean;
   price?: string | null;
@@ -22,6 +23,7 @@ export default function ProductInfo({
   t,
   title,
   productCode,
+  shouldShowPrice = true,
   description,
   hasStockWarning,
   price,
@@ -44,7 +46,7 @@ export default function ProductInfo({
         </div>
         
               
-        {price || salePrice ? (
+        {shouldShowPrice && (price || salePrice) ? (
           <ProductPriceBlock
             locale={locale}
             label={t.priceLabel}

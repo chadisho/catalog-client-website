@@ -10,6 +10,7 @@ import {
 type ProductCardProps = {
   product: ProductItemModel;
   locale: CatalogLocale;
+  shouldShowPrice?: boolean;
 };
 
 type DiscountBadgeProps = {
@@ -118,6 +119,14 @@ function resolveProductHref(product: ProductItemModel): string | null {
   return `/product/${encodeURIComponent(fallbackProductCode)}/${encodeURIComponent(fallbackProductTitle)}`;
 }
 
+function appendShouldShowPriceQuery(href: string, shouldShowPrice: boolean): string {
+  const query = new URLSearchParams({
+    shouldShowPrice: shouldShowPrice ? 'true' : 'false',
+  });
+
+  return `${href}?${query.toString()}`;
+}
+
 function DiscountBadge({ text }: DiscountBadgeProps) {
   return (
     <span className="absolute left-2 top-2 rounded-md bg-error px-2 py-1 text-[11px] font-medium leading-none text-error-content shadow-sm">
@@ -146,13 +155,19 @@ function StockWarning({ text }: StockWarningProps) {
   );
 }
 
-export default function ProductCard({ product, locale }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  locale,
+  shouldShowPrice = true,
+}: ProductCardProps) {
   const t = getCatalogTranslations(locale);
   const textAlignClass = getCatalogTextAlignClass(locale);
 
   const title = product.title ?? t.defaultProductTitle;
   const imageUrl = product.coverImage ?? '';
   const productHref = resolveProductHref(product);
+  const productHrefWithPriceState =
+    productHref ? appendShouldShowPriceQuery(productHref, shouldShowPrice) : null;
   const priceValue = product.salePrice ?? product.price;
 
   const formattedPrice =
@@ -182,25 +197,28 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
     >
       <div className="relative overflow-hidden rounded-xl bg-muted/20">
         {imageUrl ? <img src={imageUrl} alt={title} className="h-50 w-full rounded-xl object-cover" loading="lazy" /> : null}
-        {discountText ? <DiscountBadge text={discountText} /> : null}
+        {shouldShowPrice && discountText ? <DiscountBadge text={discountText} /> : null}
       </div>
 
       <div className="space-y-1 px-1 pb-1 pt-3">
         <h3 className="line-clamp-1 text-base font-semibold leading-6 text-text">{title}</h3>
      
-        {formattedPrice ? <PriceSection amount={formattedPrice} currency={currency} locale={locale} /> : null}
+        {shouldShowPrice && formattedPrice ? <PriceSection amount={formattedPrice} currency={currency} locale={locale} /> : null}
 
         {hasLowStockWarning ? <StockWarning text={stockWarningText} /> : null}
       </div>
     </article>
   );
 
-  if (!productHref) {
+  if (!productHrefWithPriceState) {
     return content;
   }
 
   return (
-    <Link href={productHref} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60">
+    <Link
+      href={productHrefWithPriceState}
+      className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+    >
       {content}
     </Link>
   );

@@ -7,9 +7,14 @@ import type { CatalogLocale } from '../../../core/i18n/catalogLocale';
 type CatalogSectionProps = {
   section: AnySectionModel;
   locale: CatalogLocale;
+  shouldShowProductPrice?: boolean;
 };
 
-export default function CatalogSection({ section, locale }: CatalogSectionProps) {
+export default function CatalogSection({
+  section,
+  locale,
+  shouldShowProductPrice = true,
+}: CatalogSectionProps) {
   return (
     <section>
       <SectionTitle title={section.title} />
@@ -21,7 +26,12 @@ export default function CatalogSection({ section, locale }: CatalogSectionProps)
   lg:grid-cols-[repeat(auto-fill,minmax(9.5rem,13.75rem))]
   justify-start">
           {section.values.map((item, index) => (
-            <ProductCard key={`product-${item.id ?? index}`} product={item} locale={locale} />
+            <ProductCard
+              key={`product-${item.id ?? index}`}
+              product={item}
+              locale={locale}
+              shouldShowPrice={shouldShowProductPrice}
+            />
           ))}
         </div>
       ) : (

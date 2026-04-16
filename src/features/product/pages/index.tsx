@@ -21,9 +21,16 @@ interface ProductPageProps {
   data?: ProductDetailsModel;
   error?: string;
   localeOverride?: AppLocale;
+  shouldShowPrice?: boolean;
 }
 
-export default function ProductPage({ productCode, data, error, localeOverride }: ProductPageProps) {
+export default function ProductPage({
+  productCode,
+  data,
+  error,
+  localeOverride,
+  shouldShowPrice = true,
+}: ProductPageProps) {
   const locale = localeOverride ?? resolveCommonLocale(data?.productModel?.language);
   const t = getProductTranslations(locale);
   const headerT = getCatalogTranslations(locale);
@@ -90,6 +97,7 @@ export default function ProductPage({ productCode, data, error, localeOverride }
               t={t}
               title={productTitle}
               productCode={productCode}
+              shouldShowPrice={shouldShowPrice}
               description={data.productModel.description}
               hasStockWarning={hasStockWarning}
               price={data.productModel.price}
