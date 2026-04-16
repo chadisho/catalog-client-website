@@ -42,6 +42,19 @@ export default function ProductInfo({
             {t.codeLabel}: {productCode}
           </p>
         </div>
+        
+              
+        {price || salePrice ? (
+          <ProductPriceBlock
+            locale={locale}
+            label={t.priceLabel}
+            originalLabel={t.originalPriceLabel}
+            currencyLabel={currencyLabel}
+            price={price}
+            salePrice={salePrice}
+            discountTextPrefix={t.discountLabel}
+          />
+        ) : null}
 
         {hasDescription ? (
           <div className="space-y-2 rounded-xl border border-border bg-secondary/5 p-4">
@@ -56,17 +69,7 @@ export default function ProductInfo({
           </div>
         ) : null}
 
-        {price || salePrice ? (
-          <ProductPriceBlock
-            locale={locale}
-            label={t.priceLabel}
-            originalLabel={t.originalPriceLabel}
-            currencyLabel={currencyLabel}
-            price={price}
-            salePrice={salePrice}
-            discountTextPrefix={t.discountLabel}
-          />
-        ) : null}
+     
 
         {hasStockWarning ? (
           <div className="inline-flex items-center gap-2 rounded-full bg-error-soft px-3 py-1 text-xs font-semibold text-error">
