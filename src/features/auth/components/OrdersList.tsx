@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import {
   getCatalogDirection,
   getCatalogTranslations,
-  getLocalizedCurrencyLabel,
   type CatalogLocale,
 } from '../../../core/i18n/catalogLocale';
 import ErrorState from '../../../core/components/feedback/ErrorState';
-import type { OrderModel, OrdersListModel } from '../model/orderModel';
+import type { OrdersListModel } from '../model/orderModel';
+import OrdersListItem from './OrdersListItem';
 import { useOrdersStore } from '../store/ordersStore';
 
 type OrdersListProps = {
@@ -25,46 +24,6 @@ function getVisiblePages(currentPage: number, lastPage: number): number[] {
   const adjustedStart = Math.max(1, end - maxVisible + 1);
 
   return Array.from({ length: end - adjustedStart + 1 }, (_, index) => adjustedStart + index);
-}
-
-function getOrderStatusLabel(orderStatus: OrderModel['status'], t: ReturnType<typeof getCatalogTranslations>): string {
-  if (orderStatus === 'pending') {
-    return t.orderStatusPending;
-  }
-
-  if (orderStatus === 'completed') {
-    return t.orderStatusCompleted;
-  }
-
-  if (orderStatus === 'canceled') {
-    return t.orderStatusCanceled;
-  }
-
-  if (orderStatus === 'returned') {
-    return t.orderStatusReturned;
-  }
-
-  return t.orderStatusUnknown;
-}
-
-function getOrderStatusItemClasses(orderStatus: OrderModel['status']): string {
-  if (orderStatus === 'pending') {
-    return 'border-warning bg-[color:color-mix(in_oklab,var(--color-warning)_14%,var(--color-surface))]';
-  }
-
-  if (orderStatus === 'completed') {
-    return 'border-success bg-[color:color-mix(in_oklab,var(--color-success)_14%,var(--color-surface))]';
-  }
-
-  if (orderStatus === 'canceled') {
-    return 'border-danger bg-[color:color-mix(in_oklab,var(--color-error)_14%,var(--color-surface))]';
-  }
-
-  if (orderStatus === 'returned') {
-    return 'border-secondary bg-[color:color-mix(in_oklab,var(--color-secondary)_12%,var(--color-surface))]';
-  }
-
-  return 'border-border bg-background';
 }
 
 export default function OrdersList({ locale, initialOrdersList }: OrdersListProps) {
@@ -108,137 +67,7 @@ export default function OrdersList({ locale, initialOrdersList }: OrdersListProp
           <>
             <div className="mt-5 space-y-4">
               {resolvedOrdersList.orders.map((order) => (
-                <article
-                  key={order.orderId ?? order.code}
-                  className={`rounded-xl border p-4 transition-colors ${getOrderStatusItemClasses(order.status)} ${
-                    order.orderId ? 'hover:bg-muted/30' : ''
-                  }`}
-                >
-                  {order.orderId ? (
-                    <Link
-                      href={`/profile/orders/${order.orderId}`}
-                      className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                    >
-                      <div className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-5">
-                        <div>
-                          <p className="text-text/65">{t.orderCode}</p>
-                          <p className="mt-1 font-medium text-text">{order.code || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderStatus}</p>
-                          <p className="mt-1 font-medium text-text">{getOrderStatusLabel(order.status, t)}</p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderDate}</p>
-                          <p className="mt-1 font-medium text-text">{order.createdAt || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderTotalAmount}</p>
-                          <p className="mt-1 font-medium text-text">
-                            {order.totalAmount
-                              ? `${order.totalAmount} ${getLocalizedCurrencyLabel(
-                                  order.orderItems[0]?.currency || 'toman',
-                                  locale
-                                )}`
-                              : '-'}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderItemsCount}</p>
-                          <p className="mt-1 font-medium text-text">{order.orderItemCount}</p>
-                        </div>
-                      </div>
-
-                      {order.orderItems.length > 0 ? (
-                        <ul className="mt-4 space-y-2 border-t border-border pt-3">
-                          {order.orderItems.map((item) => (
-                            <li key={item.id ?? `${order.code}-${item.productId ?? item.productName}`}>
-                              <div className="flex items-center gap-3 rounded-lg border border-border/70 bg-background px-3 py-2">
-                                {item.productImage ? (
-                                  <img
-                                    src={item.productImage}
-                                    alt={item.productName || t.orderProductFallback}
-                                    className="h-12 w-12 rounded-md border border-border object-cover"
-                                  />
-                                ) : (
-                                  <div className="h-12 w-12 rounded-md border border-border bg-muted" aria-hidden />
-                                )}
-                                <div className="min-w-0 flex-1">
-                                  <p className="truncate text-sm font-medium text-text">
-                                    {item.productName || t.orderProductFallback}
-                                  </p>
-                                  <p className="mt-0.5 text-xs text-text/70">
-                                    {item.quantity} × {item.price || '-'}
-                                  </p>
-                                </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </Link>
-                  ) : (
-                    <>
-                      <div className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-5">
-                        <div>
-                          <p className="text-text/65">{t.orderCode}</p>
-                          <p className="mt-1 font-medium text-text">{order.code || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderStatus}</p>
-                          <p className="mt-1 font-medium text-text">{getOrderStatusLabel(order.status, t)}</p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderDate}</p>
-                          <p className="mt-1 font-medium text-text">{order.createdAt || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderTotalAmount}</p>
-                          <p className="mt-1 font-medium text-text">
-                            {order.totalAmount
-                              ? `${order.totalAmount} ${getLocalizedCurrencyLabel(
-                                  order.orderItems[0]?.currency || 'toman',
-                                  locale
-                                )}`
-                              : '-'}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-text/65">{t.orderItemsCount}</p>
-                          <p className="mt-1 font-medium text-text">{order.orderItemCount}</p>
-                        </div>
-                      </div>
-
-                      {order.orderItems.length > 0 ? (
-                        <ul className="mt-4 space-y-2 border-t border-border pt-3">
-                          {order.orderItems.map((item) => (
-                            <li key={item.id ?? `${order.code}-${item.productId ?? item.productName}`}>
-                              <div className="flex items-center gap-3 rounded-lg border border-border/70 bg-background px-3 py-2">
-                                {item.productImage ? (
-                                  <img
-                                    src={item.productImage}
-                                    alt={item.productName || t.orderProductFallback}
-                                    className="h-12 w-12 rounded-md border border-border object-cover"
-                                  />
-                                ) : (
-                                  <div className="h-12 w-12 rounded-md border border-border bg-muted" aria-hidden />
-                                )}
-                                <div className="min-w-0 flex-1">
-                                  <p className="truncate text-sm font-medium text-text">
-                                    {item.productName || t.orderProductFallback}
-                                  </p>
-                                  <p className="mt-0.5 text-xs text-text/70">
-                                    {item.quantity} × {item.price || '-'}
-                                  </p>
-                                </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </>
-                  )}
-                </article>
+                <OrdersListItem key={order.orderId ?? order.code} locale={locale} order={order} t={t} />
               ))}
             </div>
 
