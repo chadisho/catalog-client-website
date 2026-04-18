@@ -49,6 +49,16 @@ type CatalogTranslations = {
   profileLastName: string;
   profileCellphone: string;
   profileCompany: string;
+  profileGender: string;
+  profileGenderMale: string;
+  profileGenderFemale: string;
+  profileGenderUnknown: string;
+  profileEdit: string;
+  profileEditPageTitle: string;
+  profileSave: string;
+  profileCancel: string;
+  profileEditSuccessToast: string;
+  profileEditErrorToast: string;
   profileViewOrders: string;
   ordersPageTitle: string;
   ordersNotAuthenticated: string;
