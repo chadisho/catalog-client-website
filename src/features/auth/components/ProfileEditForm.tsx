@@ -70,7 +70,7 @@ export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormPr
           id="profile-first-name"
           value={firstName}
           onChange={(event) => setFirstName(event.target.value)}
-          className="h-11 w-full rounded-lg border border-secondary/30 bg-surface px-3 text-text"
+          className="h-11 w-full rounded-lg border border-border bg-surface px-3 text-text"
         />
       </div>
 
@@ -82,7 +82,7 @@ export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormPr
           id="profile-last-name"
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}
-          className="h-11 w-full rounded-lg border border-secondary/30 bg-surface px-3 text-text"
+          className="h-11 w-full rounded-lg border border-border bg-surface px-3 text-text"
         />
       </div>
 
@@ -94,7 +94,7 @@ export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormPr
           id="profile-cellphone"
           value={cellphone}
           readOnly
-          className="h-11 w-full rounded-lg border border-secondary/30 bg-surface px-3 text-text"
+          className="h-11 w-full rounded-lg border border-border bg-surface px-3 text-text"
         />
       </div>
 
@@ -106,7 +106,7 @@ export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormPr
           id="profile-gender"
           value={gender}
           onChange={(event) => setGender(event.target.value)}
-          className="h-11 w-full rounded-lg border border-secondary/30 bg-surface px-3 text-text"
+          className="h-11 w-full rounded-lg border border-border bg-surface px-3 text-text"
         >
           <option value="">{t.profileGenderUnknown}</option>
           <option value="0">{t.profileGenderMale}</option>
