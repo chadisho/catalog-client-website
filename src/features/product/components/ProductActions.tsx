@@ -9,8 +9,10 @@ import QuantitySelector from './QuantitySelector';
 import VariationSelector from './VariationSelector';
 
 type ProductVariationOption = {
-  id: number;
+  id?: number | null;
   label: string;
+  price?: string | null;
+  salePrice?: string | null;
 };
 
 type ProductActionsProps = {
@@ -18,6 +20,8 @@ type ProductActionsProps = {
   productId?: number | null;
   variationOptions: string[];
   variationItems?: ProductVariationOption[];
+  selectedVariation: string;
+  onSelectedVariationChange: (value: string) => void;
 };
 
 export default function ProductActions({
@@ -25,10 +29,11 @@ export default function ProductActions({
   productId,
   variationOptions,
   variationItems = [],
+  selectedVariation,
+  onSelectedVariationChange,
 }: ProductActionsProps) {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
   const isSubmitting = useCartStore((state) => state.isAddPending);
@@ -71,7 +76,7 @@ export default function ProductActions({
           label={t.variationLabel}
           options={variationOptions}
           selected={selectedVariation}
-          onSelect={setSelectedVariation}
+          onSelect={onSelectedVariationChange}
         />
 
         <QuantitySelector
@@ -84,7 +89,7 @@ export default function ProductActions({
         />
       </>
     ),
-    [quantity, selectedVariation, t, variationOptions]
+    [onSelectedVariationChange, quantity, selectedVariation, t, variationOptions]
   );
 
   return (

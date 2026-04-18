@@ -14,7 +14,7 @@ export type VariationModel = {
   sku?: string | null;
   stockType?: string | null;
   inventory?: number | null;
-  attrs: VariationAttrModel[];
+  attrsValues: string[];
 };
 
 export const mapVariationAttr = (data: any): VariationAttrModel => ({
@@ -56,7 +56,7 @@ export const mapVariation = (data: any): VariationModel => ({
         ? data.stock_type
         : null,
   inventory: typeof data?.inventory === 'number' ? data.inventory : null,
-  attrs: mapVariationAttrs(data?.attrs),
+  attrsValues: data?.attribute_product_values??[],
 });
 
 export const mapVariations = (data: any): VariationModel[] => {

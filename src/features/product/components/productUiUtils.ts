@@ -101,10 +101,7 @@ export function resolveStockWarning(data: ProductDetailsModel): boolean {
 export function resolveVariationOptions(data: ProductDetailsModel): string[] {
   const fromVariations = (data.variations ?? [])
     .map((variation) =>
-      variation.attrs
-        .filter((attr) => attr.isVariation !== false)
-        .map((attr) => attr.value)
-        .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+      variation.attrsValues
         .join(' / ')
     )
     .filter((label) => label.trim().length > 0);

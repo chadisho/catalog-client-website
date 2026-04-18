@@ -14,6 +14,6 @@ export async function getProductByCode(
   const response = await apiClient(`app/product/show/${productCode}`, {
     method: 'POST',
   });
-
+console.log('API Response for product details:', response);
   return mapProductDetails(response);
 }

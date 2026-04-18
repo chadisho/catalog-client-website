@@ -1,6 +1,5 @@
-import ProductActions from '../components/ProductActions';
 import ProductGallery from '../components/ProductGallery';
-import ProductInfo from '../components/ProductInfo';
+import ProductPurchasePanel from '../components/ProductPurchasePanel';
 import ProductSpecs from '../components/ProductSpecs';
 import Header from '../../../core/components/Header';
 import {
@@ -52,13 +51,11 @@ export default function ProductPage({
   const variationItems = (data.variations ?? [])
     .map((variation) => ({
       id: variation.id,
-      label: variation.attrs
-        .filter((attr) => attr.isVariation !== false)
-        .map((attr) => attr.value)
-        .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
-        .join(' / '),
+      label: variation.attrsValues.join(' / '),
+      price: variation.price,
+      salePrice: variation.salePrice,
     }))
-    .filter((item): item is { id: number; label: string } => Boolean(item.id && item.label.trim().length > 0));
+    .filter((item) => item.label.trim().length > 0);
   const hasStockWarning = resolveStockWarning(data);
   const specs = [
     ...(data.variationAttributes ?? []).map((attribute) => ({
@@ -68,12 +65,6 @@ export default function ProductPage({
         .filter((value): value is string => Boolean(value && value.trim().length > 0))
         .join('، '),
     })),
-    ...(data.variations?.[0]?.attrs ?? [])
-      .filter((attr) => Boolean(attr.title && attr.value))
-      .map((attr) => ({
-        key: attr.title as string,
-        value: attr.unit ? `${attr.value} ${attr.unit}` : (attr.value as string),
-      })),
   ].filter((item) => item.key.trim().length > 0 && item.value.trim().length > 0);
 
   const productTitle = data.productModel.title ?? t.detailsTitle;
@@ -92,7 +83,7 @@ export default function ProductPage({
             <ProductGallery mediaItems={mediaItems} />
           </div>
           <div className="space-y-4 lg:col-span-4">
-            <ProductInfo
+            <ProductPurchasePanel
               locale={locale}
               t={t}
               title={productTitle}
@@ -100,12 +91,9 @@ export default function ProductPage({
               shouldShowPrice={shouldShowPrice}
               description={data.productModel.description}
               hasStockWarning={hasStockWarning}
-              price={data.productModel.price}
-              salePrice={data.productModel.salePrice}
+              basePrice={data.productModel.price}
+              baseSalePrice={data.productModel.salePrice}
               currencyLabel={currencyLabel}
-            />
-            <ProductActions
-              t={t}
               productId={data.productModel.id}
               variationOptions={variationOptions}
               variationItems={variationItems}
