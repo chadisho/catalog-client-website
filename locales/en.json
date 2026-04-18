@@ -123,7 +123,8 @@
     "addToCartSuccess": "Added to cart successfully.",
     "addToCartError": "Could not add this item to cart.",
     "addToCartToastSuccess": "Item added to cart successfully.",
-    "addToCartToastError": "Adding item to cart failed."
+    "addToCartToastError": "Adding item to cart failed.",
+    "addToCartToastActionCart": "View cart"
   },
   "cart": {
     "title": "Shopping Cart",

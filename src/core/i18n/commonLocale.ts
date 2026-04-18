@@ -42,6 +42,7 @@ export type ProductTranslations = {
   addToCartError: string;
   addToCartToastSuccess: string;
   addToCartToastError: string;
+  addToCartToastActionCart: string;
 };
 
 type ShopTranslations = {

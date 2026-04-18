@@ -123,7 +123,8 @@
     "addToCartSuccess": "محصول با موفقیت به سبد خرید اضافه شد.",
     "addToCartError": "افزودن محصول به سبد خرید امکان‌پذیر نیست.",
     "addToCartToastSuccess": "محصول با موفقیت به سبد خرید اضافه شد.",
-    "addToCartToastError": "افزودن محصول به سبد خرید ناموفق بود."
+    "addToCartToastError": "افزودن محصول به سبد خرید ناموفق بود.",
+    "addToCartToastActionCart": "مشاهده سبد خرید"
   },
   "cart": {
     "title": "سبد خرید",

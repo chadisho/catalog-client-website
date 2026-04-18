@@ -31,6 +31,10 @@ export default function AppToaster() {
             'font-[var(--sans)] border border-border bg-surface text-text shadow-lg data-[type=success]:border-success/35 data-[type=success]:bg-success/10 data-[type=error]:border-danger/35 data-[type=error]:bg-danger/10',
           title: 'font-[var(--sans)] text-text',
           description: 'font-[var(--sans)] text-text/80',
+          actionButton:
+            'font-[var(--sans)] border border-border bg-transparent text-text hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
+          cancelButton:
+            'font-[var(--sans)] border border-border bg-transparent text-text hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
           closeButton: 'bg-surface text-text border-border',
         },
       }}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import type { ProductTranslations } from '../../../core/i18n/commonLocale';
 import { toastError, toastSuccess } from '../../../core/lib/toast';
@@ -25,6 +26,7 @@ export default function ProductActions({
   variationOptions,
   variationItems = [],
 }: ProductActionsProps) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
@@ -48,7 +50,12 @@ export default function ProductActions({
         quantity,
         variationId: selectedVariationId,
       });
-      toastSuccess(t.addToCartToastSuccess);
+      toastSuccess(t.addToCartToastSuccess, {
+        action: {
+          label: t.addToCartToastActionCart,
+          onClick: () => router.push('/cart'),
+        },
+      });
       setIsSelectionModalOpen(false);
     } catch {
       toastError(t.addToCartToastError);
