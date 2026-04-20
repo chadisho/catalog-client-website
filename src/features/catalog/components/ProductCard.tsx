@@ -193,17 +193,17 @@ export default function ProductCard({
 
   const content = (
     <article
-      className={`w-full overflow-hidden rounded-2xl border border-border bg-surface p-2 text-text shadow-sm transition-colors ${textAlignClass}`}
+      className={`flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface p-2 text-text shadow-sm transition-colors ${textAlignClass}`}
     >
       <div className="relative aspect-[1] overflow-hidden rounded-xl bg-muted/20">
         {imageUrl ? <img src={imageUrl} alt={title} className="h-full w-full rounded-xl object-cover" loading="lazy" /> : null}
         {shouldShowPrice && discountText ? <DiscountBadge text={discountText} /> : null}
       </div>
 
-      <div className="space-y-1 px-1 pb-1 pt-3">
+      <div className="flex flex-1 flex-col px-1 pb-1 pt-3">
         <h3 className="line-clamp-1 text-base font-semibold leading-6 text-text">{title}</h3>
-     
-        {shouldShowPrice && formattedPrice ? <PriceSection amount={formattedPrice} currency={currency} locale={locale} /> : null}
+
+        {shouldShowPrice && formattedPrice ? <div className="mt-1"><PriceSection amount={formattedPrice} currency={currency} locale={locale} /></div> : null}
 
         {hasLowStockWarning ? <StockWarning text={stockWarningText} /> : null}
       </div>
@@ -217,7 +217,7 @@ export default function ProductCard({
   return (
     <Link
       href={productHrefWithPriceState}
-      className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
     >
       {content}
     </Link>
