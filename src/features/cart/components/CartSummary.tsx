@@ -8,6 +8,8 @@ type CartSummaryProps = {
   originalTotal: number;
   discountPercent: number;
   profit: number;
+  onCheckout: () => void;
+  isCheckoutPending?: boolean;
 };
 
 function SummaryContent({
@@ -17,43 +19,54 @@ function SummaryContent({
   originalTotal,
   discountPercent,
   profit,
+  onCheckout,
+  isCheckoutPending,
   compact,
 }: CartSummaryProps & { compact?: boolean }) {
+  const shouldShowDiscount = discountPercent > 0;
+  const shouldShowProfit = profit > 0;
+
   return (
     <>
 
-      <div className={compact ? 'mt-3' : 'mt-6 border-t border-border pt-5'}>
+      <div className={compact ? 'mt-3' : 'mt-2'}>
         <div className="flex items-center justify-between">
-          <span className={compact ? 'text-xl font-semibold text-text' : 'text-3xl font-semibold text-text'}>
+          <span className={compact ? 'text-lg font-semibold text-text' : 'text-xl font-semibold text-text'}>
             {t.finalPrice}
           </span>
-          <span className={compact ? 'text-2xl font-semibold text-text' : 'text-3xl font-semibold text-text'}>
+          <span className={compact ? 'text-xl font-semibold text-text' : 'text-2xl font-semibold text-text'}>
             {formatPrice(locale, computedTotal)} {t.currencyToman}
           </span>
         </div>
 
-        <div className="mt-2 flex items-center justify-between text-sm text-text/70">
-          <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-content">
-            {discountPercent}% {t.discountLabel}
-          </span>
-          <span>
-            {formatPrice(locale, originalTotal)} {t.currencyToman}
-          </span>
-        </div>
+        {shouldShowDiscount ? (
+          <div className="mt-2 flex items-center justify-between text-xs text-text/70">
+            <span className="rounded-full bg-accent px-2 py-0.5 text-[11px] text-accent-content">
+              {discountPercent}% {t.discountLabel}
+            </span>
+            <span>
+              {formatPrice(locale, originalTotal)} {t.currencyToman}
+            </span>
+          </div>
+        ) : null}
 
-        <p className={compact ? 'mt-2 text-sm text-text' : 'mt-3 text-lg text-text'}>
-          {t.yourProfit}{' '}
-          <span className="font-medium text-primary">
-            {formatPrice(locale, profit)} {t.currencyToman}
-          </span>
-        </p>
+        {shouldShowProfit ? (
+          <p className={compact ? 'mt-2 text-sm text-text' : 'mt-2 text-sm text-text'}>
+            {t.yourProfit}{' '}
+            <span className="font-medium text-primary">
+              {formatPrice(locale, profit)} {t.currencyToman}
+            </span>
+          </p>
+        ) : null}
 
         <button
           type="button"
+          onClick={onCheckout}
+          disabled={isCheckoutPending}
           className={
             compact
-              ? 'mt-3 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-content'
-              : 'mt-6 inline-flex h-14 w-full items-center justify-center rounded-2xl bg-primary text-lg font-semibold text-primary-content'
+              ? 'mt-3 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-content disabled:opacity-60'
+              : 'mt-5 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-content disabled:opacity-60'
           }
         >
           {t.checkout}

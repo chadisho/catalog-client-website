@@ -41,6 +41,19 @@ export type CartTranslations = {
   authRequiredTitle: string;
   authRequiredDescription: string;
   authRequiredAction: string;
+  checkoutToastSuccess: string;
+  checkoutToastError: string;
+  checkoutMissingCartId: string;
+  checkoutConfirmMessage: string;
+  checkoutConfirmTitle: string;
+  checkoutConfirmDescription: string;
+  checkoutConfirmAction: string;
+  checkoutCancelAction: string;
+  orderSuccessTitle: string;
+  orderSuccessDescription: string;
+  orderSuccessOrderCodeLabel: string;
+  orderSuccessViewOrders: string;
+  orderSuccessBackToCart: string;
 };
 
 export function getCartTranslations(locale: CartLocale): CartTranslations {

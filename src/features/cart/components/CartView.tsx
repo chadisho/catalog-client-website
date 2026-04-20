@@ -1,10 +1,13 @@
 "use client";
 
 import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 import { toastError, toastSuccess } from '../../../core/lib/toast';
+import { createOrderFromCart } from '../api/cartApi';
 import { useCartStore } from '../store/cartStore';
 import CartHeaderBlock from './CartHeaderBlock';
+import CheckoutConfirmDialog from './CheckoutConfirmDialog';
 import CartGroupCard from './CartGroupCard';
 import { CartSummaryDesktop, CartSummaryMobile } from './CartSummary';
 import { calculateTotals, resolveGroups } from './cartViewUtils';
@@ -15,12 +18,15 @@ type CartViewProps = {
 };
 
 export default function CartView({ locale, t }: CartViewProps) {
+  const router = useRouter();
   const cart = useCartStore((state) => state.cart);
   const items = cart?.listProducts ?? [];
   const pendingByItemId = useCartStore((state) => state.pendingByItemId);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+  const [isCheckoutPending, setIsCheckoutPending] = useState(false);
+  const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
 
   const groups = useMemo(() => resolveGroups(t, items), [items, t]);
   const { computedTotal, originalTotal, discountPercent, profit } = useMemo(
@@ -65,6 +71,42 @@ export default function CartView({ locale, t }: CartViewProps) {
     }
   };
 
+  const handleCheckoutConfirm = async () => {
+    const cartId = cart?.id;
+    if (!cartId) {
+      toastError(t.checkoutMissingCartId);
+      return;
+    }
+
+    try {
+      setIsCheckoutPending(true);
+      const { orderCode } = await createOrderFromCart(cartId);
+
+      if (!orderCode) {
+        toastError(t.checkoutToastError);
+        return;
+      }
+
+      toastSuccess(t.checkoutToastSuccess);
+      setIsCheckoutDialogOpen(false);
+      router.push(`/cart/success?orderCode=${encodeURIComponent(orderCode)}`);
+    } catch {
+      toastError(t.checkoutToastError);
+    } finally {
+      setIsCheckoutPending(false);
+    }
+  };
+
+  const handleCheckoutRequest = () => {
+    const cartId = cart?.id;
+    if (!cartId) {
+      toastError(t.checkoutMissingCartId);
+      return;
+    }
+
+    setIsCheckoutDialogOpen(true);
+  };
+
   if (items.length === 0) {
     return (
       <main className="mx-auto w-full max-w-[1280px] px-4 py-6">
@@ -77,15 +119,15 @@ export default function CartView({ locale, t }: CartViewProps) {
   }
 
   return (
-    <main className="mx-auto w-full max-w-[1280px] px-3 pb-24 pt-4 lg:px-4 lg:pb-6">
+    <main className="mx-auto w-full max-w-[1280px] px-3 pb-[calc(12rem+env(safe-area-inset-bottom))] pt-4 lg:px-4 lg:pb-6">
       {/*<CartHeaderBlock t={t} />*/}
 
-      <div className="mt-2 grid gap-4 lg:grid-cols-[1fr_340px] lg:gap-6">
+      <h2 className="text-base font-semibold text-text">{t.readyItemsTitle}</h2>
+
+      <div className="mt-2 grid gap-4 lg:grid-cols-[1fr_340px] lg:items-start lg:gap-6">
         <section className="space-y-4">
 
           <div className="space-y-4">
-            <h2 className="text-base font-semibold text-text">{t.readyItemsTitle}</h2>
-
             {groups.map((group) => {
               const isCollapsed = Boolean(collapsedGroups[group.id]);
 
@@ -118,6 +160,8 @@ export default function CartView({ locale, t }: CartViewProps) {
           originalTotal={originalTotal}
           discountPercent={discountPercent}
           profit={profit}
+          onCheckout={handleCheckoutRequest}
+          isCheckoutPending={isCheckoutPending}
         />
       </div>
 
@@ -128,6 +172,23 @@ export default function CartView({ locale, t }: CartViewProps) {
         originalTotal={originalTotal}
         discountPercent={discountPercent}
         profit={profit}
+        onCheckout={handleCheckoutRequest}
+        isCheckoutPending={isCheckoutPending}
+      />
+
+      <CheckoutConfirmDialog
+        isOpen={isCheckoutDialogOpen}
+        locale={locale}
+        t={t}
+        isSubmitting={isCheckoutPending}
+        onClose={() => {
+          if (isCheckoutPending) {
+            return;
+          }
+
+          setIsCheckoutDialogOpen(false);
+        }}
+        onConfirm={handleCheckoutConfirm}
       />
     </main>
   );

@@ -164,7 +164,20 @@
     "deleteItemToastError": "حذف آیتم از سبد خرید ناموفق بود.",
     "authRequiredTitle": "نیاز به ورود",
     "authRequiredDescription": "برای مشاهده و مدیریت سبد خرید، لطفاً وارد حساب کاربری شوید.",
-    "authRequiredAction": "ورود به حساب کاربری"
+    "authRequiredAction": "ورود به حساب کاربری",
+    "checkoutToastSuccess": "سفارش با موفقیت ثبت شد.",
+    "checkoutToastError": "ثبت سفارش ناموفق بود.",
+    "checkoutMissingCartId": "اطلاعات سبد خرید کامل نیست.",
+    "checkoutConfirmMessage": "آیا از ثبت این سفارش مطمئن هستید؟",
+    "checkoutConfirmTitle": "ثبت سفارش",
+    "checkoutConfirmDescription": "آیا می‌خواهید این سفارش را نهایی و ثبت کنید؟",
+    "checkoutConfirmAction": "بله، ثبت سفارش",
+    "checkoutCancelAction": "انصراف",
+    "orderSuccessTitle": "سفارش شما ثبت شد",
+    "orderSuccessDescription": "سفارش شما با موفقیت ثبت شد.",
+    "orderSuccessOrderCodeLabel": "کد سفارش",
+    "orderSuccessViewOrders": "مشاهده سفارش‌های من",
+    "orderSuccessBackToCart": "بازگشت به سبد خرید"
   },
   "shop": {
     "profileTitle": "پروفایل فروشگاه",

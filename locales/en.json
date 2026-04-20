@@ -164,7 +164,20 @@
     "deleteItemToastError": "Removing item failed.",
     "authRequiredTitle": "Sign in required",
     "authRequiredDescription": "Please sign in to view and manage your cart.",
-    "authRequiredAction": "Sign in"
+    "authRequiredAction": "Sign in",
+    "checkoutToastSuccess": "Order registered successfully.",
+    "checkoutToastError": "Registering order failed.",
+    "checkoutMissingCartId": "Cart information is incomplete.",
+    "checkoutConfirmMessage": "Are you sure you want to register this order?",
+    "checkoutConfirmTitle": "Register order",
+    "checkoutConfirmDescription": "Do you want to finalize and register this order now?",
+    "checkoutConfirmAction": "Yes, register order",
+    "checkoutCancelAction": "Cancel",
+    "orderSuccessTitle": "Your order was registered",
+    "orderSuccessDescription": "Your order has been submitted successfully.",
+    "orderSuccessOrderCodeLabel": "Order code",
+    "orderSuccessViewOrders": "View my orders",
+    "orderSuccessBackToCart": "Back to cart"
   },
   "shop": {
     "profileTitle": "Shop Profile",

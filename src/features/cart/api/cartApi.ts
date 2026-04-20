@@ -14,6 +14,7 @@ type UpdateCartItemInput = {
 };
 
 type OrderResponse = {
+    options: { orderCode?: string;},
   orderCode?: string;
 };
 
@@ -74,5 +75,5 @@ export async function createOrderFromCart(cartId: number): Promise<{ orderCode: 
     method: 'POST',
   })) as OrderResponse;
 
-  return { orderCode: response.orderCode ?? '' };
+  return { orderCode: response.orderCode??response.options?.orderCode ?? '' };
 }
