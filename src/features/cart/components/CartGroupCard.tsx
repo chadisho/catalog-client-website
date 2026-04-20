@@ -4,67 +4,26 @@ import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale
 import type { CartItemModel } from '../model/cartModel';
 import { formatItemVariation, formatPrice, toNumber, type CartGroup } from './cartViewUtils';
 
-function slugifyTitle(value: string): string {
-  const trimmedValue = value.trim();
-
-  if (!trimmedValue) {
-    return 'product';
-  }
-
-  return trimmedValue
-    .replace(/\s+/g, '-')
-    .replace(/[^\p{L}\p{N}-]/gu, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .toLowerCase();
-}
-
 function resolveProductHref(group: CartGroup): string | null {
-  const firstItem = group.items[0];
+  const productUri = group.items[0]?.productUri;
 
-  if (!firstItem) {
+  if (typeof productUri !== 'string' || productUri.trim().length === 0) {
     return null;
   }
 
-  if (typeof firstItem.uri === 'string' && firstItem.uri.trim().length > 0) {
-    const normalizedUri = firstItem.uri.trim();
-
-    try {
-      const parsedUrl = new URL(normalizedUri, 'http://localhost');
-      const segments = parsedUrl.pathname.split('/').filter(Boolean);
-
-      if (segments.length >= 3 && segments[0] === 'product') {
-        const [, productCode, ...titleSegments] = segments;
-        const productTitle = titleSegments.join('-');
-
-        if (productCode && productTitle) {
-          return `/product/${encodeURIComponent(productCode)}/${encodeURIComponent(productTitle)}`;
-        }
-      }
-    } catch {
-      return null;
-    }
-  }
-
-  const fallbackCode =
-    (typeof firstItem.productCode === 'string' && firstItem.productCode.trim().length > 0
-      ? firstItem.productCode.trim()
-      : null) ??
-    (typeof firstItem.productId === 'number' ? firstItem.productId.toString() : null);
-
-  if (!fallbackCode) {
+  try {
+    const parsedUrl = new URL(productUri.trim(), 'http://localhost');
+    const resolvedPath = `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+    return resolvedPath || null;
+  } catch {
     return null;
   }
-
-  return `/product/${encodeURIComponent(fallbackCode)}/${encodeURIComponent(slugifyTitle(group.title))}`;
 }
 
 function appendShouldShowPriceQuery(href: string, shouldShowPrice: boolean): string {
-  const query = new URLSearchParams({
-    shouldShowPrice: shouldShowPrice ? 'true' : 'false',
-  });
-
-  return `${href}?${query.toString()}`;
+  const url = new URL(href, 'http://localhost');
+  url.searchParams.set('shouldShowPrice', shouldShowPrice ? 'true' : 'false');
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 type CartGroupCardProps = {
