@@ -78,7 +78,8 @@ export type CartItemModel = {
   updatedAt: string | null;
   productName: string | null;
   currency: string;
-  productImage: string | null;
+    productImage: string | null;
+   productUri: string | null;
   unit: string | null;
   productVariations: CartAttrModel[];
   productPrice?: CartProductPriceModel;
@@ -144,7 +145,8 @@ function mapCartItem(source: any): CartItemModel {
     productVariations: Array.isArray(source?.product_variation)
       ? source.product_variation.map(mapCartAttr)
       : [],
-    productPrice: mapCartProductPrice(source?.productPrice),
+      productPrice: mapCartProductPrice(source?.productPrice),
+    productUri:typeof source?.product_uri === 'string' ? source.product_uri : null,
     uri: typeof source?.uri === 'string' ? source.uri : null,
   };
 }

@@ -1,7 +1,71 @@
 import { ChevronDown, ChevronUp, LoaderCircle, Minus, Plus, Trash2 } from 'lucide-react';
+import Link from 'next/link';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 import type { CartItemModel } from '../model/cartModel';
 import { formatItemVariation, formatPrice, toNumber, type CartGroup } from './cartViewUtils';
+
+function slugifyTitle(value: string): string {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return 'product';
+  }
+
+  return trimmedValue
+    .replace(/\s+/g, '-')
+    .replace(/[^\p{L}\p{N}-]/gu, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase();
+}
+
+function resolveProductHref(group: CartGroup): string | null {
+  const firstItem = group.items[0];
+
+  if (!firstItem) {
+    return null;
+  }
+
+  if (typeof firstItem.uri === 'string' && firstItem.uri.trim().length > 0) {
+    const normalizedUri = firstItem.uri.trim();
+
+    try {
+      const parsedUrl = new URL(normalizedUri, 'http://localhost');
+      const segments = parsedUrl.pathname.split('/').filter(Boolean);
+
+      if (segments.length >= 3 && segments[0] === 'product') {
+        const [, productCode, ...titleSegments] = segments;
+        const productTitle = titleSegments.join('-');
+
+        if (productCode && productTitle) {
+          return `/product/${encodeURIComponent(productCode)}/${encodeURIComponent(productTitle)}`;
+        }
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  const fallbackCode =
+    (typeof firstItem.productCode === 'string' && firstItem.productCode.trim().length > 0
+      ? firstItem.productCode.trim()
+      : null) ??
+    (typeof firstItem.productId === 'number' ? firstItem.productId.toString() : null);
+
+  if (!fallbackCode) {
+    return null;
+  }
+
+  return `/product/${encodeURIComponent(fallbackCode)}/${encodeURIComponent(slugifyTitle(group.title))}`;
+}
+
+function appendShouldShowPriceQuery(href: string, shouldShowPrice: boolean): string {
+  const query = new URLSearchParams({
+    shouldShowPrice: shouldShowPrice ? 'true' : 'false',
+  });
+
+  return `${href}?${query.toString()}`;
+}
 
 type CartGroupCardProps = {
   locale: CartLocale;
@@ -100,10 +164,35 @@ export default function CartGroupCard({
   onChangeQuantity,
   isItemPending,
 }: CartGroupCardProps) {
-    const groupImage = group.items[0]?.productImage;
+  const groupImage = group.items[0]?.productImage;
+  const productHref = resolveProductHref(group);
+  const productHrefWithPriceState = productHref ? appendShouldShowPriceQuery(productHref, true) : null;
+
+  const headerContent = (
+    <>
+      <div className="flex-1 text-right">
+        <p className="text-xl font-medium text-text">{group.title}</p>
+        <p className="mt-1 text-xs text-text/60">{group.subtitle}</p>
+      </div>
+
+      {groupImage ? (
+        <img
+          src={groupImage}
+          alt={group.title}
+          className="h-16 w-16 rounded-2xl border border-border object-cover lg:h-28 lg:w-28"
+          loading="lazy"
+        />
+      ) : (
+        <div className="h-16 w-16 overflow-hidden rounded-2xl bg-muted lg:h-28 lg:w-28">
+          <div className="h-full w-full bg-gradient-to-b from-primary/60 to-transparent" />
+        </div>
+      )}
+    </>
+  );
+
   return (
     <article className="rounded-[28px] border border-border bg-surface p-3 shadow-sm lg:p-4">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start gap-3">
         <button
           type="button"
           onClick={onToggleCollapse}
@@ -113,21 +202,16 @@ export default function CartGroupCard({
           {isCollapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
         </button>
 
-        <div className="flex-1 text-right">
-          <p className="text-xl font-medium text-text">{group.title}</p>
-          <p className="mt-1 text-xs text-text/60">{group.subtitle}</p>
-        </div>
-
-        {groupImage ? (
-          <img
-            src={groupImage}
-            alt={group.title}
-            className="h-16 w-16 lg:h-28 lg:w-28  rounded-2xl border border-border object-cover"
-            loading="lazy"
-          />
+        {productHrefWithPriceState ? (
+          <Link
+            href={productHrefWithPriceState}
+            className="flex flex-1 items-start justify-between gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          >
+            {headerContent}
+          </Link>
         ) : (
-          <div className="h-16 w-16 lg:h-28 lg:w-28  overflow-hidden rounded-2xl bg-muted">
-            <div className="h-full w-full bg-gradient-to-b from-primary/60 to-transparent" />
+          <div className="flex flex-1 items-start justify-between gap-3">
+            {headerContent}
           </div>
         )}
       </div>

@@ -37,6 +37,8 @@ export async function getCart(): Promise<CartModel> {
     const response = await apiClient('app/cart', {
       method: 'POST',
     });
+       console.log("CCA");
+    console.log(response);
     return mapCart(response );
  
 }
