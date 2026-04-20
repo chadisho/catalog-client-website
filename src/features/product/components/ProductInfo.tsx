@@ -16,6 +16,7 @@ type ProductInfoProps = {
   price?: string | null;
   salePrice?: string | null;
   currencyLabel: string;
+  isOutOfStock: boolean;
 };
 
 export default function ProductInfo({
@@ -29,6 +30,7 @@ export default function ProductInfo({
   price,
   salePrice,
   currencyLabel,
+  isOutOfStock,
 }: ProductInfoProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -55,6 +57,7 @@ export default function ProductInfo({
             price={price}
             salePrice={salePrice}
             discountTextPrefix={t.discountLabel}
+            stockBadgeText={isOutOfStock ? t.outOfStock : undefined}
           />
         ) : null}
 

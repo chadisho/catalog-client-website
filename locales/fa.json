@@ -115,6 +115,8 @@
     "discountLabel": "تخفیف",
     "noPrice": "قیمت ثبت نشده",
     "stockWarning": "تنها چند عدد موجود",
+    "outOfStock": "ناموجود",
+    "notEnoughStockToast": "موجودی این محصول کافی نیست.",
     "currencyToman": "تومان",
     "mediaImageAlt": "تصویر محصول",
     "mediaVideoAlt": "ویدیوی محصول",

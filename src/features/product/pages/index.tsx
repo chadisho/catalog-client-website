@@ -54,6 +54,8 @@ export default function ProductPage({
       label: variation.attrsValues.join(' / '),
       price: variation.price,
       salePrice: variation.salePrice,
+      inventory: variation.inventory,
+      stockType: variation.stockType,
     }))
     .filter((item) => item.label.trim().length > 0);
   const hasStockWarning = resolveStockWarning(data);
@@ -96,6 +98,8 @@ export default function ProductPage({
               baseSalePrice={data.productModel.salePrice}
               currencyLabel={currencyLabel}
               productId={data.productModel.id}
+              baseInventory={data.productModel.inventory}
+              baseStockType={data.productModel.stockType}
               variationOptions={variationOptions}
               variationItems={variationItems}
             />

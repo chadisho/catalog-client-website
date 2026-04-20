@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
 import type { LoginSheetTranslations } from '../../auth/components/LoginSheet';
+import { resolveStockState } from './productUiUtils';
 import ProductActions from './ProductActions';
 import ProductInfo from './ProductInfo';
 
@@ -11,6 +12,8 @@ type ProductVariationItem = {
   label: string;
   price?: string | null;
   salePrice?: string | null;
+  inventory?: number | null;
+  stockType?: string | null;
 };
 
 type ProductPurchasePanelProps = {
@@ -26,6 +29,8 @@ type ProductPurchasePanelProps = {
   baseSalePrice?: string | null;
   currencyLabel: string;
   productId?: number | null;
+  baseInventory?: number | null;
+  baseStockType?: string | null;
   variationOptions: string[];
   variationItems: ProductVariationItem[];
 };
@@ -43,6 +48,8 @@ export default function ProductPurchasePanel({
   baseSalePrice,
   currencyLabel,
   productId,
+  baseInventory,
+  baseStockType,
   variationOptions,
   variationItems,
 }: ProductPurchasePanelProps) {
@@ -63,6 +70,9 @@ export default function ProductPurchasePanel({
 
   const activePrice = selectedVariationPrice?.price ?? basePrice;
   const activeSalePrice = selectedVariationPrice?.salePrice ?? baseSalePrice;
+  const activeStock = selectedVariationPrice
+    ? resolveStockState(selectedVariationPrice.stockType, selectedVariationPrice.inventory)
+    : resolveStockState(baseStockType, baseInventory);
 
   return (
     <>
@@ -77,6 +87,7 @@ export default function ProductPurchasePanel({
         price={activePrice}
         salePrice={activeSalePrice}
         currencyLabel={currencyLabel}
+        isOutOfStock={activeStock.isOutOfStock}
       />
 
       <ProductActions
@@ -88,6 +99,8 @@ export default function ProductPurchasePanel({
         variationItems={variationItems}
         selectedVariation={activeVariationLabel}
         onSelectedVariationChange={setSelectedVariation}
+        baseInventory={baseInventory}
+        baseStockType={baseStockType}
       />
     </>
   );

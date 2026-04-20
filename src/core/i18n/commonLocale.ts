@@ -33,6 +33,8 @@ export type ProductTranslations = {
   discountLabel: string;
   noPrice: string;
   stockWarning: string;
+  outOfStock: string;
+  notEnoughStockToast: string;
   currencyToman: string;
   mediaImageAlt: string;
   mediaVideoAlt: string;

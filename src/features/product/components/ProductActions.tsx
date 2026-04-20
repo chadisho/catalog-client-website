@@ -2,7 +2,7 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
 import { toastError, toastSuccess } from '../../../core/lib/toast';
 import { getAuthSession } from '../../auth/api/authClientApi';
@@ -10,12 +10,15 @@ import LoginSheet, { type LoginSheetTranslations } from '../../auth/components/L
 import { useCartStore } from '../../cart/store/cartStore';
 import QuantitySelector from './QuantitySelector';
 import VariationSelector from './VariationSelector';
+import { resolveStockState } from './productUiUtils';
 
 type ProductVariationOption = {
   id?: number | null;
   label: string;
   price?: string | null;
   salePrice?: string | null;
+  inventory?: number | null;
+  stockType?: string | null;
 };
 
 type ProductActionsProps = {
@@ -23,6 +26,8 @@ type ProductActionsProps = {
   t: ProductTranslations;
   loginSheetT: LoginSheetTranslations;
   productId?: number | null;
+  baseInventory?: number | null;
+  baseStockType?: string | null;
   variationOptions: string[];
   variationItems?: ProductVariationOption[];
   selectedVariation: string;
@@ -34,6 +39,8 @@ export default function ProductActions({
   t,
   loginSheetT,
   productId,
+  baseInventory,
+  baseStockType,
   variationOptions,
   variationItems = [],
   selectedVariation,
@@ -54,13 +61,50 @@ export default function ProductActions({
 
   const isAuthenticated = Boolean(session?.isAuthenticated);
 
-  const selectedVariationId = useMemo(() => {
-    const matched = variationItems.find((item) => item.label === selectedVariation);
-    return matched?.id;
+  const selectedVariationItem = useMemo(() => {
+    return variationItems.find((item) => item.label === selectedVariation);
   }, [selectedVariation, variationItems]);
 
+  const selectedVariationId = selectedVariationItem?.id;
+
+  const activeStock = useMemo(() => {
+    if (selectedVariationItem) {
+      return resolveStockState(selectedVariationItem.stockType, selectedVariationItem.inventory);
+    }
+
+    return resolveStockState(baseStockType, baseInventory);
+  }, [baseInventory, baseStockType, selectedVariationItem]);
+
+  const disableIncrease =
+    activeStock.isOutOfStock ||
+    (!activeStock.isUnlimited && activeStock.maxQuantity !== null && quantity >= activeStock.maxQuantity);
+
+  const disableAddToCart = !productId || isSubmitting || activeStock.isOutOfStock;
+
+  useEffect(() => {
+    if (activeStock.maxQuantity !== null && activeStock.maxQuantity > 0 && quantity > activeStock.maxQuantity) {
+      setQuantity(activeStock.maxQuantity);
+    }
+  }, [activeStock.maxQuantity, quantity]);
+
+  const handleIncreaseQuantity = () => {
+    if (disableIncrease) {
+      if (!activeStock.isOutOfStock) {
+        toastError(t.notEnoughStockToast);
+      }
+      return;
+    }
+
+    setQuantity((prev) => prev + 1);
+  };
+
   const handleAddToCart = async () => {
-    if (!productId || isSubmitting) {
+    if (!productId || isSubmitting || activeStock.isOutOfStock) {
+      return;
+    }
+
+    if (!activeStock.isUnlimited && activeStock.maxQuantity !== null && quantity > activeStock.maxQuantity) {
+      toastError(t.notEnoughStockToast);
       return;
     }
 
@@ -105,12 +149,21 @@ export default function ProductActions({
           value={quantity}
           increaseLabel={t.increaseQuantity}
           decreaseLabel={t.decreaseQuantity}
-          onIncrease={() => setQuantity((prev) => prev + 1)}
+          disableIncrease={disableIncrease}
+          onIncrease={handleIncreaseQuantity}
           onDecrease={() => setQuantity((prev) => Math.max(1, prev - 1))}
         />
       </>
     ),
-    [onSelectedVariationChange, quantity, selectedVariation, t, variationOptions]
+    [
+      disableIncrease,
+      handleIncreaseQuantity,
+      onSelectedVariationChange,
+      quantity,
+      selectedVariation,
+      t,
+      variationOptions,
+    ]
   );
 
   return (
@@ -121,7 +174,7 @@ export default function ProductActions({
           <button
             type="button"
             onClick={handleAddToCart}
-            disabled={!productId || isSubmitting}
+            disabled={disableAddToCart}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isSubmitting ? (
@@ -141,7 +194,7 @@ export default function ProductActions({
             type="button"
             onClick={() => setIsSelectionModalOpen(true)}
             aria-label={t.openSelectionSheet}
-            disabled={!productId || isSubmitting}
+            disabled={disableAddToCart}
             className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-content disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isSubmitting ? (
@@ -170,7 +223,7 @@ export default function ProductActions({
               <button
                 type="button"
                 onClick={handleAddToCart}
-                disabled={!productId || isSubmitting}
+                disabled={disableAddToCart}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-content disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isSubmitting ? (

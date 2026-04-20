@@ -115,6 +115,8 @@
     "discountLabel": "off",
     "noPrice": "Price unavailable",
     "stockWarning": "Only a few left",
+    "outOfStock": "Out of stock",
+    "notEnoughStockToast": "Requested quantity is not available.",
     "currencyToman": "toman",
     "mediaImageAlt": "Product image",
     "mediaVideoAlt": "Product video",

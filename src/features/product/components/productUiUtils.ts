@@ -8,6 +8,12 @@ export type ProductMediaItem = {
   alt: string;
 };
 
+export type StockState = {
+  isOutOfStock: boolean;
+  isUnlimited: boolean;
+  maxQuantity: number | null;
+};
+
 function normalizeNumericValue(value?: string | null): number | null {
   if (!value) {
     return null;
@@ -49,6 +55,54 @@ export function resolveDisplayCurrency(currency: string | null | undefined, t: P
   }
 
   return currency;
+}
+
+export function resolveStockState(
+  stockType: string | null | undefined,
+  inventory: number | null | undefined
+): StockState {
+  const normalizedStockType = stockType?.trim().toLowerCase();
+  const normalizedInventory = typeof inventory === 'number' ? inventory : null;
+
+  if (normalizedStockType === 'notinstock') {
+    return {
+      isOutOfStock: true,
+      isUnlimited: false,
+      maxQuantity: 0,
+    };
+  }
+
+  if (normalizedStockType === 'unlimited') {
+    return {
+      isOutOfStock: false,
+      isUnlimited: true,
+      maxQuantity: null,
+    };
+  }
+
+  if (normalizedStockType === 'limited') {
+    const maxQuantity = normalizedInventory ?? 0;
+
+    return {
+      isOutOfStock: maxQuantity <= 0,
+      isUnlimited: false,
+      maxQuantity,
+    };
+  }
+
+  if (normalizedInventory !== null) {
+    return {
+      isOutOfStock: normalizedInventory <= 0,
+      isUnlimited: false,
+      maxQuantity: normalizedInventory,
+    };
+  }
+
+  return {
+    isOutOfStock: false,
+    isUnlimited: true,
+    maxQuantity: null,
+  };
 }
 
 export function resolveMediaItems(data: ProductDetailsModel, t: ProductTranslations): ProductMediaItem[] {
