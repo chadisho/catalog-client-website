@@ -65,6 +65,8 @@ interface HeaderProps {
   headerTitle?: string;
   headerImage?: string;
   shopSlug?: string;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
 }
 
 type ThemeOption = 'light' | 'dark' | 'system';
@@ -76,6 +78,8 @@ export default function Header({
   headerTitle,
   headerImage,
   shopSlug,
+  searchValue,
+  onSearchChange,
 }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -87,6 +91,7 @@ export default function Header({
   const [isMobileThemeMenuOpen, setIsMobileThemeMenuOpen] = useState(false);
   const [isMobileLanguageMenuOpen, setIsMobileLanguageMenuOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [internalSearchValue, setInternalSearchValue] = useState('');
   const [loadedHeaderImageSrc, setLoadedHeaderImageSrc] = useState<string | null>(null);
   const [failedHeaderImageSrc, setFailedHeaderImageSrc] = useState<string | null>(null);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
@@ -239,6 +244,16 @@ export default function Header({
   const normalizedShopSlug = shopSlug?.trim();
   const drawerHiddenTranslateClass = locale === 'fa' ? 'translate-x-full' : '-translate-x-full';
   const CurrentThemeIcon = theme === 'system' ? Monitor : theme === 'light' ? Sun : Moon;
+  const resolvedSearchValue = searchValue ?? internalSearchValue;
+
+  const handleSearchChange = (value: string) => {
+    if (onSearchChange) {
+      onSearchChange(value);
+      return;
+    }
+
+    setInternalSearchValue(value);
+  };
 
   const handleThemeSelect = (nextTheme: ThemeOption) => {
     setTheme(nextTheme);
@@ -311,6 +326,8 @@ export default function Header({
               <input
                 type="search"
                 placeholder={t.searchPlaceholder}
+                value={resolvedSearchValue}
+                onChange={(event) => handleSearchChange(event.target.value)}
                 className="h-12 w-full appearance-none rounded-full border border-border bg-surface px-11 text-sm text-text outline-none ring-primary transition placeholder:text-text/70 focus:ring-2"
               />
             </div>
@@ -565,6 +582,8 @@ export default function Header({
                   <input
                     type="search"
                     placeholder={t.searchPlaceholder}
+                    value={resolvedSearchValue}
+                    onChange={(event) => handleSearchChange(event.target.value)}
                     className="h-12 w-full appearance-none rounded-full border border-border bg-background px-11 text-sm text-text outline-none ring-primary transition placeholder:text-text/70 focus:ring-2"
                   />
                 </div>

@@ -14,6 +14,7 @@
     "errorOccurred": "Error occurred",
     "loading": "Loading...",
     "noContent": "No content available to display.",
+    "searchNoResults": "No matching items were found.",
     "searchPlaceholder": "Search products",
     "login": "Sign in",
     "cart": "Cart",

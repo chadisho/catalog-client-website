@@ -10,6 +10,7 @@ type CatalogTranslations = {
   errorOccurred: string;
   loading: string;
   noContent: string;
+  searchNoResults: string;
   searchPlaceholder: string;
   login: string;
   cart: string;

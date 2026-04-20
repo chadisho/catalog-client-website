@@ -1,7 +1,5 @@
 import type { CatalogDetailsModel } from '../api/catalogApi';
-import CatalogSection from '../components/CatalogSection';
-import CatalogHero from '../components/CatalogHero';
-import Header from '../../../core/components/Header';
+import CatalogPageClient from './CatalogPageClient';
 import ErrorState from '../../../core/components/feedback/ErrorState';
 import LoadingState from '../../../core/components/feedback/LoadingState';
 import {
@@ -55,37 +53,19 @@ export default function CatalogPage({
       dir={direction}
       className={`min-h-screen overflow-x-clip bg-background text-text ${textAlignClass}`}
     >
-          <Header locale={locale} t={t} headerTitle={data.shopInformation?.faName ?? undefined}
-              headerImage={data.shopInformation?.avatar ?? undefined} shopSlug={ data.shopInformation?.enName??undefined} />
-
-      <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
-        <div className="order-1 min-w-0 lg:order-2 lg:sticky lg:top-4 lg:h-fit lg:self-start">
-          <CatalogHero
-            title={heroTitle}
-            description={heroDescription}
-            images={heroImages}
-            fallbackImageUrl={heroImage ?? undefined}
-            autoPlayIntervalMs={8000}
-          />
-        </div>
-
-        <main className="order-2 min-w-0 space-y-10 lg:order-1">
-          {sections.length === 0 ? (
-            <div className="rounded-2xl border border-secondary/30 bg-background/70 p-6 text-center text-sm text-text/70">
-              {t.noContent}
-            </div>
-          ) : (
-            sections.map((section) => (
-              <CatalogSection
-                key={section.id}
-                section={section}
-                locale={locale}
-                shouldShowProductPrice={shouldShowProductPrice}
-              />
-            ))
-          )}
-        </main>
-      </div>
+      <CatalogPageClient
+        locale={locale}
+        t={t}
+        headerTitle={data.shopInformation?.faName ?? undefined}
+        headerImage={data.shopInformation?.avatar ?? undefined}
+        shopSlug={data.shopInformation?.enName ?? undefined}
+        heroTitle={heroTitle}
+        heroDescription={heroDescription}
+        heroImage={heroImage ?? undefined}
+        heroImages={heroImages}
+        sections={sections}
+        shouldShowProductPrice={shouldShowProductPrice}
+      />
     </div>
   );
 }
