@@ -141,8 +141,8 @@ function mapCartItem(source: any): CartItemModel {
     currency: typeof source?.currency === 'string' ? source.currency : 'toman',
     productImage: typeof source?.product_image === 'string' ? source.product_image : null,
     unit: typeof source?.unit === 'string' ? source.unit : null,
-    productVariations: Array.isArray(source?.productVariations)
-      ? source.productVariations.map(mapCartAttr)
+    productVariations: Array.isArray(source?.product_variation)
+      ? source.product_variation.map(mapCartAttr)
       : [],
     productPrice: mapCartProductPrice(source?.productPrice),
     uri: typeof source?.uri === 'string' ? source.uri : null,

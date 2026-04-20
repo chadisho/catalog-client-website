@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, LoaderCircle, Minus, Pencil, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, LoaderCircle, Minus, Plus, Trash2 } from 'lucide-react';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 import type { CartItemModel } from '../model/cartModel';
 import { formatItemVariation, formatPrice, toNumber, type CartGroup } from './cartViewUtils';
@@ -30,41 +30,34 @@ function CartItemRow({
   isPending: boolean;
 }) {
   const rowPrice = formatPrice(locale, toNumber(item.productPrice?.salePrice ?? item.price));
+  const variationLabel = formatItemVariation(item);
+  const isVariationEmpty = !variationLabel?.trim();
 
   return (
     <div
       key={item.id ?? `${item.productId}-${item.variationId ?? 0}`}
       className="rounded-xl border-b border-border/70 pb-3 last:border-b-0 last:pb-0"
     >
-      <div className="grid grid-cols-[38px_1fr] items-center gap-2">
-        <button
-          type="button"
-          onClick={() => onDelete(item.id)}
-          disabled={isPending}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-text/80"
-          aria-label={t.deleteItem}
-          title={t.deleteItem}
-        >
-          {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-        </button>
-
-        <button
-          type="button"
-          className="flex h-9 items-center justify-between rounded-lg border border-primary/70 bg-surface px-3 text-xs text-text"
-          aria-label={t.editVariation}
-          title={t.editVariation}
-        >
-          <Pencil className="h-3.5 w-3.5 text-primary" />
-          <span className="truncate">{formatItemVariation(item)}</span>
-        </button>
-      </div>
 
       <div className="mt-2 flex items-center justify-between gap-2 px-1">
-        <div>
-          <p className="text-[10px] text-text/50">{item.unit ?? t.productCodeLabel}</p>
-          <p className="text-base font-semibold text-text">
-            {rowPrice} <span className="text-sm font-medium">{t.currencyToman}</span>
-          </p>
+        <div className="flex items-start gap-2">
+          <button
+            type="button"
+            onClick={() => onDelete(item.id)}
+            disabled={isPending}
+            className="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface text-text/80"
+            aria-label={t.deleteItem}
+            title={t.deleteItem}
+          >
+            {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+          </button>
+
+          <div className={`flex min-h-10 flex-col ${isVariationEmpty ? 'justify-center' : 'justify-start'}`}>
+            <p className={`text-[10px] text-text/50 ${isVariationEmpty ? 'hidden' : ''}`}>{variationLabel}</p>
+            <p className={`text-base font-semibold text-text ${isVariationEmpty ? 'text-center' : ''}`}>
+              {rowPrice} <span className="text-sm font-medium">{t.currencyToman}</span>
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
@@ -129,11 +122,11 @@ export default function CartGroupCard({
           <img
             src={groupImage}
             alt={group.title}
-            className="h-12 w-12 rounded-full border border-border object-cover"
+            className="h-16 w-16 lg:h-28 lg:w-28  rounded-2xl border border-border object-cover"
             loading="lazy"
           />
         ) : (
-          <div className="h-12 w-12 overflow-hidden rounded-full bg-muted">
+          <div className="h-16 w-16 lg:h-28 lg:w-28  overflow-hidden rounded-2xl bg-muted">
             <div className="h-full w-full bg-gradient-to-b from-primary/60 to-transparent" />
           </div>
         )}

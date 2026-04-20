@@ -24,9 +24,9 @@ export function formatPrice(locale: CartLocale, value: number): string {
   return new Intl.NumberFormat(locale === 'fa' ? 'fa-IR' : 'en-US').format(value);
 }
 
-export function formatItemVariation(item: CartItemModel): string {
+export function formatItemVariation(item: CartItemModel): string|undefined {
   if (!item.productVariations.length) {
-    return '-';
+    return undefined;
   }
 
   return item.productVariations
@@ -44,7 +44,7 @@ export function resolveGroups(t: CartTranslations, list: CartItemModel[]): CartG
   list.forEach((item, index) => {
     const groupKey =
       item.productId !== null && item.productId !== undefined
-        ? `product-${item.productId}`
+        ? `product-${item.id}`
         : `product-unknown-${index}`;
 
     const current = groupedMap.get(groupKey);
@@ -59,7 +59,7 @@ export function resolveGroups(t: CartTranslations, list: CartItemModel[]): CartG
   return Array.from(groupedMap.entries()).map(([id, items]) => ({
     id,
     title: items[0]?.productName ?? t.readyItemsTitle,
-    subtitle: t.productCodeLabel,
+    subtitle: items[0]?.productCode ??'',
     items,
   }));
 }
