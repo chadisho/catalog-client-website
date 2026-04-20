@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from 'lucide-react';
+import AppDialog from '../../../core/components/dialog/AppDialog';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 
 type CheckoutConfirmDialogProps = {
@@ -27,15 +28,13 @@ export default function CheckoutConfirmDialog({
   const isRtl = locale === 'fa';
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end bg-overlay lg:items-center lg:justify-center"
-      dir={isRtl ? 'rtl' : 'ltr'}
-      role="dialog"
-      aria-modal
+    <AppDialog
+      isOpen={isOpen}
+      onClose={onClose}
+      closeLabel={t.close}
+      panelClassName="relative w-full rounded-t-3xl border border-border bg-background px-5 pb-6 pt-5 text-text shadow-2xl lg:max-w-[480px] lg:rounded-3xl lg:px-6 lg:pb-7 lg:pt-6"
     >
-      <button type="button" aria-label={t.close} className="absolute inset-0" onClick={onClose} />
-
-      <div className="relative w-full rounded-t-3xl border border-border bg-background px-5 pb-6 pt-5 text-text shadow-2xl lg:max-w-[480px] lg:rounded-3xl lg:px-6 lg:pb-7 lg:pt-6">
+      <div dir={isRtl ? 'rtl' : 'ltr'}>
         <div className={`mb-3 flex items-center ${isRtl ? 'justify-start' : 'justify-end'}`}>
           <button
             type="button"
@@ -72,6 +71,6 @@ export default function CheckoutConfirmDialog({
           </div>
         </div>
       </div>
-    </div>
+    </AppDialog>
   );
 }

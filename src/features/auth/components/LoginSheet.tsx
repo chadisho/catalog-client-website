@@ -2,10 +2,11 @@
 
 import { X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import AppDialog from '../../../core/components/dialog/AppDialog';
 import { getAuthSession, requestLogin, resendOtp, verifyOtp } from '../api/authClientApi';
 import type { CatalogLocale } from '../../../core/i18n/catalogLocale';
 
-type AuthSheetTranslations = {
+export type LoginSheetTranslations = {
   loginSheetTitle: string;
   loginSheetDescription: string;
   mobileLabel: string;
@@ -25,14 +26,14 @@ type AuthSheetTranslations = {
 type LoginSheetProps = {
   isOpen: boolean;
   locale: CatalogLocale;
-  t: AuthSheetTranslations;
+  t: LoginSheetTranslations;
   onClose: () => void;
   onLoginSuccess: () => void;
 };
 
 type LoginStep = 'mobile' | 'otp';
 
-function resolveErrorMessage(message: string, t: AuthSheetTranslations): string {
+function resolveErrorMessage(message: string, t: LoginSheetTranslations): string {
   const normalized = message.toLowerCase();
 
   if (normalized.includes('cellphone') || normalized.includes('mobile')) {
@@ -135,15 +136,13 @@ export default function LoginSheet({ isOpen, locale, t, onClose, onLoginSuccess 
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end bg-overlay lg:items-center lg:justify-center"
-      dir={direction}
-      role="dialog"
-      aria-modal
+    <AppDialog
+      isOpen={isOpen}
+      onClose={onClose}
+      closeLabel={t.close}
+      panelClassName="relative w-full rounded-t-3xl border border-border bg-background px-5 pb-6 pt-5 text-text shadow-2xl lg:max-w-[480px] lg:rounded-3xl lg:px-6 lg:pb-7 lg:pt-6"
     >
-      <button type="button" aria-label={t.close} className="absolute inset-0" onClick={onClose} />
-
-      <div className="relative w-full rounded-t-3xl border border-border bg-background px-5 pb-6 pt-5 text-text shadow-2xl lg:max-w-[480px] lg:rounded-3xl lg:px-6 lg:pb-7 lg:pt-6">
+      <div dir={direction}>
         <div className={`mb-3 flex items-center ${isRtl ? 'justify-start' : 'justify-end'}`}>
           <button
             type="button"
@@ -237,6 +236,6 @@ export default function LoginSheet({ isOpen, locale, t, onClose, onLoginSuccess 
           {errorMessage ? <p className="text-sm text-danger">{errorMessage}</p> : null}
         </div>
       </div>
-    </div>
+    </AppDialog>
   );
 }

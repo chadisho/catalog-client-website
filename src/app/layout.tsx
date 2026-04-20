@@ -58,6 +58,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <html lang={locale} dir={direction} suppressHydrationWarning>
       <body>
         <Providers>{children}</Providers>
+        <div id="modal-root" />
       </body>
     </html>
   );

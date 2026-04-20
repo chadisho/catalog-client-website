@@ -165,6 +165,7 @@
     "authRequiredTitle": "نیاز به ورود",
     "authRequiredDescription": "برای مشاهده و مدیریت سبد خرید، لطفاً وارد حساب کاربری شوید.",
     "authRequiredAction": "ورود به حساب کاربری",
+    "close": "بستن",
     "checkoutToastSuccess": "سفارش با موفقیت ثبت شد.",
     "checkoutToastError": "ثبت سفارش ناموفق بود.",
     "checkoutMissingCartId": "اطلاعات سبد خرید کامل نیست.",

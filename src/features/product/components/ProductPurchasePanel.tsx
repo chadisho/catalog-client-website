@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
+import type { LoginSheetTranslations } from '../../auth/components/LoginSheet';
 import ProductActions from './ProductActions';
 import ProductInfo from './ProductInfo';
 
@@ -15,6 +16,7 @@ type ProductVariationItem = {
 type ProductPurchasePanelProps = {
   locale: CommonLocale;
   t: ProductTranslations;
+  loginSheetT: LoginSheetTranslations;
   title: string;
   productCode: string;
   shouldShowPrice?: boolean;
@@ -31,6 +33,7 @@ type ProductPurchasePanelProps = {
 export default function ProductPurchasePanel({
   locale,
   t,
+  loginSheetT,
   title,
   productCode,
   shouldShowPrice = true,
@@ -77,7 +80,9 @@ export default function ProductPurchasePanel({
       />
 
       <ProductActions
+        locale={locale}
         t={t}
+        loginSheetT={loginSheetT}
         productId={productId}
         variationOptions={variationOptions}
         variationItems={variationItems}

@@ -86,6 +86,7 @@ export default function ProductPage({
             <ProductPurchasePanel
               locale={locale}
               t={t}
+              loginSheetT={headerT}
               title={productTitle}
               productCode={productCode}
               shouldShowPrice={shouldShowPrice}

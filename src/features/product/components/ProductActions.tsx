@@ -1,9 +1,12 @@
 'use client';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import type { ProductTranslations } from '../../../core/i18n/commonLocale';
+import type { CommonLocale, ProductTranslations } from '../../../core/i18n/commonLocale';
 import { toastError, toastSuccess } from '../../../core/lib/toast';
+import { getAuthSession } from '../../auth/api/authClientApi';
+import LoginSheet, { type LoginSheetTranslations } from '../../auth/components/LoginSheet';
 import { useCartStore } from '../../cart/store/cartStore';
 import QuantitySelector from './QuantitySelector';
 import VariationSelector from './VariationSelector';
@@ -16,7 +19,9 @@ type ProductVariationOption = {
 };
 
 type ProductActionsProps = {
+  locale: CommonLocale;
   t: ProductTranslations;
+  loginSheetT: LoginSheetTranslations;
   productId?: number | null;
   variationOptions: string[];
   variationItems?: ProductVariationOption[];
@@ -25,7 +30,9 @@ type ProductActionsProps = {
 };
 
 export default function ProductActions({
+  locale,
   t,
+  loginSheetT,
   productId,
   variationOptions,
   variationItems = [],
@@ -33,10 +40,19 @@ export default function ProductActions({
   onSelectedVariationChange,
 }: ProductActionsProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [quantity, setQuantity] = useState(1);
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
+  const [isLoginSheetOpen, setIsLoginSheetOpen] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
   const isSubmitting = useCartStore((state) => state.isAddPending);
+
+  const { data: session } = useQuery({
+    queryKey: ['auth-session'],
+    queryFn: getAuthSession,
+  });
+
+  const isAuthenticated = Boolean(session?.isAuthenticated);
 
   const selectedVariationId = useMemo(() => {
     const matched = variationItems.find((item) => item.label === selectedVariation);
@@ -48,12 +64,17 @@ export default function ProductActions({
       return;
     }
 
+    if (!isAuthenticated) {
+      setIsLoginSheetOpen(true);
+      return;
+    }
+
 
     try {
       await addToCart({
         productId,
         quantity,
-        variationId: selectedVariationId,
+        variationId: selectedVariationId ?? undefined,
       });
       toastSuccess(t.addToCartToastSuccess, {
         action: {
@@ -164,6 +185,17 @@ export default function ProductActions({
           </div>
         </div>
       ) : null}
+
+      <LoginSheet
+        isOpen={isLoginSheetOpen}
+        locale={locale}
+        t={loginSheetT}
+        onClose={() => setIsLoginSheetOpen(false)}
+        onLoginSuccess={async () => {
+          await queryClient.invalidateQueries({ queryKey: ['auth-session'] });
+          setIsLoginSheetOpen(false);
+        }}
+      />
     </>
   );
 }

@@ -165,6 +165,7 @@
     "authRequiredTitle": "Sign in required",
     "authRequiredDescription": "Please sign in to view and manage your cart.",
     "authRequiredAction": "Sign in",
+    "close": "Close",
     "checkoutToastSuccess": "Order registered successfully.",
     "checkoutToastError": "Registering order failed.",
     "checkoutMissingCartId": "Cart information is incomplete.",

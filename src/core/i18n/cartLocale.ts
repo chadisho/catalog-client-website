@@ -41,6 +41,7 @@ export type CartTranslations = {
   authRequiredTitle: string;
   authRequiredDescription: string;
   authRequiredAction: string;
+  close: string;
   checkoutToastSuccess: string;
   checkoutToastError: string;
   checkoutMissingCartId: string;
