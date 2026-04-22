@@ -199,7 +199,90 @@
     "emptyDescription": "No description provided."
   },
   "home": {
-    "title": "Home Page"
+    "title": "Home Page",
+    "meta": {
+      "title": "Chadisho | Smart Digital Catalog for Shops",
+      "description": "Build and share beautiful product catalogs in minutes with Chadisho. Designed for shops, catalog pages, and fast customer sharing."
+    },
+    "brand": {
+      "en": "Chadisho",
+      "fa": "چادیشو",
+      "combined": "Chadisho (چادیشو)"
+    },
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How it works",
+      "download": "Download",
+      "faq": "FAQ",
+      "language": "Language",
+      "languageFa": "فارسی",
+      "languageEn": "English",
+      "theme": "Theme",
+      "themeSystem": "System",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "hero": {
+      "badge": "Built for modern sellers",
+      "title": "Create and share your",
+      "highlight": "digital catalog instantly",
+      "description": "Chadisho helps you turn products into a clean shareable catalog page, so customers can browse, compare, and place orders faster.",
+      "primaryCta": "Get the app",
+      "secondaryCta": "See how it works"
+    },
+    "features": {
+      "badge": "Core features",
+      "title": "Everything you need to introduce your products",
+      "description": "From structured product display to easy sharing links, Chadisho is designed as a production-ready catalog experience.",
+      "item1Title": "Clean catalog pages",
+      "item1Description": "Present products with clear sections, rich details, and readable design in both light and dark mode.",
+      "item2Title": "Fast link sharing",
+      "item2Description": "Send one link instead of many photos. Share on social apps, messengers, and your website.",
+      "item3Title": "Bilingual experience",
+      "item3Description": "Support both Persian and English with proper RTL/LTR layout handling for better customer reach.",
+      "item4Title": "SEO-friendly foundation",
+      "item4Description": "Built with SSR-first architecture and metadata support to improve discoverability and performance."
+    },
+    "howItWorks": {
+      "badge": "Simple flow",
+      "title": "Start with three easy steps",
+      "description": "Launch your catalog workflow quickly without complex setup.",
+      "step1Title": "Add products",
+      "step1Description": "Create your product list with title, media, pricing and details.",
+      "step2Title": "Publish catalog",
+      "step2Description": "Organize products into sections and generate a branded catalog page.",
+      "step3Title": "Share and sell",
+      "step3Description": "Share your catalog link with customers and drive faster purchase decisions."
+    },
+    "download": {
+      "badge": "Get Chadisho",
+      "title": "Download options",
+      "description": "Use your preferred platform. Replace placeholder links from homeDownloadLinks config when ready.",
+      "android": "Download for Android",
+      "ios": "Download for iOS",
+      "pwa": "Open Web App",
+      "placeholderTag": "placeholder",
+      "note": "You can update download URLs in src/core/config/homeDownloadLinks.ts"
+    },
+    "faq": {
+      "badge": "Questions",
+      "title": "Frequently asked questions",
+      "description": "Quick answers about Chadisho and catalog usage.",
+      "q1": "What is Chadisho?",
+      "a1": "Chadisho is a digital catalog application that helps shops present products online and share them using direct links.",
+      "q2": "Does it support Persian and English?",
+      "a2": "Yes. Chadisho supports both fa and en locales with direction-aware layout (RTL/LTR).",
+      "q3": "Can I use it on mobile devices?",
+      "a3": "Yes. Pages are responsive and optimized for both mobile and desktop browsing.",
+      "q4": "Where can I set download URLs?",
+      "a4": "Update the placeholders inside src/core/config/homeDownloadLinks.ts with your real store or app links."
+    },
+    "footer": {
+      "description": "Chadisho helps businesses build better product discovery journeys.",
+      "copyright": "© 2026 Chadisho. All rights reserved."
+    }
   },
   "theme": {
     "light": "Light",
