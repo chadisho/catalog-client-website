@@ -207,7 +207,7 @@
     "brand": {
       "en": "Chadisho",
       "fa": "چادیشو",
-      "combined": "Chadisho (چادیشو)"
+      "combined": "چادیشو"
     },
     "nav": {
       "features": "امکانات",
@@ -230,7 +230,20 @@
       "highlight": "خود را سریع بسازید و منتشر کنید",
       "description": "چادیشو به شما کمک می‌کند محصولاتتان را به یک صفحه کاتالوگ حرفه‌ای و قابل اشتراک تبدیل کنید تا مشتری‌ها سریع‌تر بررسی و خرید کنند.",
       "primaryCta": "دریافت اپلیکیشن",
-      "secondaryCta": "مشاهده نحوه کار"
+      "secondaryCta": "مشاهده نحوه کار",
+      "mockupAlt": "پیش‌نمایش کاتالوگ دیجیتال چادیشو",
+      "sampleProductTitle1": "کیف چرمی",
+        "sampleProductPrice1": "۸۹.۰۰",
+        "sampleProductTitle2": "ست مراقبت پوست",
+        "sampleProductPrice2": "۴۵.۰۰",
+        "sampleProductTitle3": "هدفون بی‌سیم",
+        "sampleProductPrice3": "۱۲۹.۰۰",
+        "sampleProductTitle4": "روسری ابریشمی",
+        "sampleProductPrice4": "۳۵.۰۰",
+        "sampleHeroTitle": "بارگزاری محصول",
+        "sampleHeroDescription": "افزودن ساده و سریع محصولات",
+        "sampleHeroSubtitle":"ساخت کاتالوگ و دریافت لینک",
+        "sampleHeroSubtitleDescription":"آماده برای اشتراک‌گذاری با مشتری‌ها"
     },
     "features": {
       "badge": "ویژگی‌های اصلی",
@@ -242,8 +255,8 @@
       "item2Description": "به‌جای ارسال چندین عکس، فقط یک لینک برای مشتری بفرستید و تجربه خرید را ساده‌تر کنید.",
       "item3Title": "تجربه دو زبانه",
       "item3Description": "پشتیبانی کامل از فارسی و انگلیسی همراه با مدیریت درست راست‌به‌چپ و چپ‌به‌راست.",
-      "item4Title": "زیرساخت سئو و SSR",
-      "item4Description": "چادیشو با معماری SSR و متادیتای مناسب ساخته شده تا عملکرد و دیده‌شدن بهتری داشته باشد."
+      "item4Title": "زیرساخت سئو ",
+      "item4Description": "چادیشو با معماری مناسب ساخته شده تا عملکرد برای دیده‌شدن بهتری داشته باشد."
     },
     "howItWorks": {
       "badge": "فرآیند ساده",
@@ -259,12 +272,12 @@
     "download": {
       "badge": "دریافت چادیشو",
       "title": "گزینه‌های دانلود",
-      "description": "از پلتفرم دلخواه استفاده کنید. لینک‌ها فعلاً نمونه هستند و بعداً می‌توانید از فایل تنظیمات تغییر دهید.",
+      "description": "از پلتفرم دلخواه استفاده کنید.",
       "android": "دانلود برای اندروید",
       "ios": "دانلود برای iOS",
       "pwa": "نسخه وب اپلیکیشن",
       "placeholderTag": "نمونه",
-      "note": "برای جایگزینی لینک‌ها، فایل src/core/config/homeDownloadLinks.ts را ویرایش کنید"
+      "note": ""
     },
     "faq": {
       "badge": "پرسش‌ها",

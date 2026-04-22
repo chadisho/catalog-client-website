@@ -207,7 +207,7 @@
     "brand": {
       "en": "Chadisho",
       "fa": "چادیشو",
-      "combined": "Chadisho (چادیشو)"
+      "combined": "Chadisho"
     },
     "nav": {
       "features": "Features",
@@ -230,7 +230,20 @@
       "highlight": "digital catalog instantly",
       "description": "Chadisho helps you turn products into a clean shareable catalog page, so customers can browse, compare, and place orders faster.",
       "primaryCta": "Get the app",
-      "secondaryCta": "See how it works"
+      "secondaryCta": "See how it works",
+      "mockupAlt": "Chadisho digital catalog preview",
+      "sampleProductTitle1": "Leather Bag",
+        "sampleProductPrice1": "89.00",
+        "sampleProductTitle2": "Skincare Set",
+        "sampleProductPrice2": "45.00",
+        "sampleProductTitle3": "Wireless Earbuds",
+        "sampleProductPrice3": "129.00",
+        "sampleProductTitle4": "Silk Scarf",
+        "sampleProductPrice4": "35.00",
+        "sampleHeroTitle":"Upload Products",
+        "sampleHeroDescription":"Add your prducts easily",
+        "sampleHeroSubtitle":"Create Catalog",
+        "sampleHeroSubtitleDescription":"Ready to share with your customers"
     },
     "features": {
       "badge": "Core features",

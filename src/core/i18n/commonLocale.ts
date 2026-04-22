@@ -41,7 +41,20 @@ export type HomeTranslations = {
     highlight: string;
     description: string;
     primaryCta: string;
-    secondaryCta: string;
+      secondaryCta: string;
+    mockupAlt: string;
+      sampleProductTitle1: string;
+    sampleProductPrice1: string;
+      sampleProductTitle2: string;
+    sampleProductPrice2: string;
+      sampleProductTitle3: string;
+    sampleProductPrice3: string;
+      sampleProductTitle4: string;
+    sampleProductPrice4: string;
+      sampleHeroTitle: string;
+      sampleHeroDescription: string;
+      sampleHeroSubtitle: string;
+    sampleHeroSubtitleDescription: string;
   };
   features: {
     badge: string;

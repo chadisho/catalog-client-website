@@ -41,7 +41,7 @@ export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-20 border-b border-border/70 bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Image src={chadiLogo} alt={t.brand.combined} className="h-9 w-9 rounded-lg object-contain" priority />

@@ -13,7 +13,7 @@ export default function HomeFeaturesSection({ t }: HomeFeaturesSectionProps) {
   ];
 
   return (
-    <section id="features" className="border-b border-border/70 bg-surface py-16 sm:py-20">
+    <section id="features" className="border-b border-border bg-surface py-16 sm:py-20">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
