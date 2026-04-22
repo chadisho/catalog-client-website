@@ -9,29 +9,31 @@ interface HomeDownloadSectionProps {
 function DownloadButton({
   label,
   href,
-  isPlaceholder,
-  placeholderTag,
+  isSoon,
+  soonTag,
 }: {
   label: string;
   href: string;
-  isPlaceholder?: boolean;
-  placeholderTag: string;
+  isSoon?: boolean;
+  soonTag: string;
 }) {
   return (
     <a
       href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="inline-flex items-center justify-center rounded-xl border border-border bg-background px-5 py-3 text-sm font-semibold text-text transition hover:bg-muted"
-      aria-disabled={isPlaceholder ? true : undefined}
+      aria-disabled={isSoon ? true : undefined}
     >
       {label}
-      {isPlaceholder ? <span className="ms-2 text-xs text-warning">({placeholderTag})</span> : null}
+      {isSoon ? <span className="ms-2 text-xs text-warning">({soonTag})</span> : null}
     </a>
   );
 }
 
 export default function HomeDownloadSection({ t, links }: HomeDownloadSectionProps) {
   return (
-    <section id="download" className="border-b border-border/70 bg-surface py-16 sm:py-20">
+    <section id="download" className="border-b border-border bg-surface py-16 sm:py-20">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
@@ -45,20 +47,20 @@ export default function HomeDownloadSection({ t, links }: HomeDownloadSectionPro
           <DownloadButton
             label={t.download.android}
             href={links.android.href}
-            isPlaceholder={links.android.isPlaceholder}
-            placeholderTag={t.download.placeholderTag}
+            isSoon={links.android.isSoon}
+            soonTag={t.download.soonTag}
           />
           <DownloadButton
             label={t.download.ios}
             href={links.ios.href}
-            isPlaceholder={links.ios.isPlaceholder}
-            placeholderTag={t.download.placeholderTag}
+            isSoon={links.ios.isSoon}
+            soonTag={t.download.soonTag}
           />
           <DownloadButton
             label={t.download.pwa}
             href={links.pwa.href}
-            isPlaceholder={links.pwa.isPlaceholder}
-            placeholderTag={t.download.placeholderTag}
+            isSoon={links.pwa.isSoon}
+            soonTag={t.download.soonTag}
           />
         </div>
 

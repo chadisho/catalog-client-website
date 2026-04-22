@@ -1,6 +1,6 @@
 export type HomeDownloadLink = {
   href: string;
-  isPlaceholder?: boolean;
+  isSoon?: boolean;
 };
 
 export type HomeDownloadLinks = {
@@ -11,15 +11,15 @@ export type HomeDownloadLinks = {
 
 export const homeDownloadLinks: HomeDownloadLinks = {
   android: {
-    href: '#',
-    isPlaceholder: true,
+    href: 'https://cafebazaar.ir/app/com.chaadisho.chaadisho_seller',
+    isSoon: false,
   },
   ios: {
     href: '#',
-    isPlaceholder: true,
+    isSoon: true,
   },
   pwa: {
     href: '#',
-    isPlaceholder: true,
+    isSoon: true,
   },
 };

@@ -272,11 +272,11 @@
     "download": {
       "badge": "Get Chadisho",
       "title": "Download options",
-      "description": "Use your preferred platform. Replace placeholder links from homeDownloadLinks config when ready.",
+      "description": "Use your preferred platform. Update links from homeDownloadLinks config when ready.",
       "android": "Download for Android",
       "ios": "Download for iOS",
       "pwa": "Open Web App",
-      "placeholderTag": "placeholder",
+      "soonTag": "soon",
       "note": "You can update download URLs in src/core/config/homeDownloadLinks.ts"
     },
     "faq": {
@@ -290,7 +290,7 @@
       "q3": "Can I use it on mobile devices?",
       "a3": "Yes. Pages are responsive and optimized for both mobile and desktop browsing.",
       "q4": "Where can I set download URLs?",
-      "a4": "Update the placeholders inside src/core/config/homeDownloadLinks.ts with your real store or app links."
+      "a4": "Update values inside src/core/config/homeDownloadLinks.ts with your real store or app links."
     },
     "footer": {
       "description": "Chadisho helps businesses build better product discovery journeys.",

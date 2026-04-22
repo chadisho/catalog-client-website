@@ -87,7 +87,7 @@ export type HomeTranslations = {
     android: string;
     ios: string;
     pwa: string;
-    placeholderTag: string;
+    soonTag: string;
     note: string;
   };
   faq: {
