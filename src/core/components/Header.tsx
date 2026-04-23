@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -20,7 +19,6 @@ import {
 import { useTheme } from '../theme/useTheme';
 import type { CatalogLocale } from '../i18n/catalogLocale';
 import { LOCALE_COOKIE_KEY } from '../i18n/globalLocale';
-import chadiLogo from '../../assets/chadi-logo.png';
 import { getAuthSession, logout } from '../../features/auth/api/authClientApi';
 import LoginSheet from '../../features/auth/components/LoginSheet';
 import { useCartStore } from '../../features/cart/store/cartStore';
@@ -287,11 +285,10 @@ export default function Header({
               className="flex items-center gap-2 disabled:cursor-default"
             >
               <div className="relative h-8 w-8">
-                <Image
-                  src={chadiLogo}
+                <img
+                  src="/assets/chadi-logo.png"
                   alt={brandTitle}
                   className="h-8 w-8 rounded-md object-contain"
-                  priority
                 />
                 {shouldRenderHeaderImage ? (
                   <img

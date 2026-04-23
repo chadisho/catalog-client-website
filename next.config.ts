@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    unoptimized: true,
+    disableStaticImages: true,
+  },
 };
 
 export default nextConfig;

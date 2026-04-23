@@ -1,10 +1,5 @@
-import Image from 'next/image';
 import { Link2, Store, UploadCloud } from 'lucide-react';
 import type { HomeTranslations } from '../../../core/i18n/commonLocale';
-import I1 from '../../../assets/10.webp';
-import I2 from '../../../assets/22.webp';
-import I3 from '../../../assets/3.webp';
-import I4 from '../../../assets/4.webp';
 
 interface HomeHeroSectionProps {
   t: HomeTranslations;
@@ -12,10 +7,10 @@ interface HomeHeroSectionProps {
 
 export default function HomeHeroSection({ t }: HomeHeroSectionProps) {
   const mockupProducts = [
-    { title: t.hero.sampleProductTitle1, price: t.hero.sampleProductPrice1, image: I1 },
-    { title: t.hero.sampleProductTitle2, price: t.hero.sampleProductPrice2, image: I2 },
-    { title: t.hero.sampleProductTitle3, price: t.hero.sampleProductPrice3, image: I3 },
-    { title: t.hero.sampleProductTitle4, price: t.hero.sampleProductPrice4, image: I4 },
+    { title: t.hero.sampleProductTitle1, price: t.hero.sampleProductPrice1, image: '/assets/10.webp' },
+    { title: t.hero.sampleProductTitle2, price: t.hero.sampleProductPrice2, image: '/assets/22.webp' },
+    { title: t.hero.sampleProductTitle3, price: t.hero.sampleProductPrice3, image: '/assets/3.webp' },
+    { title: t.hero.sampleProductTitle4, price: t.hero.sampleProductPrice4, image: '/assets/4.webp' },
   ];
 
   return (
@@ -79,7 +74,7 @@ export default function HomeHeroSection({ t }: HomeHeroSectionProps) {
                       className="overflow-hidden rounded-xl border border-border bg-background transition hover:-translate-y-0.5"
                     >
                       <div className="relative h-24 w-full bg-muted">
-                        <Image src={product.image} alt={product.title} fill className="object-cover" />
+                        <img src={product.image} alt={product.title} className="absolute inset-0 h-full w-full object-cover" />
                       </div>
                       <div className="p-2.5">
                         <p className="truncate text-xs font-semibold text-text">{product.title}</p>
