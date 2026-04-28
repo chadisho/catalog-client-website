@@ -1,5 +1,6 @@
 export type CatalogLocale = 'fa' | 'en';
 import { getMessages } from './messages';
+import { LOCALE_COOKIE_KEY, resolveAppLocale } from './globalLocale';
 
 type CatalogTranslations = {
   defaultProductTitle: string;
@@ -94,15 +95,32 @@ type CatalogTranslations = {
 };
 
 export function resolveCatalogLocale(language?: string | null): CatalogLocale {
-  return language?.toLowerCase().startsWith('fa') ? 'fa' : 'en';
+    const catalogLocal = language?.toLowerCase().startsWith('fa') ? 'fa' : 'en';
+    setCatalogLocalToCookie(catalogLocal);
+    return catalogLocal;
 }
 
-export function resolveRequestedCatalogLocale(language?: string | null): CatalogLocale | undefined {
-  if (!language) {
+function getCatalogLocaleFromCookie(): CatalogLocale | undefined {
+  if (typeof document === 'undefined') {
     return undefined;
   }
 
-  return resolveCatalogLocale(language);
+  const matchedCookie = document.cookie
+    .split(';')
+    .map((item) => item.trim())
+    .find((item) => item.startsWith(`${LOCALE_COOKIE_KEY}=`));
+
+  const cookieValue = matchedCookie ? decodeURIComponent(matchedCookie.slice(LOCALE_COOKIE_KEY.length + 1)) : undefined;
+  const locale = resolveAppLocale(cookieValue);
+
+  return locale === 'fa' || locale === 'en' ? locale : undefined;
+}
+
+export function setCatalogLocalToCookie(locale: CatalogLocale) {
+  if (typeof document === 'undefined') {
+    return;
+  }
+  document.cookie = `${LOCALE_COOKIE_KEY}=${locale}; path=/; max-age=31536000; samesite=lax`;
 }
 
 export function getCatalogTranslations(locale: CatalogLocale): CatalogTranslations {

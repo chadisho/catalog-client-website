@@ -1,6 +1,7 @@
 export type AppLocale = 'fa' | 'en';
 
 export const LOCALE_COOKIE_KEY = 'locale';
+export const DEFAULT_APP_LOCALE: AppLocale = 'fa';
 
 export function resolveAppLocale(input?: string | null): AppLocale | undefined {
   if (!input) {

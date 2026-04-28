@@ -1,5 +1,10 @@
 import { headers } from 'next/headers';
-import { LOCALE_COOKIE_KEY, resolveAppLocale, type AppLocale } from '../../../core/i18n/globalLocale';
+import {
+  DEFAULT_APP_LOCALE,
+  LOCALE_COOKIE_KEY,
+  resolveAppLocale,
+  type AppLocale,
+} from '../../../core/i18n/globalLocale';
 
 function extractCookieValue(cookieHeader: string | null, key: string): string | undefined {
   if (!cookieHeader) {
@@ -29,5 +34,5 @@ export async function resolveHomeLocale(): Promise<AppLocale> {
     return localeFromCookie;
   }
 
-  return resolveAppLocale(acceptLanguage) ?? 'en';
+  return resolveAppLocale(acceptLanguage) ?? DEFAULT_APP_LOCALE;
 }

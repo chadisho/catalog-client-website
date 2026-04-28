@@ -4,7 +4,7 @@ import {
   getProductByCode,
   type ProductDetailsModel,
 } from '../../../../features/product/api/productApi';
-import { LOCALE_COOKIE_KEY, resolveAppLocale } from '../../../../core/i18n/globalLocale';
+import { LOCALE_COOKIE_KEY, resolveAppLocale,DEFAULT_APP_LOCALE } from '../../../../core/i18n/globalLocale';
 
 interface ProductRouteParams {
   productCode: string;
@@ -26,8 +26,9 @@ function resolveShouldShowPrice(searchParams?: Record<string, string | string[] 
 export default async function Page({ params, searchParams }: ProductRoutePageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const cookieStore = await cookies();
-  const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value);
+    const cookieStore = await cookies();
+    console.log(cookieStore.get(LOCALE_COOKIE_KEY)?.value);
+  const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value)??DEFAULT_APP_LOCALE;
   const shouldShowPrice = resolveShouldShowPrice(resolvedSearchParams);
 
   const { productCode } = resolvedParams;

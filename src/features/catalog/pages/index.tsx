@@ -8,6 +8,7 @@ import {
   getCatalogTextAlignClass,
   getCatalogTranslations,
   resolveCatalogLocale,
+  setCatalogLocalToCookie,
 } from '../../../core/i18n/catalogLocale';
 
 interface CatalogPageProps {
@@ -23,7 +24,8 @@ export default function CatalogPage({
   error,
   localeOverride,
 }: CatalogPageProps) {
-  const locale = localeOverride ?? resolveCatalogLocale(data?.catalogModel?.language);
+ const locale = localeOverride ?? resolveCatalogLocale(data?.catalogModel?.language);
+  setCatalogLocalToCookie(locale);
   const t = getCatalogTranslations(locale);
   const direction = getCatalogDirection(locale);
   const textAlignClass = getCatalogTextAlignClass(locale);

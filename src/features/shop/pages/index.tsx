@@ -1,4 +1,5 @@
 import type { ShopInformationModel } from '../model/shopInformationModel';
+import type { AppLocale } from '../../../core/i18n/globalLocale';
 import ErrorState from '../../../core/components/feedback/ErrorState';
 import LoadingState from '../../../core/components/feedback/LoadingState';
 import {
@@ -17,11 +18,12 @@ interface ShopPageProps {
   shopUsername: string;
   data?: ShopInformationModel;
   error?: string;
+  localeOverride?: AppLocale;
 }
 
 function resolveShopLocale(data?: ShopInformationModel): CommonLocale {
   if (!data) {
-    return 'en';
+    return 'fa';
   }
 
   if (typeof data.faName === 'string' && data.faName.trim().length > 0) {
@@ -35,9 +37,9 @@ function resolveShopLocale(data?: ShopInformationModel): CommonLocale {
   return resolveCommonLocale(undefined);
 }
 
-export default function ShopPage({ shopUsername, data, error }: ShopPageProps) {
-  const locale = resolveShopLocale(data);
-    const t = getShopTranslations(locale);
+export default function ShopPage({ shopUsername, data, error, localeOverride }: ShopPageProps) {
+  const locale = localeOverride ?? resolveShopLocale(data);
+  const t = getShopTranslations(locale);
   const headerT = getCatalogTranslations(locale);
   const direction = getCommonDirection(locale);
   const textAlignClass = locale === 'fa' ? 'text-right' : 'text-left';

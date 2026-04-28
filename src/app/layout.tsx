@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { headers } from 'next/headers';
 import { Providers } from '../core/providers';
 import {
+  DEFAULT_APP_LOCALE,
   getDirectionByLocale,
   LOCALE_COOKIE_KEY,
   type AppLocale,
@@ -47,7 +48,7 @@ async function resolveLayoutLocale(): Promise<AppLocale> {
     return localeFromCookie;
   }
 
-  return resolveAppLocale(acceptLanguage) ?? 'en';
+  return resolveAppLocale(acceptLanguage) ?? DEFAULT_APP_LOCALE;
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
