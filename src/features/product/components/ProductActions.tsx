@@ -127,8 +127,11 @@ export default function ProductActions({
         },
       });
       setIsSelectionModalOpen(false);
-    } catch {
-      toastError(t.addToCartToastError);
+    } catch (error) {
+      const message = error instanceof Error && error.message.trim().length > 0
+        ? error.message
+        : t.addToCartToastError;
+      toastError(message);
     }
   };
 

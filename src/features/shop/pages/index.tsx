@@ -49,7 +49,7 @@ export default function ShopPage({ shopUsername, data, error, localeOverride }: 
   }
 
   if (error) {
-    return <ErrorState locale={locale} />;
+    return <ErrorState locale={locale} message={error} />;
   }
 
   if (!data) {

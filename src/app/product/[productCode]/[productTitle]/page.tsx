@@ -39,8 +39,8 @@ export default async function Page({ params, searchParams }: ProductRoutePagePro
 
   try {
     data = await getProductByCode(normalizedProductCode);
-  } catch {
-    error = 'product_fetch_failed';
+  } catch (fetchError) {
+    error = fetchError instanceof Error ? fetchError.message : 'product_fetch_failed';
   }
 
   return (

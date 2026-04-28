@@ -22,8 +22,8 @@ export default async function Page({ params }: ShopRoutePageProps) {
 
   try {
     data = await getShopBySlug(shopUsername);
-  } catch {
-    error = 'shop_fetch_failed';
+  } catch (fetchError) {
+    error = fetchError instanceof Error ? fetchError.message : 'shop_fetch_failed';
   }
 
   return (

@@ -34,7 +34,7 @@ export default async function Page({ params }: CatalogRoutePageProps) {
     data = await getCatalogByCode(normalizedCatalogCode);
   } catch (fetchError) {
     console.error('Failed to fetch catalog by code:', fetchError);
-    error = 'catalog_fetch_failed';
+    error = fetchError instanceof Error ? fetchError.message : 'catalog_fetch_failed';
   }
 
   return (

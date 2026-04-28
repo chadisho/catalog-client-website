@@ -35,7 +35,7 @@ export default function CatalogPage({
   }
 
   if (error) {
-    return <ErrorState locale={locale} />;
+    return <ErrorState locale={locale} message={error} />;
   }
 
   if (!data) {

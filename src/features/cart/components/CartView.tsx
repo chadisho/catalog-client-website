@@ -53,8 +53,11 @@ export default function CartView({ locale, t }: CartViewProps) {
     try {
       await updateQuantity(id, nextQuantity);
       toastSuccess(t.updateItemToastSuccess);
-    } catch {
-      toastError(t.updateItemToastError);
+    } catch (error) {
+      const message = error instanceof Error && error.message.trim().length > 0
+        ? error.message
+        : t.updateItemToastError;
+      toastError(message);
     }
   };
 
@@ -66,8 +69,11 @@ export default function CartView({ locale, t }: CartViewProps) {
     try {
       await removeItem(id);
       toastSuccess(t.deleteItemToastSuccess);
-    } catch {
-      toastError(t.deleteItemToastError);
+    } catch (error) {
+      const message = error instanceof Error && error.message.trim().length > 0
+        ? error.message
+        : t.deleteItemToastError;
+      toastError(message);
     }
   };
 
@@ -90,8 +96,11 @@ export default function CartView({ locale, t }: CartViewProps) {
       toastSuccess(t.checkoutToastSuccess);
       setIsCheckoutDialogOpen(false);
       router.push(`/cart/success?orderCode=${encodeURIComponent(orderCode)}`);
-    } catch {
-      toastError(t.checkoutToastError);
+    } catch (error) {
+      const message = error instanceof Error && error.message.trim().length > 0
+        ? error.message
+        : t.checkoutToastError;
+      toastError(message);
     } finally {
       setIsCheckoutPending(false);
     }

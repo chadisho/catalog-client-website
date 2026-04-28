@@ -44,6 +44,10 @@ function resolveErrorMessage(message: string, t: LoginSheetTranslations): string
     return t.authInvalidOtp;
   }
 
+  if (message.trim().length > 0) {
+    return message;
+  }
+
   return t.authGenericError;
 }
 

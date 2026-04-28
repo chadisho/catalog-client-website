@@ -12,6 +12,25 @@ const API_TOKEN =
 
 const INTERNAL_PROXY_BASE = '/api/proxy';
 
+function extractValidationErrorsMessage(data: unknown): string | null {
+  if (typeof data !== 'object' || data === null || !('errors' in data)) {
+    return null;
+  }
+
+  const errors = data.errors;
+
+  if (!Array.isArray(errors)) {
+    return null;
+  }
+
+  const messages = errors
+    .filter((item): item is string => typeof item === 'string')
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+
+  return messages.length > 0 ? messages.join(' | ') : null;
+}
+
 /**
  * Central API client with automatic header injection
  * @param endpoint - API endpoint (relative path)
@@ -60,10 +79,16 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
     const data = await parseUnknownResponseBody(response);
 
     if (!response.ok) {
-      const message =
+      let message =
         typeof data === 'object' && data && 'message' in data && typeof data.message === 'string'
           ? data.message
           : `HTTP ${response.status}`;
+
+        const validationMessage = extractValidationErrorsMessage(data);
+        if (validationMessage) {
+          message = validationMessage;
+        
+      }
 
       throw new Error(message);
     }

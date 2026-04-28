@@ -9,11 +9,32 @@ export type LoginOtpRequestModel = {
 
 type MessageResponse = {
   message?: string;
+  errors?: unknown;
 };
+
+function extractValidationErrorsMessage(errors: unknown): string | null {
+  if (!Array.isArray(errors)) {
+    return null;
+  }
+
+  const messages = errors
+    .filter((item): item is string => typeof item === 'string')
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+
+  return messages.length > 0 ? messages.join(' | ') : null;
+}
 
 async function parseMessage(response: Response): Promise<string> {
   const payload = (await response.json().catch(() => null)) as MessageResponse | null;
-  return payload?.message ?? `HTTP ${response.status}`;
+    let message = payload?.message ?? `HTTP ${response.status}`;
+
+  const validationMessage = extractValidationErrorsMessage(payload?.errors);
+  if (validationMessage) {
+    message = validationMessage;
+  }
+
+  return message;
 }
 
 export async function requestLogin(cellphone: string): Promise<LoginOtpRequestModel> {
