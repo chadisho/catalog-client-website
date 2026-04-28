@@ -8,12 +8,16 @@ type CatalogSectionProps = {
   section: AnySectionModel;
   locale: CatalogLocale;
   shouldShowProductPrice?: boolean;
+  contextCatalogCode?: string;
+  contextShopSlug?: string;
 };
 
 export default function CatalogSection({
   section,
   locale,
   shouldShowProductPrice = true,
+  contextCatalogCode,
+  contextShopSlug,
 }: CatalogSectionProps) {
   return (
     <section>
@@ -27,6 +31,8 @@ export default function CatalogSection({
               product={item}
               locale={locale}
               shouldShowPrice={shouldShowProductPrice}
+              contextCatalogCode={contextCatalogCode}
+              contextShopSlug={contextShopSlug}
             />
           ))}
         </div>

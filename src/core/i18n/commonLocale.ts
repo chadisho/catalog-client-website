@@ -157,6 +157,7 @@ type ShopTranslations = {
   call: string;
   emptyContacts: string;
   emptyDescription: string;
+  backToLastContext: string;
 };
 
 type ThemeTranslations = {

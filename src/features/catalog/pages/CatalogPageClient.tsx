@@ -7,6 +7,7 @@ import CatalogHero from '../components/CatalogHero';
 import CatalogSection from '../components/CatalogSection';
 import type { CatalogImageModel } from '../model/catalogImageModel';
 import type { AnySectionModel, CatalogSectionModel, ProductSectionModel } from '../model/sectionModel';
+import CatalogNavigationTracker from '../../navigation/components/CatalogNavigationTracker';
 
 type CatalogPageClientTranslations = {
   defaultCatalogTitle: string;
@@ -56,6 +57,7 @@ interface CatalogPageClientProps {
   heroImages: CatalogImageModel[];
   sections: AnySectionModel[];
   shouldShowProductPrice: boolean;
+  catalogCode: string;
 }
 
 function includesQuery(value: string | null | undefined, normalizedQuery: string): boolean {
@@ -104,6 +106,7 @@ export default function CatalogPageClient({
   heroImages,
   sections,
   shouldShowProductPrice,
+  catalogCode,
 }: CatalogPageClientProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -125,6 +128,7 @@ export default function CatalogPageClient({
 
   return (
     <>
+      <CatalogNavigationTracker catalogCode={catalogCode} shopSlug={shopSlug} />
       <Header
         locale={locale}
         t={t}
@@ -162,6 +166,8 @@ export default function CatalogPageClient({
                 section={section}
                 locale={locale}
                 shouldShowProductPrice={shouldShowProductPrice}
+                contextCatalogCode={catalogCode}
+                contextShopSlug={shopSlug}
               />
             ))
           )}

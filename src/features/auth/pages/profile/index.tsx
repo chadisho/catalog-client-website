@@ -4,6 +4,7 @@ import ErrorState from '../../../../core/components/feedback/ErrorState';
 import Header from '../../../../core/components/Header';
 import { getProfile } from '../../api/profileApi';
 import Link from 'next/link';
+import BackToLastContextButton from '../../../navigation/components/BackToLastContextButton';
 
 type ProfilePageProps = {
   locale: AppLocale;
@@ -36,6 +37,9 @@ export default async function ProfilePage({ locale, isAuthenticated }: ProfilePa
         <main dir={direction} className="mx-auto w-full max-w-[900px] px-4 py-6">
           <section className="rounded-2xl border border-secondary/30 bg-background p-6">
             <h1 className="text-xl font-semibold text-text">{t.profilePageTitle}</h1>
+            <div className="mt-4">
+              <BackToLastContextButton label={t.backToLastContext} />
+            </div>
             <p className="mt-3 text-sm text-text/75">{t.profileNotAuthenticated}</p>
           </section>
         </main>
@@ -50,8 +54,11 @@ export default async function ProfilePage({ locale, isAuthenticated }: ProfilePa
     return (
       <>
         <Header locale={locale} t={t} hideSearchInput />
+               <main dir={direction} className="mx-auto w-full max-w-[980px] px-4 pt-4">
+                      <BackToLastContextButton label={t.backToLastContext} />
+                    </main>
         <main dir={direction} className="mx-auto w-full max-w-[900px] px-4 py-6">
-          <section className="rounded-2xl border border-border bg-background p-6">
+                <section className="rounded-2xl border border-border bg-background p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h1 className="text-xl font-semibold text-text">{t.profilePageTitle}</h1>
 

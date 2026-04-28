@@ -94,7 +94,8 @@
     "orderDetailsProductFallback": "Product",
     "orderDetailsMakingDuration": "Making duration",
     "orderDetailsTotal": "Order total",
-    "orderViewDetails": "View details"
+    "orderViewDetails": "View details",
+    "backToLastContext": "Back to last viewed"
   },
   "product": {
     "detailsTitle": "Product Details",
@@ -181,7 +182,8 @@
     "orderSuccessDescription": "Your order has been submitted successfully.",
     "orderSuccessOrderCodeLabel": "Order code",
     "orderSuccessViewOrders": "View my orders",
-    "orderSuccessBackToCart": "Back to cart"
+    "orderSuccessBackToCart": "Back to cart",
+    "backToLastContext": "Back to last viewed"
   },
   "shop": {
     "profileTitle": "Shop Profile",
@@ -196,7 +198,8 @@
     "website": "Website",
     "call": "Call",
     "emptyContacts": "No contact details available.",
-    "emptyDescription": "No description provided."
+    "emptyDescription": "No description provided.",
+    "backToLastContext": "Back to last viewed"
   },
   "home": {
     "title": "Home Page",

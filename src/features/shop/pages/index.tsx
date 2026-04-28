@@ -13,6 +13,8 @@ import ShopContactCard from '../components/ShopContactCard';
 import ShopProfileHero from '../components/ShopProfileHero';
 import Header from '../../../core/components/Header';
 import { getCatalogTranslations } from '../../../core/i18n/catalogLocale';
+import ShopNavigationTracker from '../../navigation/components/ShopNavigationTracker';
+import BackToLastContextButton from '../../navigation/components/BackToLastContextButton';
 
 interface ShopPageProps {
   shopUsername: string;
@@ -75,10 +77,12 @@ export default function ShopPage({ shopUsername, data, error, localeOverride }: 
               headerImage={data?.avatar ?? undefined}
           
           />
+      <ShopNavigationTracker shopSlug={shopUsername} />
     <main
       dir={direction}
       className={`mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-16 pt-4 ${textAlignClass}`}
       >
+      <BackToLastContextButton label={t.backToLastContext} />
         
       <ShopProfileHero
         shopUsername={shopUsername}

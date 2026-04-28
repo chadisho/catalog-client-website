@@ -15,6 +15,7 @@ import { getAuthSession } from '../../auth/api/authClientApi';
 import LoginSheet from '../../auth/components/LoginSheet';
 import CartView from '../components/CartView';
 import { useCartStore } from '../store/cartStore';
+import BackToLastContextButton from '../../navigation/components/BackToLastContextButton';
 
 type CartPageProps = {
   locale: CartLocale;
@@ -84,7 +85,11 @@ export default function CartPage({ locale }: CartPageProps) {
 
   return (
     <div dir={direction} className="min-h-screen bg-background text-text">
-      <Header locale={locale} t={headerT} hideSearchInput />
+          <Header locale={locale} t={headerT} hideSearchInput />
+          
+      <main dir={direction} className="mx-auto w-full max-w-[1280px] px-4 pt-4">
+        <BackToLastContextButton label={t.backToLastContext} />
+      </main>
 
       {isAuthenticated ? (
         <CartView locale={locale} t={t} />

@@ -56,6 +56,7 @@ export default function CatalogPage({
       className={`min-h-screen overflow-x-clip bg-background text-text ${textAlignClass}`}
     >
       <CatalogPageClient
+        catalogCode={catalogCode}
         locale={locale}
         t={t}
         headerTitle={data.shopInformation?.faName ?? undefined}

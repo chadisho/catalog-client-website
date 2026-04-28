@@ -94,7 +94,8 @@
     "orderDetailsProductFallback": "محصول",
     "orderDetailsMakingDuration": "زمان آماده‌سازی",
     "orderDetailsTotal": "جمع کل سفارش",
-    "orderViewDetails": "مشاهده جزئیات"
+    "orderViewDetails": "مشاهده جزئیات",
+    "backToLastContext": "بازگشت به آخرین بازدید"
   },
   "product": {
     "detailsTitle": "جزئیات محصول",
@@ -181,7 +182,8 @@
     "orderSuccessDescription": "سفارش شما با موفقیت ثبت شد.",
     "orderSuccessOrderCodeLabel": "کد سفارش",
     "orderSuccessViewOrders": "مشاهده سفارش‌های من",
-    "orderSuccessBackToCart": "بازگشت به سبد خرید"
+    "orderSuccessBackToCart": "بازگشت به سبد خرید",
+    "backToLastContext": "بازگشت به آخرین بازدید"
   },
   "shop": {
     "profileTitle": "پروفایل فروشگاه",
@@ -196,7 +198,8 @@
     "website": "وب‌سایت",
     "call": "تماس",
     "emptyContacts": "اطلاعات ارتباطی ثبت نشده است.",
-    "emptyDescription": "توضیحاتی برای این فروشگاه ثبت نشده است."
+    "emptyDescription": "توضیحاتی برای این فروشگاه ثبت نشده است.",
+    "backToLastContext": "بازگشت به آخرین بازدید"
   },
   "home": {
     "title": "صفحه اصلی",

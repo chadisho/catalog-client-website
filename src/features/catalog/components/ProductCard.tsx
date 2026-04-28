@@ -6,11 +6,14 @@ import {
   getLocalizedCurrencyLabel,
   type CatalogLocale,
 } from '../../../core/i18n/catalogLocale';
+import { appendNavigationContextToHref } from '../../navigation/lib/navigationContextQuery';
 
 type ProductCardProps = {
   product: ProductItemModel;
   locale: CatalogLocale;
   shouldShowPrice?: boolean;
+  contextCatalogCode?: string;
+  contextShopSlug?: string;
 };
 
 type DiscountBadgeProps = {
@@ -159,6 +162,8 @@ export default function ProductCard({
   product,
   locale,
   shouldShowPrice = true,
+  contextCatalogCode,
+  contextShopSlug,
 }: ProductCardProps) {
   const t = getCatalogTranslations(locale);
   const textAlignClass = getCatalogTextAlignClass(locale);
@@ -166,8 +171,14 @@ export default function ProductCard({
   const title = product.title ?? t.defaultProductTitle;
   const imageUrl = product.coverImage ?? '';
   const productHref = resolveProductHref(product);
-  const productHrefWithPriceState =
-    productHref ? appendShouldShowPriceQuery(productHref, shouldShowPrice) : null;
+  const productHrefWithPriceState = productHref ? appendShouldShowPriceQuery(productHref, shouldShowPrice) : null;
+  const productHrefWithNavigationContext = productHrefWithPriceState
+    ? appendNavigationContextToHref(productHrefWithPriceState, {
+        from: 'catalog',
+        fromCatalog: contextCatalogCode,
+        fromShop: contextShopSlug,
+      })
+    : null;
   const priceValue = product.salePrice ?? product.price;
 
   const formattedPrice =
@@ -210,13 +221,13 @@ export default function ProductCard({
     </article>
   );
 
-  if (!productHrefWithPriceState) {
+  if (!productHrefWithNavigationContext) {
     return content;
   }
 
   return (
     <Link
-      href={productHrefWithPriceState}
+      href={productHrefWithNavigationContext}
       className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
     >
       {content}

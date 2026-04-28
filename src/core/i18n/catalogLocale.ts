@@ -92,6 +92,7 @@ type CatalogTranslations = {
   orderDetailsMakingDuration: string;
   orderDetailsTotal: string;
   orderViewDetails: string;
+  backToLastContext: string;
 };
 
 export function resolveCatalogLocale(language?: string | null): CatalogLocale {
