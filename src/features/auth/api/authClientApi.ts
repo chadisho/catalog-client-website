@@ -37,11 +37,24 @@ async function parseMessage(response: Response): Promise<string> {
   return message;
 }
 
+function normalizeCellphone(cellphone: string): string {
+  const trimmed = cellphone.trim();
+
+  if (trimmed.length === 10 && !trimmed.startsWith('0')) {
+    return `0${trimmed}`;
+  }
+
+  return trimmed;
+}
+
+
 export async function requestLogin(cellphone: string): Promise<LoginOtpRequestModel> {
+  const normalizedCellphone = normalizeCellphone(cellphone);
+
   const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cellphone }),
+    body: JSON.stringify({ cellphone: normalizedCellphone }),
   });
 
   if (!response.ok) {

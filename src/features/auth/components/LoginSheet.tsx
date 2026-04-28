@@ -91,7 +91,7 @@ export default function LoginSheet({ isOpen, locale, t, onClose, onLoginSuccess 
       setLoginToken(response.loginToken);
       setStep('otp');
     } catch (error) {
-      const message = error instanceof Error ? error.message : t.authGenericError;
+      const message = error instanceof Error && !error.message.startsWith("HTTP")? error.message  : t.authGenericError;
       setErrorMessage(resolveErrorMessage(message, t));
     } finally {
       setIsSubmitting(false);
