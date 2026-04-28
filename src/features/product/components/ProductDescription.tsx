@@ -1,7 +1,11 @@
 'use client';
 
 import { useMemo } from 'react';
-import DOMPurify from 'isomorphic-dompurify';
+let DOMPurify: any = null;
+
+if (typeof window !== 'undefined') {
+  DOMPurify = require('dompurify');
+}
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 type ProductDescriptionProps = {
@@ -81,7 +85,9 @@ function parseDescription(rawDescription: string): ParsedDescription {
     const converter = new QuillDeltaToHtmlConverter(quillDelta.ops as never[], {
       multiLineParagraph: false,
     });
-    const html = DOMPurify.sanitize(converter.convert());
+
+    const htmlRaw = converter.convert();
+    const html = DOMPurify ? DOMPurify.sanitize(htmlRaw) : htmlRaw;
 
     return {
       mode: 'html',
@@ -91,7 +97,7 @@ function parseDescription(rawDescription: string): ParsedDescription {
   }
 
   if (isLikelyHtml(rawDescription)) {
-    const html = DOMPurify.sanitize(rawDescription);
+    const html = DOMPurify ? DOMPurify.sanitize(rawDescription) : rawDescription;
 
     return {
       mode: 'html',
