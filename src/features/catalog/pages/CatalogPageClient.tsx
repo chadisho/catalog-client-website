@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Header from '../../../core/components/Header';
 import type { CatalogLocale } from '../../../core/i18n/catalogLocale';
 import CatalogHero from '../components/CatalogHero';
@@ -8,6 +9,8 @@ import CatalogSection from '../components/CatalogSection';
 import type { CatalogImageModel } from '../model/catalogImageModel';
 import type { AnySectionModel, CatalogSectionModel, ProductSectionModel } from '../model/sectionModel';
 import CatalogNavigationTracker from '../../navigation/components/CatalogNavigationTracker';
+import NavigationBreadcrumbs from '../../navigation/components/NavigationBreadcrumbs';
+import { NAVIGATION_QUERY_KEYS } from '../../navigation/lib/navigationContextQuery';
 
 type CatalogPageClientTranslations = {
   defaultCatalogTitle: string;
@@ -109,6 +112,13 @@ export default function CatalogPageClient({
   catalogCode,
 }: CatalogPageClientProps) {
   const [searchTerm, setSearchTerm] = useState('');
+  const searchParams = useSearchParams();
+
+  const outgoingCatalogTrail = useMemo(() => {
+    const existingTrail = searchParams.get(NAVIGATION_QUERY_KEYS.catalogTrail) ?? '';
+    const currentEntry = `${catalogCode}:${encodeURIComponent(heroTitle)}`;
+    return existingTrail ? `${existingTrail}>${currentEntry}` : currentEntry;
+  }, [searchParams, catalogCode, heroTitle]);
 
   const normalizedQuery = searchTerm.trim().toLocaleLowerCase();
 
@@ -128,7 +138,7 @@ export default function CatalogPageClient({
 
   return (
     <>
-      <CatalogNavigationTracker catalogCode={catalogCode} shopSlug={shopSlug} />
+      <CatalogNavigationTracker catalogCode={catalogCode} catalogTitle={heroTitle} shopSlug={shopSlug} />
       <Header
         locale={locale}
         t={t}
@@ -137,7 +147,9 @@ export default function CatalogPageClient({
         shopSlug={shopSlug}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
-      />
+          />
+          
+      <NavigationBreadcrumbs className="mx-auto w-full max-w-[1400px] px-4" />
 
       <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
         <div className="order-1 min-w-0 lg:order-2 lg:sticky lg:top-4 lg:h-fit lg:self-start">
@@ -167,7 +179,9 @@ export default function CatalogPageClient({
                 locale={locale}
                 shouldShowProductPrice={shouldShowProductPrice}
                 contextCatalogCode={catalogCode}
+                contextCatalogTitle={heroTitle}
                 contextShopSlug={shopSlug}
+                catalogTrail={outgoingCatalogTrail}
               />
             ))
           )}

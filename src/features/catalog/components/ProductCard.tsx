@@ -13,7 +13,9 @@ type ProductCardProps = {
   locale: CatalogLocale;
   shouldShowPrice?: boolean;
   contextCatalogCode?: string;
+  contextCatalogTitle?: string;
   contextShopSlug?: string;
+  catalogTrail?: string;
 };
 
 type DiscountBadgeProps = {
@@ -163,7 +165,9 @@ export default function ProductCard({
   locale,
   shouldShowPrice = true,
   contextCatalogCode,
+  contextCatalogTitle,
   contextShopSlug,
+  catalogTrail,
 }: ProductCardProps) {
   const t = getCatalogTranslations(locale);
   const textAlignClass = getCatalogTextAlignClass(locale);
@@ -176,7 +180,12 @@ export default function ProductCard({
     ? appendNavigationContextToHref(productHrefWithPriceState, {
         from: 'catalog',
         fromCatalog: contextCatalogCode,
+        fromCatalogTitle: contextCatalogTitle,
         fromShop: contextShopSlug,
+        catalogTrail: catalogTrail
+          ?? (contextCatalogCode && contextCatalogTitle
+            ? `${contextCatalogCode}:${encodeURIComponent(contextCatalogTitle)}`
+            : undefined),
       })
     : null;
   const priceValue = product.salePrice ?? product.price;

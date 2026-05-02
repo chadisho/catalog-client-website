@@ -11,35 +11,43 @@ type BackToLastContextButtonProps = {
 
 function resolveTargetFromContext(
   lastVisitedContext: ReturnType<typeof useNavigationContextStore.getState>['lastVisitedContext'],
-  recentProducts: string[],
-  recentCatalogs: string[],
-  recentShops: string[],
+  recentProducts: ReturnType<typeof useNavigationContextStore.getState>['recentProducts'],
+  recentCatalogs: ReturnType<typeof useNavigationContextStore.getState>['recentCatalogs'],
+  recentShops: ReturnType<typeof useNavigationContextStore.getState>['recentShops'],
 ): string | null {
+  if (lastVisitedContext?.href) {
+    return lastVisitedContext.href;
+  }
+
   if (lastVisitedContext?.type === 'product') {
-    return `/product/chp-${encodeURIComponent(lastVisitedContext.id)}/product`;
+    const title = lastVisitedContext.title || 'product';
+    return `/product/${lastVisitedContext.id}/${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`;
   }
 
   if (lastVisitedContext?.type === 'catalog') {
-    return `/catalog/chc-${encodeURIComponent(lastVisitedContext.id)}/catalog`;
+    const title = lastVisitedContext.title || 'catalog';
+    return `/catalog/${lastVisitedContext.id}/${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`;
   }
 
   if (lastVisitedContext?.type === 'shop') {
-    return `/shop/${encodeURIComponent(lastVisitedContext.id)}`;
+    return `/shop/${lastVisitedContext.id}`;
   }
 
   const recentProduct = recentProducts[0];
   if (recentProduct) {
-    return `/product/chp-${encodeURIComponent(recentProduct)}/product`;
+    const title = recentProduct.title || 'product';
+    return `/product/${recentProduct.code}/${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`;
   }
 
   const recentCatalog = recentCatalogs[0];
   if (recentCatalog) {
-    return `/catalog/chc-${encodeURIComponent(recentCatalog)}/catalog`;
+    const title = recentCatalog.title || 'catalog';
+    return `/catalog/${recentCatalog.code}/${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`;
   }
 
   const recentShop = recentShops[0];
   if (recentShop) {
-    return `/shop/${encodeURIComponent(recentShop)}`;
+    return `/shop/${recentShop.slug}`;
   }
 
   return null;

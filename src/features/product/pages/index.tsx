@@ -15,6 +15,7 @@ import type { AppLocale } from '../../../core/i18n/globalLocale';
 import { getCatalogTranslations } from '../../../core/i18n/catalogLocale';
 import { getProductTranslations, resolveCommonLocale } from '../../../core/i18n/commonLocale';
 import ProductNavigationTracker from '../../navigation/components/ProductNavigationTracker';
+import NavigationBreadcrumbs from '../../navigation/components/NavigationBreadcrumbs';
 
 interface ProductPageProps {
   productCode: string;
@@ -83,8 +84,10 @@ export default function ProductPage({
       <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
         <ProductNavigationTracker
           productCode={productCode}
+          productTitle={data.productModel.title ?? undefined}
           shopSlug={data.shopInformation?.enName ?? undefined}
         />
+        <NavigationBreadcrumbs className="mb-4" />
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
           <div className="lg:col-span-8 lg:sticky lg:top-4 lg:self-start">
             <ProductGallery mediaItems={mediaItems} />

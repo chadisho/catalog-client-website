@@ -1,8 +1,13 @@
 import Link from 'next/link';
+import { appendNavigationContextToHref } from '../../navigation/lib/navigationContextQuery';
 import type { CatalogModel } from '../model/catalogModel';
 
 type CatalogCardProps = {
   catalog: CatalogModel;
+  contextCatalogCode?: string;
+  contextCatalogTitle?: string;
+  contextShopSlug?: string;
+  catalogTrail?: string;
 };
 
 function slugifyTitle(value: string): string {
@@ -44,7 +49,7 @@ function resolveCatalogHref(catalog: CatalogModel): string | null {
         const safeCatalogTitle = routeCatalogTitle || slugifyTitle(catalog.title);
 
         if (routeCatalogCode && safeCatalogTitle) {
-          return `/catalog/${encodeURIComponent(routeCatalogCode)}/${encodeURIComponent(safeCatalogTitle)}`;
+          return `/catalog/chc-${encodeURIComponent(routeCatalogCode)}/${encodeURIComponent(safeCatalogTitle)}`;
         }
       }
     } catch {
@@ -59,13 +64,31 @@ function resolveCatalogHref(catalog: CatalogModel): string | null {
     return null;
   }
 
-  return `/catalog/${encodeURIComponent(fallbackCatalogCode)}/${encodeURIComponent(fallbackCatalogTitle)}`;
+  return `/catalog/chc-${encodeURIComponent(fallbackCatalogCode)}/${encodeURIComponent(fallbackCatalogTitle)}`;
 }
 
-export default function CatalogCard({ catalog }: CatalogCardProps) {
+export default function CatalogCard({ catalog, contextCatalogCode, contextCatalogTitle, contextShopSlug, catalogTrail }: CatalogCardProps) {
   const imageUrl = catalog.image ?? undefined;
   const title = catalog.title;
-  const href = resolveCatalogHref(catalog) ?? undefined;
+  const baseHref = resolveCatalogHref(catalog);
+
+  let href = baseHref;
+  if (baseHref && (contextCatalogCode || contextShopSlug)) {
+    const resolvedTrail = catalogTrail
+      ?? (contextCatalogCode && contextCatalogTitle
+        ? `${contextCatalogCode}:${encodeURIComponent(contextCatalogTitle)}`
+        : undefined);
+
+    const navigationContext = {
+      from: 'catalog' as const,
+      fromCatalog: contextCatalogCode,
+      fromCatalogTitle: contextCatalogTitle,
+      fromShop: contextShopSlug,
+      catalogTrail: resolvedTrail,
+    };
+    href = appendNavigationContextToHref(baseHref, navigationContext);
+  }
+
   const content = (
     <article className="group relative aspect-[3/2] overflow-hidden rounded-2xl border border-border bg-background/90 shadow-sm transition">
       {imageUrl ? <img src={imageUrl} alt={title} className="h-full w-full object-cover" /> : null}

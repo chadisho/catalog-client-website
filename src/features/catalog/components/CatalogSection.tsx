@@ -9,7 +9,9 @@ type CatalogSectionProps = {
   locale: CatalogLocale;
   shouldShowProductPrice?: boolean;
   contextCatalogCode?: string;
+  contextCatalogTitle?: string;
   contextShopSlug?: string;
+  catalogTrail?: string;
 };
 
 export default function CatalogSection({
@@ -17,7 +19,9 @@ export default function CatalogSection({
   locale,
   shouldShowProductPrice = true,
   contextCatalogCode,
+  contextCatalogTitle,
   contextShopSlug,
+  catalogTrail,
 }: CatalogSectionProps) {
   return (
     <section>
@@ -32,14 +36,23 @@ export default function CatalogSection({
               locale={locale}
               shouldShowPrice={shouldShowProductPrice}
               contextCatalogCode={contextCatalogCode}
+              contextCatalogTitle={contextCatalogTitle}
               contextShopSlug={contextShopSlug}
+              catalogTrail={catalogTrail}
             />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {section.values.map((item, index) => (
-            <CatalogCard key={`catalog-${item.id ?? index}`} catalog={item} />
+            <CatalogCard
+              key={`catalog-${item.id ?? index}`}
+              catalog={item}
+              contextCatalogCode={contextCatalogCode}
+              contextCatalogTitle={contextCatalogTitle}
+              contextShopSlug={contextShopSlug}
+              catalogTrail={catalogTrail}
+            />
           ))}
         </div>
       )}
