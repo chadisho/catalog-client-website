@@ -147,9 +147,8 @@ export default function CatalogPageClient({
         shopSlug={shopSlug}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
-          />
-          
-      <NavigationBreadcrumbs className="mx-auto w-full max-w-[1400px] px-4" />
+      />
+      <NavigationBreadcrumbs className="mx-auto mt-4 w-full max-w-[1400px] px-4" />
 
       <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[1fr_320px] lg:gap-8">
         <div className="order-1 min-w-0 lg:order-2 lg:sticky lg:top-4 lg:h-fit lg:self-start">
