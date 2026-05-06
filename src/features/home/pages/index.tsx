@@ -1,3 +1,4 @@
+import type { AppLocale } from '../../../core/i18n/globalLocale';
 import { getHomeTranslations } from '../../../core/i18n/commonLocale';
 import { homeDownloadLinks } from '../../../core/config/homeDownloadLinks';
 import HomeDownloadSection from '../components/HomeDownloadSection';
@@ -9,8 +10,12 @@ import HomeHowItWorksSection from '../components/HomeHowItWorksSection';
 import HomeNavbar from '../components/HomeNavbar';
 import { resolveHomeLocale } from '../api/homeLocale';
 
-export default async function HomePage() {
-  const locale = await resolveHomeLocale();
+interface HomePageProps {
+  locale?: AppLocale;
+}
+
+export default async function HomePage({ locale: localeProp }: HomePageProps = {}) {
+  const locale = localeProp ?? (await resolveHomeLocale());
   const t = getHomeTranslations(locale);
 
   return (

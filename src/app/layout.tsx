@@ -39,16 +39,13 @@ function extractCookieValue(cookieHeader: string | null, key: string): string | 
 
 async function resolveLayoutLocale(): Promise<AppLocale> {
   const requestHeaders = await headers();
+
+  const forcedLocale = resolveAppLocale(requestHeaders.get('x-forced-locale'));
+  if (forcedLocale) return forcedLocale;
+
   const cookieHeader = requestHeaders.get('cookie');
-  const acceptLanguage = requestHeaders.get('accept-language');
 
-  const localeFromCookie = resolveAppLocale(extractCookieValue(cookieHeader, LOCALE_COOKIE_KEY));
-
-  if (localeFromCookie) {
-    return localeFromCookie;
-  }
-
-  return resolveAppLocale(acceptLanguage) ?? DEFAULT_APP_LOCALE;
+  return resolveAppLocale(extractCookieValue(cookieHeader, LOCALE_COOKIE_KEY)) ?? DEFAULT_APP_LOCALE;
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
