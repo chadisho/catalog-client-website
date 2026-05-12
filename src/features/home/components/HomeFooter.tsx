@@ -1,43 +1,103 @@
-import { BookOpen, Globe, MessageCircle, Send, Share2 } from 'lucide-react';
+import { Globe, Mail, MessageCircle, Phone, Send, Share2, Smartphone } from 'lucide-react';
 import type { HomeTranslations } from '../../../core/i18n/commonLocale';
+
+const PHONE = '021-91090093';
+const PHONE_TEL = 'tel:02191090093';
+const CELLPHONE = '+98 935 210 1030';
+const CELLPHONE_HREF = 'tel:+989352101030';
+const EMAIL = 'softbaran@gmail.com';
+const EMAIL_HREF = 'mailto:softbaran@gmail.com';
+const WHATSAPP = 'https://wa.me/+989352101030';
 
 interface HomeFooterProps {
   t: HomeTranslations;
 }
 
 export default function HomeFooter({ t }: HomeFooterProps) {
-  const productLinks = ['Features', 'Pricing', 'Templates', 'Integrations', 'Changelog'];
-  const resourceLinks = ['Help Center', 'Blog', 'Tutorials', 'API Docs', 'Community'];
-  const companyLinks = ['About', 'Careers', 'Privacy Policy', 'Terms of Service', 'Contact'];
-
   const socialLinks = [
     { icon: Share2, href: '#', label: 'Twitter' },
     { icon: MessageCircle, href: '#', label: 'Telegram' },
-    { icon: Send, href: '#', label: 'WhatsApp' },
-    { icon: Globe, href: '#', label: 'Website' },
+    { icon: Send, href: WHATSAPP, label: 'WhatsApp' },
   ];
 
   return (
-    <footer className="bg-neutral text-neutral-content pt-16 pb-8">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          <div className="sm:col-span-2 lg:col-span-1">
-            <a href="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary">
-                <BookOpen className="w-5 h-5 text-primary-content" />
-              </div>
+    <footer className="bg-neutral text-neutral-content">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        {/* Three column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {/* Left Column: Brand, Description, Contact, Socials */}
+          <div>
+            {/* Brand */}
+            <a href="/" className="inline-flex items-center gap-2 mb-4">
+              <img
+                src="/assets/chadi-logo.png"
+                alt={t.brand.combined}
+                className="h-9 w-9 rounded-xl object-contain"
+              />
               <span className="text-xl font-bold text-neutral-content">
-                {t.brand.fa !== t.brand.en ? t.brand.fa : t.brand.combined.slice(0, -2)}
-                <span className="text-primary">{t.brand.fa !== t.brand.en ? t.brand.en : t.brand.combined.slice(-2)}</span>
+                {t.brand.fa !== t.brand.en ? (
+                  <>
+                    {t.brand.fa}
+                    <span className="text-primary">{t.brand.en}</span>
+                  </>
+                ) : (
+                  <>
+                    {t.brand.combined.slice(0, -2)}
+                    <span className="text-primary">{t.brand.combined.slice(-2)}</span>
+                  </>
+                )}
               </span>
             </a>
-            <p className="text-sm leading-relaxed text-neutral-content/60">{t.footer.description}</p>
-            <div className="flex gap-3 mt-5">
+
+            {/* Description */}
+            <p className="text-sm leading-relaxed text-neutral-content/60 mb-6">
+              {t.footer.description}
+            </p>
+
+            {/* Contact Info */}
+            <div className="space-y-3 mb-6">
+              {/* Phone */}
+              <a
+                href={PHONE_TEL}
+                className="inline-flex items-center gap-2 text-sm text-neutral-content/70 hover:text-primary transition-colors"
+                aria-label={t.footer.phoneLabel}
+              >
+                <Phone className="w-4 h-4 shrink-0" />
+                <span dir="ltr">{PHONE}</span>
+              </a>
+
+              {/* Mobile (WhatsApp) */}
+              <a
+                href={CELLPHONE_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-neutral-content/70 hover:text-primary transition-colors"
+                aria-label={t.footer.mobileLabel}
+              >
+                <Smartphone className="w-4 h-4 shrink-0" />
+                <span dir="ltr">{CELLPHONE}</span>
+              </a>
+
+              {/* Email */}
+              <a
+                href={EMAIL_HREF}
+                className="inline-flex items-center gap-2 text-sm text-neutral-content/70 hover:text-primary transition-colors"
+                aria-label={t.footer.emailLabel}
+              >
+                <Mail className="w-4 h-4 shrink-0" />
+                <span dir="ltr">{EMAIL}</span>
+              </a>
+            </div>
+
+            {/* Social icons */}
+            <div className="flex gap-3">
               {socialLinks.map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="w-9 h-9 rounded-lg bg-neutral-content/10 hover:bg-primary flex items-center justify-center transition-colors"
                 >
                   <Icon className="w-4 h-4" />
@@ -46,47 +106,46 @@ export default function HomeFooter({ t }: HomeFooterProps) {
             </div>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-neutral-content mb-4">{t.footer.productColumn}</h4>
-            <ul className="space-y-2.5 text-sm">
-              {productLinks.map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-neutral-content/60 hover:text-neutral-content transition-colors">{link}</a>
-                </li>
-              ))}
-            </ul>
+          {/* Middle Column: Useful Links + Copyright */}
+          <div className="flex flex-col">
+            <h3 className="text-m font-bold text-neutral-content mb-4">
+              {t.footer.usefulLinks}
+            </h3>
+            <nav className="space-y-3 mb-auto flex flex-col pt-2">
+              <a
+                href="#"
+                className="inline-block text-sm text-neutral-content/50 hover:text-primary transition-colors"
+              >
+                {t.footer.privacyLink}
+              </a>
+              <a
+                href="#"
+                className="inline-block text-sm text-neutral-content/70 hover:text-primary transition-colors"
+              >
+                {t.footer.termsLink}
+              </a>
+              <a
+                href="#"
+                className="inline-block text-sm text-neutral-content/70 hover:text-primary transition-colors"
+              >
+                {t.footer.educationLink}
+              </a>
+            </nav>
+     
           </div>
 
-          <div>
-            <h4 className="font-semibold text-neutral-content mb-4">{t.footer.resourcesColumn}</h4>
-            <ul className="space-y-2.5 text-sm">
-              {resourceLinks.map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-neutral-content/60 hover:text-neutral-content transition-colors">{link}</a>
-                </li>
-              ))}
-            </ul>
+          {/* Right Column: e-nemad Placeholder */}
+          <div className="flex items-start justify-center md:justify-end">
+            <div className="w-24 h-24 bg-neutral-content/10 rounded-lg flex items-center justify-center">
+              <span className="text-xs text-neutral-content/40 text-center px-2">
+                {/*e-nemad*/}
+              </span>
+            </div>
           </div>
-
-          <div>
-            <h4 className="font-semibold text-neutral-content mb-4">{t.footer.companyColumn}</h4>
-            <ul className="space-y-2.5 text-sm">
-              {companyLinks.map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-neutral-content/60 hover:text-neutral-content transition-colors">{link}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-neutral-content/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-neutral-content/60">{t.footer.copyright}</p>
-          <div className="flex items-center gap-2 text-sm text-neutral-content/60">
-            <span className="w-2 h-2 bg-success rounded-full pulse-dot" />
-            {t.footer.systemsOk}
-          </div>
-        </div>
+              </div>
+                     <p className="text-xs text-neutral-content/50 mt-8 pt-6 border-t border-neutral-content/10 text-center">
+              {t.footer.copyright}
+            </p>
       </div>
     </footer>
   );

@@ -320,11 +320,13 @@
     "footer": {
       "description": "چادیشو به کسب‌وکارها کمک می‌کند مسیر معرفی و کشف محصول را حرفه‌ای‌تر بسازند.",
       "copyright": "© ۲۰۲۶ چادیشو. تمامی حقوق محفوظ است.",
-      "productColumn": "محصول",
-      "resourcesColumn": "منابع",
-      "companyColumn": "شرکت",
-      "socialLabel": "ما را دنبال کنید",
-      "systemsOk": "همه سیستم‌ها فعال"
+      "phoneLabel": "تلفن",
+      "mobileLabel": "موبایل",
+      "emailLabel": "ایمیل",
+      "privacyLink": "حریم خصوصی",
+      "termsLink": "قوانین و مقررات",
+      "educationLink": "آموزش‌های برنامه",
+      "usefulLinks": "لینک‌های کاربردی"
     },
     "showcase": {
       "badge": "نمونه کاتالوگ‌ها",

@@ -205,11 +205,13 @@ export type HomeTranslations = {
   footer: {
     description: string;
     copyright: string;
-    productColumn: string;
-    resourcesColumn: string;
-    companyColumn: string;
-    socialLabel: string;
-    systemsOk: string;
+    phoneLabel: string;
+    mobileLabel: string;
+    emailLabel: string;
+    privacyLink: string;
+    termsLink: string;
+    educationLink: string;
+    usefulLinks: string;
   };
 };
 

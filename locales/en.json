@@ -327,11 +327,13 @@
     "footer": {
       "description": "Chadisho helps businesses build better product discovery journeys.",
       "copyright": "© 2026 Chadisho. All rights reserved.",
-      "productColumn": "Product",
-      "resourcesColumn": "Resources",
-      "companyColumn": "Company",
-      "socialLabel": "Follow us",
-      "systemsOk": "All systems operational"
+      "phoneLabel": "Phone",
+      "mobileLabel": "Mobile",
+      "emailLabel": "Email",
+      "privacyLink": "Privacy Policy",
+      "termsLink": "Terms and Conditions",
+      "educationLink": "Education",
+      "usefulLinks": "Useful Links"
     },
     "showcase": {
       "badge": "Catalog Examples",
