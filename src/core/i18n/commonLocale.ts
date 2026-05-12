@@ -55,6 +55,8 @@ export type HomeTranslations = {
       sampleHeroDescription: string;
       sampleHeroSubtitle: string;
     sampleHeroSubtitleDescription: string;
+    trustedByBadge: string;
+    trustedByCount: string;
   };
   features: {
     badge: string;
@@ -68,6 +70,10 @@ export type HomeTranslations = {
     item3Description: string;
     item4Title: string;
     item4Description: string;
+    item5Title: string;
+    item5Description: string;
+    item6Title: string;
+    item6Description: string;
   };
   howItWorks: {
     badge: string;
@@ -79,6 +85,93 @@ export type HomeTranslations = {
     step2Description: string;
     step3Title: string;
     step3Description: string;
+    demoTitle: string;
+    demoDescription: string;
+    demoCheck1: string;
+    demoCheck2: string;
+    demoCheck3: string;
+    step1Action: string;
+    step2Action: string;
+    step3Action: string;
+  };
+  showcase: {
+    badge: string;
+    title: string;
+    description: string;
+    item1Label: string;
+    item1Name: string;
+    item1Count: string;
+    item2Label: string;
+    item2Name: string;
+    item2Count: string;
+    item3Label: string;
+    item3Name: string;
+    item3Count: string;
+    item4Label: string;
+    item4Name: string;
+    item4Count: string;
+  };
+  testimonials: {
+    badge: string;
+    title: string;
+    quote1: string;
+    name1: string;
+    role1: string;
+    initials1: string;
+    quote2: string;
+    name2: string;
+    role2: string;
+    initials2: string;
+    quote3: string;
+    name3: string;
+    role3: string;
+    initials3: string;
+  };
+  pricing: {
+    badge: string;
+    title: string;
+    description: string;
+    mostPopular: string;
+    plan1Name: string;
+    plan1Price: string;
+    plan1Period: string;
+    plan1Desc: string;
+    plan1Cta: string;
+    plan1Feature1: string;
+    plan1Feature2: string;
+    plan1Feature3: string;
+    plan1Feature4: string;
+    plan2Name: string;
+    plan2Price: string;
+    plan2Period: string;
+    plan2Desc: string;
+    plan2Cta: string;
+    plan2Feature1: string;
+    plan2Feature2: string;
+    plan2Feature3: string;
+    plan2Feature4: string;
+    plan2Feature5: string;
+    plan2Feature6: string;
+    plan3Name: string;
+    plan3Price: string;
+    plan3Period: string;
+    plan3Desc: string;
+    plan3Cta: string;
+    plan3Feature1: string;
+    plan3Feature2: string;
+    plan3Feature3: string;
+    plan3Feature4: string;
+    plan3Feature5: string;
+    plan3Feature6: string;
+  };
+  cta: {
+    title: string;
+    description: string;
+    primaryCta: string;
+    secondaryCta: string;
+    badge1: string;
+    badge2: string;
+    badge3: string;
   };
   download: {
     badge: string;
@@ -102,10 +195,21 @@ export type HomeTranslations = {
     a3: string;
     q4: string;
     a4: string;
+    q5: string;
+    a5: string;
+    q6: string;
+    a6: string;
+    q7: string;
+    a7: string;
   };
   footer: {
     description: string;
     copyright: string;
+    productColumn: string;
+    resourcesColumn: string;
+    companyColumn: string;
+    socialLabel: string;
+    systemsOk: string;
   };
 };
 

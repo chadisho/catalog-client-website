@@ -209,7 +209,7 @@
     },
     "brand": {
       "en": "Chadisho",
-      "fa": "چادیشو",
+      "fa": "",
       "combined": "Chadisho"
     },
     "nav": {
@@ -236,17 +236,19 @@
       "secondaryCta": "See how it works",
       "mockupAlt": "Chadisho digital catalog preview",
       "sampleProductTitle1": "Leather Bag",
-        "sampleProductPrice1": "89.00",
-        "sampleProductTitle2": "Skincare Set",
-        "sampleProductPrice2": "45.00",
-        "sampleProductTitle3": "Wireless Earbuds",
-        "sampleProductPrice3": "129.00",
-        "sampleProductTitle4": "Silk Scarf",
-        "sampleProductPrice4": "35.00",
-        "sampleHeroTitle":"Upload Products",
-        "sampleHeroDescription":"Add your prducts easily",
-        "sampleHeroSubtitle":"Create Catalog",
-        "sampleHeroSubtitleDescription":"Ready to share with your customers"
+      "sampleProductPrice1": "89.00",
+      "sampleProductTitle2": "Skincare Set",
+      "sampleProductPrice2": "45.00",
+      "sampleProductTitle3": "Wireless Earbuds",
+      "sampleProductPrice3": "129.00",
+      "sampleProductTitle4": "Silk Scarf",
+      "sampleProductPrice4": "35.00",
+      "sampleHeroTitle": "Upload Products",
+      "sampleHeroDescription": "Add your prducts easily",
+      "sampleHeroSubtitle": "Create Catalog",
+      "sampleHeroSubtitleDescription": "Ready to share with your customers",
+      "trustedByBadge": "Now in Public Beta — Free to use",
+      "trustedByCount": "Loved by 2,400+ businesses"
     },
     "features": {
       "badge": "Core features",
@@ -259,7 +261,11 @@
       "item3Title": "Bilingual experience",
       "item3Description": "Support both Persian and English with proper RTL/LTR layout handling for better customer reach.",
       "item4Title": "SEO-friendly foundation",
-      "item4Description": "Built with SSR-first architecture and metadata support to improve discoverability and performance."
+      "item4Description": "Built with SSR-first architecture and metadata support to improve discoverability and performance.",
+      "item5Title": "Mobile Optimized",
+      "item5Description": "Catalogs look amazing on any device. Your customers get a seamless browsing experience on phones and tablets.",
+      "item6Title": "Real-time Updates",
+      "item6Description": "Update your catalog instantly. Changes appear live to customers without republishing or waiting."
     },
     "howItWorks": {
       "badge": "Simple flow",
@@ -270,7 +276,15 @@
       "step2Title": "Publish catalog",
       "step2Description": "Organize products into sections and generate a branded catalog page.",
       "step3Title": "Share and sell",
-      "step3Description": "Share your catalog link with customers and drive faster purchase decisions."
+      "step3Description": "Share your catalog link with customers and drive faster purchase decisions.",
+      "demoTitle": "See Chadisho in Action",
+      "demoDescription": "Watch how easy it is to create a professional catalog and share it with your customers in minutes.",
+      "demoCheck1": "No design skills needed",
+      "demoCheck2": "Works on all devices",
+      "demoCheck3": "Instant sharing",
+      "step1Action": "Drag & drop or browse",
+      "step2Action": "Templates & customization",
+      "step3Action": "One link, everywhere"
     },
     "download": {
       "badge": "Get Chadisho",
@@ -283,21 +297,120 @@
       "note": "You can update download URLs in src/core/config/homeDownloadLinks.ts"
     },
     "faq": {
-      "badge": "Questions",
-      "title": "Frequently asked questions",
-      "description": "Quick answers about Chadisho and catalog usage.",
-      "q1": "What is Chadisho?",
-      "a1": "Chadisho is a digital catalog application that helps shops present products online and share them using direct links.",
-      "q2": "Does it support Persian and English?",
-      "a2": "Yes. Chadisho supports both fa and en locales with direction-aware layout (RTL/LTR).",
-      "q3": "Can I use it on mobile devices?",
-      "a3": "Yes. Pages are responsive and optimized for both mobile and desktop browsing.",
-      "q4": "Where can I set download URLs?",
-      "a4": "Update values inside src/core/config/homeDownloadLinks.ts with your real store or app links."
-    },
+  "badge": "FAQ",
+  "title": "Frequently Asked Questions",
+  "description": "Answers to the most common questions about Chadisho and its features.",
+  "q1": "What does Chadisho do?",
+  "a1": "Chadisho helps you create online catalogs for your products or services, generate shareable links, and easily send them to customers through WhatsApp, Instagram, and other social platforms.",
+
+  "q2": "Can I create different catalogs for different customers?",
+  "a2": "Yes. You can select specific products and create personalized catalogs for each customer or customer group.",
+
+  "q3": "Can I hide product prices?",
+  "a3": "Yes. You can disable price visibility anytime and showcase only your products or services.",
+
+  "q4": "Is Chadisho only for physical products?",
+  "a4": "No. Besides physical products, you can also manage services, online courses, portfolios, and custom packages as catalog items.",
+
+  "q5": "Can I add photos and videos to products?",
+  "a5": "Yes. You can upload multiple images and videos for each product or service to provide a richer presentation for customers.",
+
+  "q6": "Does Chadisho support inventory management and discounts?",
+  "a6": "Yes. You can manage stock quantities, set pricing, and apply discounts to your products easily.",
+
+  "q7": "Does Chadisho work well on mobile devices?",
+  "a7": "Yes. Both the catalogs and the admin panel are fully responsive and optimized for mobile, tablet, and desktop devices.",
+
+  "q8": "Can multiple people manage the same store?",
+  "a8": "Yes. You can give admin access to your teammates or staff members and manage your store collaboratively."
+},
     "footer": {
       "description": "Chadisho helps businesses build better product discovery journeys.",
-      "copyright": "© 2026 Chadisho. All rights reserved."
+      "copyright": "© 2026 Chadisho. All rights reserved.",
+      "productColumn": "Product",
+      "resourcesColumn": "Resources",
+      "companyColumn": "Company",
+      "socialLabel": "Follow us",
+      "systemsOk": "All systems operational"
+    },
+    "showcase": {
+      "badge": "Catalog Examples",
+      "title": "Catalogs for Every Industry",
+      "description": "From fashion to electronics, create catalogs that fit your business perfectly.",
+      "item1Label": "Fashion",
+      "item1Name": "Style Collection",
+      "item1Count": "24 products",
+      "item2Label": "Electronics",
+      "item2Name": "Tech Gadgets",
+      "item2Count": "18 products",
+      "item3Label": "Food & Drink",
+      "item3Name": "Gourmet Menu",
+      "item3Count": "32 products",
+      "item4Label": "Wellness",
+      "item4Name": "Beauty & Care",
+      "item4Count": "15 products"
+    },
+    "testimonials": {
+      "badge": "Testimonials",
+      "title": "Loved by Businesses",
+      "quote1": "Chadisho transformed how I share products with my customers. Instead of sending 20 separate photos, I just send one link. Sales increased by 40%!",
+      "name1": "Sara M.",
+      "role1": "Boutique Owner",
+      "initials1": "SM",
+      "quote2": "The catalog builder has been incredibly useful, especially for me since I need to recommend different products to each customer. Now I can send personalized catalogs much faster and more professionally.",
+      "name2": "James R.",
+      "role2": "Electronics Distributor",
+      "initials2": "JR",
+      "quote3": "We used to print catalogs that cost a fortune and went outdated quickly. Now we update digitally in seconds. Customers love the experience.",
+      "name3": "Amira H.",
+      "role3": "Home Decor Seller",
+      "initials3": "AH"
+    },
+    "pricing": {
+      "badge": "Pricing",
+      "title": "Simple, Transparent Pricing",
+      "description": "Start free, upgrade when you need more. No hidden fees.",
+      "mostPopular": "MOST POPULAR",
+      "plan1Name": "Starter",
+      "plan1Price": "0",
+      "plan1Period": "/month",
+      "plan1Desc": "Perfect for getting started",
+      "plan1Cta": "Get Started Free",
+      "plan1Feature1": "Up to 10 products",
+      "plan1Feature2": "1 catalog",
+      "plan1Feature3": "Basic templates",
+      "plan1Feature4": "Shareable link",
+      "plan2Name": "Professional",
+      "plan2Price": "12",
+      "plan2Period": "/month",
+      "plan2Desc": "For growing businesses",
+      "plan2Cta": "Start 14-Day Trial",
+      "plan2Feature1": "Unlimited products",
+      "plan2Feature2": "10 catalogs",
+      "plan2Feature3": "All templates",
+      "plan2Feature4": "Shareable link",
+      "plan2Feature5": "Full analytics",
+      "plan2Feature6": "Custom branding",
+      "plan3Name": "Business",
+      "plan3Price": "29",
+      "plan3Period": "/month",
+      "plan3Desc": "For large teams & enterprises",
+      "plan3Cta": "Contact Sales",
+      "plan3Feature1": "Unlimited products",
+      "plan3Feature2": "Unlimited catalogs",
+      "plan3Feature3": "All templates + custom",
+      "plan3Feature4": "Priority support",
+      "plan3Feature5": "Advanced analytics",
+      "plan3Feature6": "Team collaboration"
+    },
+    "cta": {
+      "title": "Ready to Create Your First Catalog?",
+      "description": "Join thousands of businesses already using Chadisho to showcase their products and increase sales.",
+      "primaryCta": "Get Started — It's Free",
+      "secondaryCta": "Talk to Sales",
+      "badge1": "No credit card required",
+      "badge2": "Free forever plan",
+      "badge3": "Cancel anytime"
     }
   },
   "theme": {
