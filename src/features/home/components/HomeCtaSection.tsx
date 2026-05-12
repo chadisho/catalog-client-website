@@ -43,7 +43,7 @@ export default function HomeCtaSection({ t }: HomeCtaSectionProps) {
                 {t.cta.primaryCta}
               </a>
               <a
-                href="#"
+                href="tel:+989352101030"
                 className="inline-flex items-center justify-center gap-2 text-base font-semibold text-white border border-white/30 hover:bg-white/10 px-8 py-4 rounded-xl transition-all"
               >
                 <MessageCircle className="w-5 h-5" />
@@ -51,14 +51,15 @@ export default function HomeCtaSection({ t }: HomeCtaSectionProps) {
               </a>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-primary-content/70">
+                      {/*//todo add real badge*/}
+            {/*<div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-primary-content/70">
               {badges.map((badge) => (
                 <div key={badge} className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
                   {badge}
                 </div>
               ))}
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

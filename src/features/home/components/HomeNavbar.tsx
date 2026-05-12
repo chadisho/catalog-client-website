@@ -64,10 +64,11 @@ export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
           </a>
           <a href="#how-it-works" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
             {t.nav.howItWorks}
-          </a>
-          <a href="#pricing" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
+                  </a>
+                  {/*//todo add real pricing section*/}
+          {/*<a href="#pricing" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
             {t.nav.faq}
-          </a>
+          </a>*/}
           <a href="#faq" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
             {t.nav.faq}
           </a>
