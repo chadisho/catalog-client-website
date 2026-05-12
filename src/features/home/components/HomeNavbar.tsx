@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { BookOpen, Menu, Monitor, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useTheme } from '../../../core/theme/useTheme';
 import { LOCALE_COOKIE_KEY, type AppLocale } from '../../../core/i18n/globalLocale';
 import type { HomeTranslations } from '../../../core/i18n/commonLocale';
@@ -15,11 +15,26 @@ interface HomeNavbarProps {
 
 export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const nextLocale = locale === 'fa' ? 'en' : 'fa';
+
+  const isHomePage = pathname === '/' || pathname === '/en';
+
+  const handleNavigation = (href: string) => {
+    if (!isHomePage && href.startsWith('#')) {
+      const homeUrl = locale === 'en' ? '/en' : '/';
+      router.push(homeUrl + href);
+    } else if (isHomePage && href.startsWith('#')) {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
   const currentThemeLabel = useMemo(() => {
     if (theme === 'dark') return t.nav.themeDark;
     if (theme === 'light') return t.nav.themeLight;
@@ -59,17 +74,17 @@ export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="#features" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
+          <a href="#features" onClick={(e) => { e.preventDefault(); handleNavigation('#features'); }} className="text-sm font-medium text-text/70 hover:text-primary transition-colors cursor-pointer">
             {t.nav.features}
           </a>
-          <a href="#how-it-works" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
+          <a href="#how-it-works" onClick={(e) => { e.preventDefault(); handleNavigation('#how-it-works'); }} className="text-sm font-medium text-text/70 hover:text-primary transition-colors cursor-pointer">
             {t.nav.howItWorks}
                   </a>
                   {/*//todo add real pricing section*/}
           {/*<a href="#pricing" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
             {t.nav.faq}
           </a>*/}
-          <a href="#faq" className="text-sm font-medium text-text/70 hover:text-primary transition-colors">
+          <a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation('#faq'); }} className="text-sm font-medium text-text/70 hover:text-primary transition-colors cursor-pointer">
             {t.nav.faq}
           </a>
         </nav>
@@ -93,7 +108,8 @@ export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
           </button>
           <a
             href="#download"
-            className="btn-shine inline-flex h-9 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-content shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all"
+            onClick={(e) => { e.preventDefault(); handleNavigation('#download'); }}
+            className="btn-shine inline-flex h-9 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-content shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all cursor-pointer"
           >
             {t.hero.primaryCta}
           </a>
@@ -121,8 +137,12 @@ export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
               <a
                 key={href}
                 href={href}
-                className="block rounded-lg px-4 py-2.5 text-sm font-medium text-text hover:bg-muted hover:text-primary transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                className="block rounded-lg px-4 py-2.5 text-sm font-medium text-text hover:bg-muted hover:text-primary transition-colors cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  handleNavigation(href);
+                }}
               >
                 {label}
               </a>
@@ -147,8 +167,12 @@ export default function HomeNavbar({ locale, t }: HomeNavbarProps) {
               </div>
               <a
                 href="#download"
-                className="block text-center text-sm font-semibold text-primary-content bg-primary px-5 py-2.5 rounded-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-center text-sm font-semibold text-primary-content bg-primary px-5 py-2.5 rounded-xl cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  handleNavigation('#download');
+                }}
               >
                 {t.hero.primaryCta}
               </a>

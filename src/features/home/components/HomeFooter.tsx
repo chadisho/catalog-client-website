@@ -1,5 +1,6 @@
 import { Globe, Mail, MessageCircle, Phone, Send, Share2, Smartphone } from 'lucide-react';
 import type { HomeTranslations } from '../../../core/i18n/commonLocale';
+import type { AppLocale } from '../../../core/i18n/globalLocale';
 
 const PHONE = '021-91090093';
 const PHONE_TEL = 'tel:02191090093';
@@ -11,9 +12,13 @@ const WHATSAPP = 'https://wa.me/+989352101030';
 
 interface HomeFooterProps {
   t: HomeTranslations;
+  locale?: AppLocale;
 }
 
-export default function HomeFooter({ t }: HomeFooterProps) {
+export default function HomeFooter({ t, locale = 'fa' }: HomeFooterProps) {
+  const getLocalePrefix = () => (locale === 'en' ? '/en' : '');
+  const getPrivacyLink = () => `${getLocalePrefix()}/privacy-policy`;
+  const getTermsLink = () => `${getLocalePrefix()}/terms-and-conditions`;
   const socialLinks = [
     { icon: Share2, href: '#', label: 'Twitter' },
     { icon: MessageCircle, href: '#', label: 'Telegram' },
@@ -113,13 +118,13 @@ export default function HomeFooter({ t }: HomeFooterProps) {
             </h3>
             <nav className="space-y-3 mb-auto flex flex-col pt-2">
               <a
-                href="#"
+                href={getPrivacyLink()}
                 className="inline-block text-sm text-neutral-content/50 hover:text-primary transition-colors"
               >
                 {t.footer.privacyLink}
               </a>
               <a
-                href="#"
+                href={getTermsLink()}
                 className="inline-block text-sm text-neutral-content/70 hover:text-primary transition-colors"
               >
                 {t.footer.termsLink}

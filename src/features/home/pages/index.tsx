@@ -14,6 +14,9 @@ import HomePricingSection from '../components/HomePricingSection';
 import HomeTestimonialsSection from '../components/HomeTestimonialsSection';
 import { resolveHomeLocale } from '../api/homeLocale';
 
+export { default as TermsAndConditionsPage } from './TermsAndConditions';
+export { default as PrivacyPolicyPage } from './PrivacyPolicy';
+
 interface HomePageProps {
   locale?: AppLocale;
 }
@@ -34,7 +37,7 @@ export default async function HomePage({ locale: localeProp }: HomePageProps = {
       <HomeDownloadSection t={t} links={homeDownloadLinks} />
       <HomeFaqSection t={t} />
       <HomeCtaSection t={t} />
-      <HomeFooter t={t} />
+      <HomeFooter t={t} locale={locale} />
     </main>
   );
 }
