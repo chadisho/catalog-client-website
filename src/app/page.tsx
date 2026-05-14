@@ -27,6 +27,23 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: locale === 'fa' ? 'fa_IR' : 'en_US',
       alternateLocale: locale === 'fa' ? 'en_US' : 'fa_IR',
       type: 'website',
+      siteName: 'Chadisho',
+      images: [
+        {
+          url: `${SITE_URL}/favicon.png`,
+          width: 1200,
+          height: 630,
+          alt: t.meta.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t.meta.title,
+      description: t.meta.description,
+      images: [`${SITE_URL}/favicon.png`],
+      site: '@chadisho',
+      creator: '@chadisho',
     },
   };
 }

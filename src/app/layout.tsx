@@ -14,6 +14,9 @@ import '../index.css';
 export const metadata: Metadata = {
   title: 'Chadisho Catalog',
   description: 'Catalog, product and shop pages',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 interface RootLayoutProps {
