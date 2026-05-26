@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import type { CartLocale, CartTranslations } from '../../../core/i18n/cartLocale';
 import { toastError, toastSuccess } from '../../../core/lib/toast';
 import { createOrderFromCart } from '../api/cartApi';
+import { getProfile } from '../../auth/api/profileApi';
 import { useCartStore } from '../store/cartStore';
 import CartHeaderBlock from './CartHeaderBlock';
 import CheckoutConfirmDialog from './CheckoutConfirmDialog';
+import ProfileCompleteDialog from './ProfileCompleteDialog';
 import CartGroupCard from './CartGroupCard';
 import { CartSummaryDesktop, CartSummaryMobile } from './CartSummary';
 import { calculateTotals, resolveGroups } from './cartViewUtils';
@@ -27,6 +29,7 @@ export default function CartView({ locale, t }: CartViewProps) {
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
   const [isCheckoutPending, setIsCheckoutPending] = useState(false);
   const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
+  const [isProfileCompleteDialogOpen, setIsProfileCompleteDialogOpen] = useState(false);
 
   const groups = useMemo(() => resolveGroups(t, items), [items, t]);
   const { computedTotal, originalTotal, discountPercent, profit } = useMemo(
@@ -106,14 +109,26 @@ export default function CartView({ locale, t }: CartViewProps) {
     }
   };
 
-  const handleCheckoutRequest = () => {
+  const handleCheckoutRequest = async () => {
     const cartId = cart?.id;
     if (!cartId) {
       toastError(t.checkoutMissingCartId);
       return;
     }
 
-    setIsCheckoutDialogOpen(true);
+    try {
+      setIsCheckoutPending(true);
+      const profile = await getProfile();
+      if (!profile.firstName?.trim() || !profile.lastName?.trim()) {
+        setIsProfileCompleteDialogOpen(true);
+      } else {
+        setIsCheckoutDialogOpen(true);
+      }
+    } catch (error) {
+      toastError(t.checkoutToastError);
+    } finally {
+      setIsCheckoutPending(false);
+    }
   };
 
   if (items.length === 0) {
@@ -183,6 +198,17 @@ export default function CartView({ locale, t }: CartViewProps) {
         profit={profit}
         onCheckout={handleCheckoutRequest}
         isCheckoutPending={isCheckoutPending}
+      />
+
+      <ProfileCompleteDialog
+        isOpen={isProfileCompleteDialogOpen}
+        locale={locale}
+        t={t}
+        onClose={() => setIsProfileCompleteDialogOpen(false)}
+        onProfileComplete={() => {
+          setIsProfileCompleteDialogOpen(false);
+          setIsCheckoutDialogOpen(true);
+        }}
       />
 
       <CheckoutConfirmDialog

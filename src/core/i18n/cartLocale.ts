@@ -50,6 +50,7 @@ export type CartTranslations = {
   checkoutConfirmDescription: string;
   checkoutConfirmAction: string;
   checkoutCancelAction: string;
+  profileCompleteTitle: string;
   orderSuccessTitle: string;
   orderSuccessDescription: string;
   orderSuccessOrderCodeLabel: string;

@@ -178,6 +178,7 @@
     "checkoutConfirmDescription": "Do you want to finalize and register this order now?",
     "checkoutConfirmAction": "Yes, register order",
     "checkoutCancelAction": "Cancel",
+    "profileCompleteTitle": "Complete your profile",
     "orderSuccessTitle": "Your order was registered",
     "orderSuccessDescription": "Your order has been submitted successfully.",
     "orderSuccessOrderCodeLabel": "Order code",

@@ -23,9 +23,11 @@ type ProfileEditFormTranslations = {
 type ProfileEditFormProps = {
   initialPayload: ProfileUpdatePayload;
   t: ProfileEditFormTranslations;
+  onSuccess?: () => void;
+  onCancel?: () => void;
 };
 
-export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormProps) {
+export default function ProfileEditForm({ initialPayload, t, onSuccess, onCancel }: ProfileEditFormProps) {
   const router = useRouter();
   const [isSubmitting, startTransition] = useTransition();
   const [firstName, setFirstName] = useState(initialPayload.user.first_name?.toString() ?? '');
@@ -52,8 +54,12 @@ export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormPr
 
         await updateProfile(nextPayload);
         toastSuccess(t.profileEditSuccessToast);
-        router.push('/profile');
-        router.refresh();
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.push('/profile');
+          router.refresh();
+        }
       } catch {
         toastError(t.profileEditErrorToast);
       }
@@ -126,7 +132,7 @@ export default function ProfileEditForm({ initialPayload, t }: ProfileEditFormPr
         <button
           type="button"
           disabled={isSubmitting}
-          onClick={() => router.push('/profile')}
+          onClick={() => onCancel ? onCancel() : router.push('/profile')}
           className="inline-flex h-10 items-center justify-center rounded-lg border border-border px-4 text-sm font-medium text-text transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
         >
           {t.profileCancel}

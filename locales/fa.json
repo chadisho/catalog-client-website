@@ -178,6 +178,7 @@
     "checkoutConfirmDescription": "آیا می‌خواهید این سفارش را نهایی و ثبت کنید؟",
     "checkoutConfirmAction": "بله، ثبت سفارش",
     "checkoutCancelAction": "انصراف",
+    "profileCompleteTitle": "تکمیل پروفایل",
     "orderSuccessTitle": "سفارش شما ثبت شد",
     "orderSuccessDescription": "سفارش شما با موفقیت ثبت شد.",
     "orderSuccessOrderCodeLabel": "کد سفارش",
