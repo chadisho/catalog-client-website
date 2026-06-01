@@ -39,7 +39,7 @@ export default function CatalogPage({
   }
 
   if (!data) {
-    return <LoadingState locale={locale} />;
+    return <LoadingState />;
   }
 
   const heroTitle = data.catalogModel?.title ?? t.defaultCatalogTitle;

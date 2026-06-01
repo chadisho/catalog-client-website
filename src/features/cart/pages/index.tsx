@@ -64,11 +64,11 @@ export default function CartPage({ locale }: CartPageProps) {
   }, [fetchCart, hasHydrated, isAuthenticated, resetCart]);
 
   if (!hasHydrated) {
-    return <LoadingState locale={locale} />;
+    return <LoadingState />;
   }
 
   if (isSessionLoading) {
-    return <LoadingState locale={locale} />;
+    return <LoadingState />;
   }
 
   if (isSessionError) {
@@ -76,7 +76,7 @@ export default function CartPage({ locale }: CartPageProps) {
   }
 
   if (isAuthenticated && !cart && cartStatus === 'syncing') {
-    return <LoadingState locale={locale} />;
+    return <LoadingState />;
   }
 
   if (isAuthenticated && !cart && cartStatus === 'error') {

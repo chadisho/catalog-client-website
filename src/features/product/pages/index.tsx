@@ -45,7 +45,7 @@ export default function ProductPage({
   }
 
   if (!data) {
-    return <LoadingState locale={locale} />;
+    return <LoadingState />;
   }
 
   const mediaItems = resolveMediaItems(data, t);

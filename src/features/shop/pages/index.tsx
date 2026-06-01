@@ -55,7 +55,7 @@ export default function ShopPage({ shopUsername, data, error, localeOverride }: 
   }
 
   if (!data) {
-    return <LoadingState locale={locale} />;
+    return <LoadingState />;
   }
 
   const aboutDescription = data.aboutUs?.trim() ?? '';
