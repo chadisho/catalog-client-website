@@ -152,7 +152,6 @@ function mapCartItem(source: any): CartItemModel {
 }
 
 export function mapCart(json: any): CartModel {
-    console.log(json);
     const source = json.options?.cart ?? {};
 
   return {

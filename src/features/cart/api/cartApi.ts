@@ -37,8 +37,6 @@ export async function getCart(): Promise<CartModel> {
     const response = await apiClient('app/cart', {
       method: 'POST',
     });
-       console.log("CCA");
-    console.log(response);
     return mapCart(response );
  
 }
@@ -72,9 +70,14 @@ export async function deleteCartItem(itemId: number): Promise<void> {
   });
 }
 
-export async function createOrderFromCart(cartId: number): Promise<{ orderCode: string }> {
-  const response = (await apiClient(`app/orders/new-order/${cartId}`, {
+export async function createOrderFromCart(
+  cartId: number,
+  addressId?: number
+): Promise<{ orderCode: string }> {
+    const body = addressId ? JSON.stringify({ address_id: addressId ,cart_id:cartId,}) : undefined;
+  const response = (await apiClient(`app/orders/new-order`, {
     method: 'POST',
+    body,
   })) as OrderResponse;
 
   return { orderCode: response.orderCode??response.options?.orderCode ?? '' };

@@ -29,6 +29,7 @@ type CatalogPageClientTranslations = {
   brand: string;
   profile: string;
   profileOrders: string;
+  profileAddresses: string;
   logout: string;
   openMenu: string;
   closeMenu: string;

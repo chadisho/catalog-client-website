@@ -80,8 +80,6 @@ export function mapProfileResponse(response: ProfileApiResponse): ProfileModel {
 
 export function mapProfileToUpdatePayload(response: ProfileApiResponse): ProfileUpdatePayload {
     const payload = getProfileSource(response);
-      console.log("PAYLOAD");
-    console.log(payload);
     return payload;
 
 }

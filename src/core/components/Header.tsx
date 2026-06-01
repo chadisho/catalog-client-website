@@ -37,6 +37,7 @@ type HeaderTranslations = {
   brand: string;
   profile: string;
   profileOrders: string;
+  profileAddresses: string;
   logout: string;
   openMenu: string;
   closeMenu: string;
@@ -516,6 +517,16 @@ export default function Header({
                   </button>
                   <button
                     type="button"
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      router.push('/profile/addresses');
+                    }}
+                    className="w-full rounded-lg px-3 py-2 text-start text-sm text-text transition hover:bg-muted"
+                  >
+                    {t.profileAddresses}
+                  </button>
+                  <button
+                    type="button"
                     onClick={handleLogout}
                     className="w-full rounded-lg px-3 py-2 text-start text-sm text-danger transition hover:bg-danger/10"
                   >
@@ -739,6 +750,16 @@ export default function Header({
                     className="inline-flex h-11 w-full items-center justify-center rounded-full border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
                   >
                     {t.profileOrders}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileDrawerOpen(false);
+                      router.push('/profile/addresses');
+                    }}
+                    className="inline-flex h-11 w-full items-center justify-center rounded-full border border-primary px-4 text-sm font-medium text-primary transition hover:bg-primary/10"
+                  >
+                    {t.profileAddresses}
                   </button>
                   <button
                     type="button"

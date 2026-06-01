@@ -51,6 +51,10 @@ export type CartTranslations = {
   checkoutConfirmAction: string;
   checkoutCancelAction: string;
   profileCompleteTitle: string;
+  addressSelectLabel: string;
+  addressSelectPlaceholder: string;
+  addressManageLink: string;
+  checkoutMissingAddress: string;
   orderSuccessTitle: string;
   orderSuccessDescription: string;
   orderSuccessOrderCodeLabel: string;

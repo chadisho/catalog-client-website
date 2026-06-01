@@ -11,6 +11,7 @@ import CartHeaderBlock from './CartHeaderBlock';
 import CheckoutConfirmDialog from './CheckoutConfirmDialog';
 import ProfileCompleteDialog from './ProfileCompleteDialog';
 import CartGroupCard from './CartGroupCard';
+import AddressSelector from './AddressSelector';
 import { CartSummaryDesktop, CartSummaryMobile } from './CartSummary';
 import { calculateTotals, resolveGroups } from './cartViewUtils';
 
@@ -27,6 +28,7 @@ export default function CartView({ locale, t }: CartViewProps) {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
   const [isCheckoutPending, setIsCheckoutPending] = useState(false);
   const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
   const [isProfileCompleteDialogOpen, setIsProfileCompleteDialogOpen] = useState(false);
@@ -89,7 +91,7 @@ export default function CartView({ locale, t }: CartViewProps) {
 
     try {
       setIsCheckoutPending(true);
-      const { orderCode } = await createOrderFromCart(cartId);
+      const { orderCode } = await createOrderFromCart(cartId, selectedAddressId ?? undefined);
 
       if (!orderCode) {
         toastError(t.checkoutToastError);
@@ -110,6 +112,11 @@ export default function CartView({ locale, t }: CartViewProps) {
   };
 
   const handleCheckoutRequest = async () => {
+    if (!selectedAddressId) {
+      toastError(t.checkoutMissingAddress);
+      return;
+    }
+
     const cartId = cart?.id;
     if (!cartId) {
       toastError(t.checkoutMissingCartId);
@@ -150,6 +157,9 @@ export default function CartView({ locale, t }: CartViewProps) {
 
       <div className="mt-2 grid gap-4 lg:grid-cols-[1fr_340px] lg:items-start lg:gap-6">
         <section className="space-y-4">
+          <div className="lg:hidden">
+            <AddressSelector t={t} onAddressChange={setSelectedAddressId} />
+          </div>
 
           <div className="space-y-4">
             {groups.map((group) => {
@@ -177,16 +187,19 @@ export default function CartView({ locale, t }: CartViewProps) {
           </div>
         </section>
 
-        <CartSummaryDesktop
-          locale={locale}
-          t={t}
-          computedTotal={computedTotal}
-          originalTotal={originalTotal}
-          discountPercent={discountPercent}
-          profit={profit}
-          onCheckout={handleCheckoutRequest}
-          isCheckoutPending={isCheckoutPending}
-        />
+        <div className="hidden lg:flex lg:flex-col lg:gap-4">
+          <AddressSelector t={t} onAddressChange={setSelectedAddressId} />
+          <CartSummaryDesktop
+            locale={locale}
+            t={t}
+            computedTotal={computedTotal}
+            originalTotal={originalTotal}
+            discountPercent={discountPercent}
+            profit={profit}
+            onCheckout={handleCheckoutRequest}
+            isCheckoutPending={isCheckoutPending}
+          />
+        </div>
       </div>
 
       <CartSummaryMobile

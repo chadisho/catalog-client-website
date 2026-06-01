@@ -78,7 +78,7 @@ function SummaryContent({
 
 export function CartSummaryDesktop(props: CartSummaryProps) {
   return (
-    <aside className="hidden rounded-3xl border border-border bg-surface p-5 lg:block">
+    <aside className="rounded-3xl border border-border bg-surface p-5">
       <SummaryContent {...props} />
     </aside>
   );

@@ -88,14 +88,12 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
         if (validationMessage) {
           message = validationMessage;
         
-      }
-
+        }
       throw new Error(message);
     }
 
     return data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

@@ -2,7 +2,7 @@ export type CatalogLocale = 'fa' | 'en';
 import { getMessages } from './messages';
 import { LOCALE_COOKIE_KEY, resolveAppLocale } from './globalLocale';
 
-type CatalogTranslations = {
+export type CatalogTranslations = {
   defaultProductTitle: string;
   defaultCatalogTitle: string;
   noUnit: string;
@@ -62,6 +62,7 @@ type CatalogTranslations = {
   profileEditSuccessToast: string;
   profileEditErrorToast: string;
   profileViewOrders: string;
+  profileAddresses: string;
   ordersPageTitle: string;
   ordersNotAuthenticated: string;
   ordersEmptyTitle: string;
@@ -92,6 +93,25 @@ type CatalogTranslations = {
   orderDetailsMakingDuration: string;
   orderDetailsTotal: string;
   orderViewDetails: string;
+  addressesPageTitle: string;
+  addressesNotAuthenticated: string;
+  addressesEmptyTitle: string;
+  addressesEmptyDescription: string;
+  addressAddNew: string;
+  addressTitle: string;
+  addressField: string;
+  addressCity: string;
+  addressProvince: string;
+  addressPostalCode: string;
+  addressPhone: string;
+  addressPreNumber: string;
+  addressDelete: string;
+  addressDeleteToastSuccess: string;
+  addressDeleteToastError: string;
+  addressCreateToastSuccess: string;
+  addressCreateToastError: string;
+  addressSave: string;
+  addressCancel: string;
   backToLastContext: string;
 };
 
