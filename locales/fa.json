@@ -208,7 +208,11 @@
     "orderSuccessOrderCodeLabel": "کد سفارش",
     "orderSuccessViewOrders": "مشاهده سفارش‌های من",
     "orderSuccessBackToCart": "بازگشت به سبد خرید",
-    "backToLastContext": "بازگشت به آخرین بازدید"
+    "backToLastContext": "بازگشت به آخرین بازدید",
+    "userCartsTitle": "سبدهای خرید من",
+    "userCartsEmpty": "هیچ سبد خریدی یافت نشد",
+    "userCartsItemCount": "{count} محصول",
+    "userCartsOpen": "مشاهده سبد"
   },
   "shop": {
     "profileTitle": "پروفایل فروشگاه",

@@ -14,14 +14,17 @@ import { getCatalogTranslations } from '../../../core/i18n/catalogLocale';
 import { getAuthSession } from '../../auth/api/authClientApi';
 import LoginSheet from '../../auth/components/LoginSheet';
 import CartView from '../components/CartView';
+import UserCartsView from '../components/UserCartsView';
 import { useCartStore } from '../store/cartStore';
 import BackToLastContextButton from '../../navigation/components/BackToLastContextButton';
 
 type CartPageProps = {
   locale: CartLocale;
+  shopSlug?: string;
+  shopId?: number;
 };
 
-export default function CartPage({ locale }: CartPageProps) {
+export default function CartPage({ locale, shopSlug, shopId }: CartPageProps) {
   const t = getCartTranslations(locale);
   const headerT = getCatalogTranslations(locale);
   const direction = getCartDirection(locale);
@@ -60,8 +63,10 @@ export default function CartPage({ locale }: CartPageProps) {
       return;
     }
 
-    void fetchCart();
-  }, [fetchCart, hasHydrated, isAuthenticated, resetCart]);
+    if (shopId) {
+      void fetchCart(shopId);
+    }
+  }, [fetchCart, hasHydrated, isAuthenticated, resetCart, shopId]);
 
   if (!hasHydrated) {
     return <LoadingState />;
@@ -75,23 +80,25 @@ export default function CartPage({ locale }: CartPageProps) {
     return <ErrorState locale={locale} />;
   }
 
-  if (isAuthenticated && !cart && cartStatus === 'syncing') {
+  if (shopId && isAuthenticated && !cart && cartStatus === 'syncing') {
     return <LoadingState />;
   }
 
-  if (isAuthenticated && !cart && cartStatus === 'error') {
+  if (shopId && isAuthenticated && !cart && cartStatus === 'error') {
     return <ErrorState locale={locale} />;
   }
 
   return (
     <div dir={direction} className="min-h-screen bg-background text-text">
-          <Header locale={locale} t={headerT} hideSearchInput />
-          
+      <Header locale={locale} t={headerT} hideSearchInput shopSlug={shopSlug} shopId={shopId} />
+
       <main dir={direction} className="mx-auto w-full max-w-[1280px] px-4 pt-4">
         <BackToLastContextButton label={t.backToLastContext} />
       </main>
 
-      {isAuthenticated ? (
+      {!shopId ? (
+        <UserCartsView locale={locale} t={t} isAuthenticated={isAuthenticated} onLoginRequest={() => setIsLoginSheetOpen(true)} />
+      ) : isAuthenticated ? (
         <CartView locale={locale} t={t} />
       ) : (
         <main className="mx-auto w-full max-w-[880px] px-4 py-8">
@@ -116,7 +123,9 @@ export default function CartPage({ locale }: CartPageProps) {
         onClose={() => setIsLoginSheetOpen(false)}
         onLoginSuccess={async () => {
           await queryClient.invalidateQueries({ queryKey: ['auth-session'] });
-          await fetchCart();
+          if (shopId) {
+            await fetchCart(shopId);
+          }
           setIsLoginSheetOpen(false);
         }}
       />

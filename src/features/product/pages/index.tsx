@@ -79,7 +79,8 @@ export default function ProductPage({
           <Header locale={locale} t={headerT} hideSearchInput
           headerTitle={data.shopInformation?.faName ?? undefined}
               headerImage={data.shopInformation?.avatar ?? undefined}
-              shopSlug={data.shopInformation?.enName ?? undefined} />
+              shopSlug={data.shopInformation?.enName ?? undefined}
+              shopId={data.shopInformation?.id ?? undefined} />
 
       <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
         <ProductNavigationTracker
@@ -98,6 +99,7 @@ export default function ProductPage({
               t={t}
               loginSheetT={headerT}
               title={productTitle}
+              shopId={data.shopInformation?.id ?? undefined}
               productCode={productCode}
               shouldShowPrice={shouldShowPrice}
               description={data.productModel.description}

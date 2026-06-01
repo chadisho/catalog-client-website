@@ -33,6 +33,7 @@ type ProductPurchasePanelProps = {
   baseStockType?: string | null;
   variationOptions: string[];
   variationItems: ProductVariationItem[];
+  shopId?: number;
 };
 
 export default function ProductPurchasePanel({
@@ -52,6 +53,7 @@ export default function ProductPurchasePanel({
   baseStockType,
   variationOptions,
   variationItems,
+  shopId,
 }: ProductPurchasePanelProps) {
   const [selectedVariation, setSelectedVariation] = useState(variationOptions[0] ?? '');
 
@@ -101,6 +103,7 @@ export default function ProductPurchasePanel({
         onSelectedVariationChange={setSelectedVariation}
         baseInventory={baseInventory}
         baseStockType={baseStockType}
+        shopId={shopId}
       />
     </>
   );

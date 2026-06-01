@@ -64,6 +64,7 @@ interface HeaderProps {
   headerTitle?: string;
   headerImage?: string;
   shopSlug?: string;
+  shopId?: number;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
 }
@@ -77,6 +78,7 @@ export default function Header({
   headerTitle,
   headerImage,
   shopSlug,
+  shopId,
   searchValue,
   onSearchChange,
 }: HeaderProps) {
@@ -113,6 +115,7 @@ export default function Header({
 
   const isAuthenticated = Boolean(session?.isAuthenticated);
   const cartItemsCount = (cart?.listProducts ?? []).length;
+  const normalizedShopSlug = shopSlug?.trim();
 
   useEffect(() => {
     hydrateCartStore();
@@ -128,8 +131,10 @@ export default function Header({
       return;
     }
 
-    void prefetchCartIfNeeded();
-  }, [hasCartHydrated, isAuthenticated, prefetchCartIfNeeded, resetCart]);
+    if (shopId) {
+      void prefetchCartIfNeeded(shopId);
+    }
+  }, [hasCartHydrated, isAuthenticated, shopId, prefetchCartIfNeeded, resetCart]);
 
   useEffect(() => {
     if (
@@ -240,7 +245,6 @@ export default function Header({
   const brandTitle = headerTitle?.trim() || t.brand;
   const shouldRenderHeaderImage = Boolean(headerImage) && headerImage !== failedHeaderImageSrc;
   const isHeaderImageLoaded = Boolean(headerImage) && loadedHeaderImageSrc === headerImage;
-  const normalizedShopSlug = shopSlug?.trim();
   const drawerHiddenTranslateClass = locale === 'fa' ? 'translate-x-full' : '-translate-x-full';
   const CurrentThemeIcon = theme === 'system' ? Monitor : theme === 'light' ? Sun : Moon;
   const resolvedSearchValue = searchValue ?? internalSearchValue;
@@ -334,13 +338,13 @@ export default function Header({
 
         <button
           type="button"
-          onClick={() => router.push('/cart')}
+          onClick={() => router.push(shopId ? `/cart?shopSlug=${encodeURIComponent(normalizedShopSlug ?? '')}&shopId=${shopId}` : '/cart')}
           className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface"
           aria-label={t.cart}
           title={t.cart}
         >
           <ShoppingCart size={18} strokeWidth={2} aria-hidden />
-          {hasCartHydrated && cartItemsCount > 0 ? (
+          {hasCartHydrated && shopId && cartItemsCount > 0 ? (
             <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-content">
               {cartItemsCount}
             </span>

@@ -1,11 +1,12 @@
 import { apiClient } from '../../../core/api';
-import { mapCart, type CartModel } from '../model/cartModel';
+import { mapCart, mapUserCarts, type CartModel, type UserCartSummaryModel } from '../model/cartModel';
 
 type AddToCartInput = {
   productId: number;
   variationId?: number;
   quantity: number;
   catalogId?: number;
+  shopId?: number;
 };
 
 type UpdateCartItemInput = {
@@ -33,12 +34,20 @@ function buildQuery(params: Record<string, string | number | undefined>): string
   return query ? `?${query}` : '';
 }
 
-export async function getCart(): Promise<CartModel> {
-    const response = await apiClient('app/cart', {
-      method: 'POST',
-    });
-    return mapCart(response );
- 
+export async function getCart(shopId?: number): Promise<CartModel> {
+  const query = buildQuery({ shop_id: shopId });
+  const response = await apiClient(`app/cart${query}`, {
+    method: 'POST',
+  });
+  return mapCart(response);
+}
+
+export async function getUserCarts(): Promise<UserCartSummaryModel[]> {
+  const response = await apiClient('app/cart/user-carts', {
+    method: 'POST',
+  });
+    console.log(response);
+  return mapUserCarts(response);
 }
 
 export async function addToCart(input: AddToCartInput): Promise<string> {
@@ -47,6 +56,7 @@ export async function addToCart(input: AddToCartInput): Promise<string> {
     variation_id: input.variationId,
     quantity: input.quantity,
     catalog_id: input.catalogId,
+    shop_id: input.shopId,
   });
 
   const response = await apiClient(`app/cart/add-to-cart${query}`, {

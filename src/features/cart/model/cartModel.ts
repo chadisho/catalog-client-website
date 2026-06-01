@@ -165,3 +165,31 @@ export function mapCart(json: any): CartModel {
     listProducts: Array.isArray(source?.order_items) ? source.order_items.map(mapCartItem) : [],
   };
 }
+
+export type UserCartSummaryModel = {
+  id: number | null;
+  code: string | null;
+  shopId: number | null;
+  shopSlug: string | null;
+  shopName: string | null;
+  itemCount: number;
+  totalAmount: string | null;
+};
+
+export function mapUserCarts(json: any): UserCartSummaryModel[] {
+  const list = json?.options?.userCarts ?? json?.userCarts ?? [];
+  if (!Array.isArray(list)) {
+    return [];
+  }
+ console.log("list[0]");
+    console.log(list);
+  return list.map((source: any): UserCartSummaryModel => ({
+    id: typeof source?.id === 'number' ? source.id : null,
+    code: typeof source?.code === 'string' ? source.code : null,
+    shopId: typeof source?.shop?.id === 'number' ? source.shop.id : null,
+    shopSlug: typeof source?.shop?.en_name === 'string' ? source.shop.en_name : null,
+    shopName: typeof source?.shop?.fa_name === 'string' ? source.shop.fa_name : null,
+    itemCount: typeof source?.order_items_count === 'number' ? source.order_items_count : 0,
+    totalAmount: typeof source?.total_amount === 'string' ? source.total_amount : null,
+  }));
+}

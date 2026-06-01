@@ -55,6 +55,7 @@ interface CatalogPageClientProps {
   headerTitle?: string;
   headerImage?: string;
   shopSlug?: string;
+  shopId?: number;
   heroTitle: string;
   heroDescription: string;
   heroImage?: string;
@@ -104,6 +105,7 @@ export default function CatalogPageClient({
   headerTitle,
   headerImage,
   shopSlug,
+  shopId,
   heroTitle,
   heroDescription,
   heroImage,
@@ -146,6 +148,7 @@ export default function CatalogPageClient({
         headerTitle={headerTitle}
         headerImage={headerImage}
         shopSlug={shopSlug}
+        shopId={shopId}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
       />

@@ -1,6 +1,7 @@
 import { mapShopingAddresses, type ShopingAddressModel } from './shopingAddressModel';
 
 export type ShopInformationModel = {
+id?: number | null;
   faName?: string | null;
   enName?: string | null;
   aboutUs?: string | null;
@@ -17,7 +18,8 @@ export const mapShopInformation = (data: any): ShopInformationModel => {
   const shop = data?.shop ?? data;
   const social = data?.shopSocialAccounts ?? data?.shop_social_accounts ?? data ?? {};
 
-  return {
+    return {
+      id: typeof shop?.id === 'number' ? shop.id : null,
     faName:
       typeof shop?.fa_name === 'string'
         ? shop.fa_name

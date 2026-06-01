@@ -61,6 +61,10 @@ export type CartTranslations = {
   orderSuccessViewOrders: string;
   orderSuccessBackToCart: string;
   backToLastContext: string;
+  userCartsTitle: string;
+  userCartsEmpty: string;
+  userCartsItemCount: string;
+  userCartsOpen: string;
 };
 
 export function getCartTranslations(locale: CartLocale): CartTranslations {

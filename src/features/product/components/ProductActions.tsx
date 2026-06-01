@@ -32,6 +32,7 @@ type ProductActionsProps = {
   variationItems?: ProductVariationOption[];
   selectedVariation: string;
   onSelectedVariationChange: (value: string) => void;
+  shopId?: number;
 };
 
 export default function ProductActions({
@@ -45,6 +46,7 @@ export default function ProductActions({
   variationItems = [],
   selectedVariation,
   onSelectedVariationChange,
+  shopId,
 }: ProductActionsProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -119,11 +121,12 @@ export default function ProductActions({
         productId,
         quantity,
         variationId: selectedVariationId ?? undefined,
+        shopId,
       });
       toastSuccess(t.addToCartToastSuccess, {
         action: {
           label: t.addToCartToastActionCart,
-          onClick: () => router.push('/cart'),
+          onClick: () => router.push(shopId ? `/cart?shopId=${shopId}` : '/cart'),
         },
       });
       setIsSelectionModalOpen(false);

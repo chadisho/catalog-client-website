@@ -208,7 +208,11 @@
     "orderSuccessOrderCodeLabel": "Order code",
     "orderSuccessViewOrders": "View my orders",
     "orderSuccessBackToCart": "Back to cart",
-    "backToLastContext": "Back to last viewed"
+    "backToLastContext": "Back to last viewed",
+    "userCartsTitle": "My Carts",
+    "userCartsEmpty": "No carts found",
+    "userCartsItemCount": "{count} items",
+    "userCartsOpen": "View Cart"
   },
   "shop": {
     "profileTitle": "Shop Profile",

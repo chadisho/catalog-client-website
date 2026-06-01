@@ -62,6 +62,7 @@ export default function CatalogPage({
         headerTitle={data.shopInformation?.faName ?? undefined}
         headerImage={data.shopInformation?.avatar ?? undefined}
         shopSlug={data.shopInformation?.enName ?? undefined}
+        shopId={data.shopInformation?.id ?? undefined}
         heroTitle={heroTitle}
         heroDescription={heroDescription}
         heroImage={heroImage ?? undefined}

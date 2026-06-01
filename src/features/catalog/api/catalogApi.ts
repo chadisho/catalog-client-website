@@ -23,15 +23,16 @@ export async function getCatalogByCode(
     method: 'POST',
   })) as Record<string, any>;
 
+    console.log(response?.options?.shopInformations);
   return {
     catalogModel: response?.options?.catalog ? mapCatalog(response?.options?.catalog) : undefined,
     sections: mapSections(response?.options?.catalogSections),
     images: mapCatalogImages(response?.options?.catalogImages),
       shopInformation: response?.options?.shopInformations ? mapShopInformation({
+          id: response.options.shopInformations.id,
           fa_name: response?.options?.shopInformations.faName,
           en_name: response?.options?.shopInformations.enName,
           avatar:response?.options?.shopInformations.avatar,
-      }
-) : undefined,
+      }) : undefined,
   };
 }
