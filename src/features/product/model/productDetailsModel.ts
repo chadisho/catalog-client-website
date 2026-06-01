@@ -69,8 +69,7 @@ export const mapProductShopInformation = (data: any): ShopInformationModel => {
 export const mapProductDetails = (response: any): ProductDetailsModel => {
   const options = response?.options ?? response ?? {};
   const rawShopInformation =
-    options?.shopInformation ?? options?.shopInformations ?? response?.shopInformation;
-    console.log(rawShopInformation);
+  options?.shopInformation ?? options?.shopInformations ?? response?.shopInformation;
   return {
     variationAttributes: mapVariationAttributes(options?.variation_attributes),
     variations: mapVariations(options?.variations),
