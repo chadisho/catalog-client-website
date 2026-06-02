@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { ChevronUp } from 'lucide-react';
-import { toastError, toastSuccess } from '../../../core/lib/toast';
+import { toastError } from '../../../core/lib/toast';
 import { createAddress } from '../api/addressApi';
 import type { AddressCreatePayload } from '../model/addressModel';
 import { getProvinces, getCities, type ProvinceModel, type CityModel } from '../api/locationApi';
@@ -88,7 +88,6 @@ export default function AddressCreateForm({ t, onCreated, onCancel }: AddressCre
         };
 
         await createAddress(payload);
-        toastSuccess(t.addressCreateToastSuccess);
         onCreated();
       } catch (error) {
         const message = error instanceof Error && error.message.trim().length > 0

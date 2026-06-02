@@ -112,11 +112,6 @@ export default function CartView({ locale, t }: CartViewProps) {
   };
 
   const handleCheckoutRequest = async () => {
-    if (!selectedAddressId) {
-      toastError(t.checkoutMissingAddress);
-      return;
-    }
-
     const cartId = cart?.id;
     if (!cartId) {
       toastError(t.checkoutMissingCartId);

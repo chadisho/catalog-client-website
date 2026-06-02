@@ -81,13 +81,17 @@ export async function deleteCartItem(itemId: number): Promise<void> {
 
 export async function createOrderFromCart(
   cartId: number,
-  addressId?: number
+  addressId?: number,
 ): Promise<{ orderCode: string }> {
-    const body = addressId ? JSON.stringify({ address_id: addressId ,cart_id:cartId,}) : undefined;
-  const response = (await apiClient(`app/orders/new-order`, {
+  const payload: { cart_id: number; address_id?: number } = { cart_id: cartId };
+  if (addressId !== undefined) {
+    payload.address_id = addressId;
+  }
+
+  const response = (await apiClient('app/orders/new-order', {
     method: 'POST',
-    body,
+    body: JSON.stringify(payload),
   })) as OrderResponse;
 
-  return { orderCode: response.orderCode??response.options?.orderCode ?? '' };
+  return { orderCode: response.orderCode ?? response.options?.orderCode ?? '' };
 }
