@@ -181,8 +181,7 @@ export function mapUserCarts(json: any): UserCartSummaryModel[] {
   if (!Array.isArray(list)) {
     return [];
   }
- console.log("list[0]");
-    console.log(list);
+
   return list.map((source: any): UserCartSummaryModel => ({
     id: typeof source?.id === 'number' ? source.id : null,
     code: typeof source?.code === 'string' ? source.code : null,

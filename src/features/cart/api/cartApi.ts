@@ -46,7 +46,6 @@ export async function getUserCarts(): Promise<UserCartSummaryModel[]> {
   const response = await apiClient('app/cart/user-carts', {
     method: 'POST',
   });
-    console.log(response);
   return mapUserCarts(response);
 }
 
