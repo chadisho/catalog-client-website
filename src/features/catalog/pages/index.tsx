@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { CatalogDetailsModel } from '../api/catalogApi';
 import CatalogPageClient from './CatalogPageClient';
 import ErrorState from '../../../core/components/feedback/ErrorState';
@@ -10,6 +11,8 @@ import {
   resolveCatalogLocale,
   setCatalogLocalToCookie,
 } from '../../../core/i18n/catalogLocale';
+import ShopFooter from '../../shop/components/ShopFooter';
+import ShopFooterSkeleton from '../../shop/components/ShopFooterSkeleton';
 
 interface CatalogPageProps {
   catalogCode: string;
@@ -50,6 +53,8 @@ export default function CatalogPage({
   const shouldShowProductPrice =
     data.catalogModel?.showProductPriceStatus?.trim().toLowerCase() !== 'inactive';
 
+  const shopSlug = data.shopInformation?.enName ?? undefined;
+
   return (
     <div
       dir={direction}
@@ -61,7 +66,7 @@ export default function CatalogPage({
         t={t}
         headerTitle={data.shopInformation?.faName ?? undefined}
         headerImage={data.shopInformation?.avatar ?? undefined}
-        shopSlug={data.shopInformation?.enName ?? undefined}
+        shopSlug={shopSlug}
         shopId={data.shopInformation?.id ?? undefined}
         heroTitle={heroTitle}
         heroDescription={heroDescription}
@@ -70,6 +75,11 @@ export default function CatalogPage({
         sections={sections}
         shouldShowProductPrice={shouldShowProductPrice}
       />
+      {shopSlug ? (
+        <Suspense fallback={<ShopFooterSkeleton />}>
+          <ShopFooter slug={shopSlug} locale={locale} />
+        </Suspense>
+      ) : null}
     </div>
   );
 }

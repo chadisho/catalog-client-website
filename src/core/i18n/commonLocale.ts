@@ -264,6 +264,8 @@ type ShopTranslations = {
   emptyContacts: string;
   emptyDescription: string;
   backToLastContext: string;
+  viewShopProfile: string;
+  logoAlt: string;
 };
 
 type ThemeTranslations = {

@@ -228,7 +228,9 @@
     "call": "تماس",
     "emptyContacts": "اطلاعات ارتباطی ثبت نشده است.",
     "emptyDescription": "توضیحاتی برای این فروشگاه ثبت نشده است.",
-    "backToLastContext": "بازگشت به آخرین بازدید"
+    "backToLastContext": "بازگشت به آخرین بازدید",
+    "viewShopProfile": "مشاهده پروفایل فروشگاه",
+    "logoAlt": "لوگوی فروشگاه"
   },
   "home": {
     "title": "صفحه اصلی",

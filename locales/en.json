@@ -228,7 +228,9 @@
     "call": "Call",
     "emptyContacts": "No contact details available.",
     "emptyDescription": "No description provided.",
-    "backToLastContext": "Back to last viewed"
+    "backToLastContext": "Back to last viewed",
+    "viewShopProfile": "View shop profile",
+    "logoAlt": "Shop logo"
   },
   "home": {
     "title": "Home Page",

@@ -18,19 +18,24 @@ export interface ShopInformation {
   [key: string]: any;
 }
 
-/**
- * Fetch shop information by shop slug/username
- * @param shopUsername - Shop username/slug to fetch
- * @returns Shop information
- */
 export async function getShopBySlug(
   shopUsername: string
 ): Promise<ShopInformationModel> {
   const response = (await apiClient(`app/shop/profile/${shopUsername}`, {
     method: 'GET',
   })) as Record<string, unknown>;
-   
-    var t = mapShopInformation(response?.options ?? response);
-     console.log(t.shopProfileCatalog);
-    return t;
+
+  return mapShopInformation(response?.options ?? response);
+}
+
+export async function getShopBySlugCached(
+  shopUsername: string
+): Promise<ShopInformationModel> {
+  const response = (await apiClient(`app/shop/profile/${shopUsername}`, {
+    method: 'GET',
+    cache: 'force-cache',
+    next: { revalidate: 120 },
+  })) as Record<string, unknown>;
+
+  return mapShopInformation(response?.options ?? response);
 }

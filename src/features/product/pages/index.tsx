@@ -1,7 +1,10 @@
+import { Suspense } from 'react';
 import ProductGallery from '../components/ProductGallery';
 import ProductPurchasePanel from '../components/ProductPurchasePanel';
 import ProductSpecs from '../components/ProductSpecs';
 import Header from '../../../core/components/Header';
+import ShopFooter from '../../shop/components/ShopFooter';
+import ShopFooterSkeleton from '../../shop/components/ShopFooterSkeleton';
 import {
   resolveDisplayCurrency,
   resolveMediaItems,
@@ -74,19 +77,21 @@ export default function ProductPage({
   const productTitle = data.productModel.title ?? t.detailsTitle;
   const currencyLabel = resolveDisplayCurrency(data.productModel.currency, t);
 
+  const shopSlug = data.shopInformation?.enName ?? undefined;
+
   return (
     <>
           <Header locale={locale} t={headerT} hideSearchInput
           headerTitle={data.shopInformation?.faName ?? undefined}
               headerImage={data.shopInformation?.avatar ?? undefined}
-              shopSlug={data.shopInformation?.enName ?? undefined}
+              shopSlug={shopSlug}
               shopId={data.shopInformation?.id ?? undefined} />
 
       <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
         <ProductNavigationTracker
           productCode={productCode}
           productTitle={data.productModel.title ?? undefined}
-          shopSlug={data.shopInformation?.enName ?? undefined}
+          shopSlug={shopSlug}
         />
         <NavigationBreadcrumbs className="mb-4" />
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
@@ -122,6 +127,11 @@ export default function ProductPage({
           </div>
         </section>
       </main>
+      {shopSlug ? (
+        <Suspense fallback={<ShopFooterSkeleton />}>
+          <ShopFooter slug={shopSlug} locale={locale} />
+        </Suspense>
+      ) : null}
     </>
   );
 }
