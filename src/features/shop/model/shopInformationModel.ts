@@ -1,3 +1,4 @@
+import { CatalogModel, mapCatalog } from '../../catalog/model/catalogModel';
 import { mapShopingAddresses, type ShopingAddressModel } from './shopingAddressModel';
 
 export type ShopInformationModel = {
@@ -11,7 +12,8 @@ id?: number | null;
   whatsapp?: string | null;
   telegram?: string | null;
   website?: string | null;
-  addresses: ShopingAddressModel[];
+    addresses: ShopingAddressModel[];
+    shopProfileCatalog: CatalogModel | null;
 };
 
 export const mapShopInformation = (data: any): ShopInformationModel => {
@@ -69,6 +71,7 @@ export const mapShopInformation = (data: any): ShopInformationModel => {
         : typeof shop?.website === 'string'
           ? shop.website
           : null,
-    addresses: mapShopingAddresses(data?.shopAddresses ?? data?.shop_addresses ?? shop?.addresses),
+        addresses: mapShopingAddresses(data?.shopAddresses ?? data?.shop_addresses ?? shop?.addresses),
+    shopProfileCatalog: data?.shopProfileCatalog!=null? mapCatalog(data?.shopProfileCatalog):null
   };
 };

@@ -90,7 +90,6 @@ export default function ShopPage({ shopUsername, data, error, localeOverride }: 
         faName={data.faName}
         enName={data.enName}
         avatar={data.avatar}
-        coverImage={data.coverImage}
       />
 
       <ShopAboutCard

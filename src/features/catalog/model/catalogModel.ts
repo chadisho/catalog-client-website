@@ -2,7 +2,8 @@
  * Catalog object shape based on API JSON keys
  */
 export type CatalogModel = {
-  id?: number | null;
+    id?: number | null;
+      code?: number | null;
   title: string;
   uri?: string | null;
   image?: string | null;
@@ -16,7 +17,8 @@ export type CatalogModel = {
 
 export const mapCatalog = (data: any): CatalogModel => {
   return {
-    id: typeof data?.id === 'number' ? data.id : null,
+      id: typeof data?.id === 'number' ? data.id : null,
+      code: typeof data?.code === 'number'? data.code:null,
     title: typeof data?.title === 'string' ? data.title : '',
     uri: typeof data?.uri === 'string' ? data.uri : null,
     image:

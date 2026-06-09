@@ -5,6 +5,8 @@ import { cookies } from 'next/headers';
 import { getShopBySlug } from '../../../features/shop/api/shopApi';
 import type { ShopInformationModel } from '../../../features/shop/model/shopInformationModel';
 import { LOCALE_COOKIE_KEY, resolveAppLocale } from '../../../core/i18n/globalLocale';
+import { getCatalogByCode, type CatalogDetailsModel } from '../../../features/catalog/api/catalogApi';
+import CatalogPage from '../../../features/catalog/pages';
 
 const SITE_URL = 'https://chadisho.com';
 
@@ -72,18 +74,38 @@ export async function generateMetadata({ params }: ShopRoutePageProps): Promise<
 }
 
 export default async function Page({ params }: ShopRoutePageProps) {
-  const { shopUsername } = await params;
-  const cookieStore = await cookies();
-  const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value);
+    const { shopUsername } = await params;
+    const cookieStore = await cookies();
+    const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value);
 
-  let data: ShopInformationModel | undefined;
-  let error: string | undefined;
+    let data: ShopInformationModel | undefined;
+    let error: string | undefined;
 
-  try {
-    data = await getCachedShop(shopUsername);
-  } catch (fetchError) {
-    error = fetchError instanceof Error ? fetchError.message : 'shop_fetch_failed';
-  }
+    try {
+        data = await getCachedShop(shopUsername);
+    } catch (fetchError) {
+        error = fetchError instanceof Error ? fetchError.message : 'shop_fetch_failed';
+    }
+
+    let catalogData: CatalogDetailsModel | undefined;
+    let catalogError: string | undefined;
+    if (data?.shopProfileCatalog?.code) {
+        try {
+            catalogData = await getCatalogByCode(String(data.shopProfileCatalog.code));
+        } catch (fetchError) {
+            catalogError = fetchError instanceof Error ? fetchError.message : 'shop_fetch_failed';
+        }
+    }
+    if (catalogData || catalogError) { 
+        return (
+          <CatalogPage
+            catalogCode={data!.shopProfileCatalog!.code!.toString()}
+            data={catalogData}
+            error={catalogError}
+            localeOverride={localeOverride}
+          />
+        );
+    }
 
   return (
     <ShopPage

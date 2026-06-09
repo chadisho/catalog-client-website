@@ -12,7 +12,7 @@ import CatalogNavigationTracker from '../../navigation/components/CatalogNavigat
 import NavigationBreadcrumbs from '../../navigation/components/NavigationBreadcrumbs';
 import { NAVIGATION_QUERY_KEYS } from '../../navigation/lib/navigationContextQuery';
 
-type CatalogPageClientTranslations = {
+export type CatalogPageClientTranslations = {
   defaultCatalogTitle: string;
   noContent: string;
   searchNoResults: string;

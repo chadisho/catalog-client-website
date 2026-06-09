@@ -29,6 +29,8 @@ export async function getShopBySlug(
   const response = (await apiClient(`app/shop/profile/${shopUsername}`, {
     method: 'GET',
   })) as Record<string, unknown>;
-
-  return mapShopInformation(response?.options ?? response);
+   
+    var t = mapShopInformation(response?.options ?? response);
+     console.log(t.shopProfileCatalog);
+    return t;
 }
