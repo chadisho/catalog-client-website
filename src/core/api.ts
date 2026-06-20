@@ -51,8 +51,8 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
     headers.set('Content-Type', 'application/json');
   }
 
-  if (isServer && API_TOKEN && !headers.has('apiToken')) {
-    headers.set('apiToken', API_TOKEN);
+  if (isServer && API_TOKEN && !headers.has('apiKey')) {
+    headers.set('apiKey', API_TOKEN);
   }
 
   if (isServer) {
