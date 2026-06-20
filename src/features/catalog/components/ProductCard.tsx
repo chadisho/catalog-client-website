@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ProductItemModel } from '../../product/model/productItemModel';
+import { slugifyTitle } from '../../../core/lib/slugify';
 import {
   getCatalogTextAlignClass,
   getCatalogTranslations,
@@ -78,21 +79,6 @@ function resolveProductCode(product: ProductItemModel): string | null {
   return null;
 }
 
-function slugifyTitle(value: string): string {
-  const trimmedValue = value.trim();
-
-  if (!trimmedValue) {
-    return 'product';
-  }
-
-  return trimmedValue
-    .replace(/\s+/g, '-')
-    .replace(/[^\p{L}\p{N}-]/gu, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .toLowerCase();
-}
-
 function resolveProductHref(product: ProductItemModel): string | null {
   if (typeof product.uri === 'string' && product.uri.trim().length > 0) {
     const normalizedUri = product.uri.trim();
@@ -115,7 +101,7 @@ function resolveProductHref(product: ProductItemModel): string | null {
   }
 
   const fallbackProductCode = resolveProductCode(product);
-  const fallbackProductTitle = slugifyTitle(product.title ?? '');
+  const fallbackProductTitle = slugifyTitle(product.title ?? '', 'product');
 
   if (!fallbackProductCode) {
     return null;

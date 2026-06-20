@@ -33,11 +33,13 @@ export const mapSection = (data: any): AnySectionModel | null => {
     view_option: typeof data?.view_option === 'string' ? data.view_option : null,
   };
 
+  const sectionItems = data?.items ?? data?.values;
+
   if (rawType.includes('product')) {
     return {
       ...base,
       sectionable_type: 'product',
-      values: mapProductItems(data?.items),
+      values: mapProductItems(sectionItems),
     };
   }
 
@@ -45,7 +47,7 @@ export const mapSection = (data: any): AnySectionModel | null => {
     return {
       ...base,
       sectionable_type: 'catalog',
-      values: mapCatalogs(data?.items),
+      values: mapCatalogs(sectionItems),
     };
   }
 

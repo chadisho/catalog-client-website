@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { CatalogDetailsModel } from '../api/catalogApi';
 import CatalogPageClient from './CatalogPageClient';
 import ErrorState from '../../../core/components/feedback/ErrorState';
@@ -7,8 +8,7 @@ import {
   getCatalogDirection,
   getCatalogTextAlignClass,
   getCatalogTranslations,
-  resolveCatalogLocale,
-  setCatalogLocalToCookie,
+  resolveCatalogLocaleFromLanguage,
 } from '../../../core/i18n/catalogLocale';
 
 interface CatalogPageProps {
@@ -24,8 +24,7 @@ export default function CatalogPage({
   error,
   localeOverride,
 }: CatalogPageProps) {
- const locale = localeOverride ?? resolveCatalogLocale(data?.catalogModel?.language);
-  setCatalogLocalToCookie(locale);
+  const locale = localeOverride ?? resolveCatalogLocaleFromLanguage(data?.catalogModel?.language);
   const t = getCatalogTranslations(locale);
   const direction = getCatalogDirection(locale);
   const textAlignClass = getCatalogTextAlignClass(locale);
@@ -55,21 +54,23 @@ export default function CatalogPage({
       dir={direction}
       className={`min-h-screen overflow-x-clip bg-background text-text ${textAlignClass}`}
     >
-      <CatalogPageClient
-        catalogCode={catalogCode}
-        locale={locale}
-        t={t}
-        headerTitle={data.shopInformation?.faName ?? undefined}
-        headerImage={data.shopInformation?.avatar ?? undefined}
-        shopSlug={data.shopInformation?.enName ?? undefined}
-        shopId={data.shopInformation?.id ?? undefined}
-        heroTitle={heroTitle}
-        heroDescription={heroDescription}
-        heroImage={heroImage ?? undefined}
-        heroImages={heroImages}
-        sections={sections}
-        shouldShowProductPrice={shouldShowProductPrice}
-      />
+      <Suspense fallback={<LoadingState />}>
+        <CatalogPageClient
+          catalogCode={catalogCode}
+          locale={locale}
+          t={t}
+          headerTitle={data.shopInformation?.faName ?? undefined}
+          headerImage={data.shopInformation?.avatar ?? undefined}
+          shopSlug={data.shopInformation?.enName ?? undefined}
+          shopId={data.shopInformation?.id ?? undefined}
+          heroTitle={heroTitle}
+          heroDescription={heroDescription}
+          heroImage={heroImage ?? undefined}
+          heroImages={heroImages}
+          sections={sections}
+          shouldShowProductPrice={shouldShowProductPrice}
+        />
+      </Suspense>
     </div>
   );
 }

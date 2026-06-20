@@ -11,6 +11,20 @@ export interface CatalogDetailsModel {
   shopInformation?: ShopInformationModel;
 }
 
+export function mapCatalogDetails(response: Record<string, unknown>): CatalogDetailsModel {
+  const options = (response?.options ?? response ?? {}) as Record<string, unknown>;
+  const rawShop = options.shopInformation ?? options.shopInformations;
+  const rawSections = options.catalogSections ?? options.catalog_sections ?? options.sections;
+  const rawImages = options.catalogImages ?? options.catalog_images ?? options.images;
+
+  return {
+    catalogModel: options.catalog ? mapCatalog(options.catalog) : undefined,
+    sections: mapSections(rawSections),
+    images: mapCatalogImages(rawImages),
+    shopInformation: rawShop ? mapShopInformation(rawShop) : undefined,
+  };
+}
+
 /**
  * Fetch catalog details by catalog code
  * @param catalogCode - Catalog code to fetch
@@ -21,17 +35,7 @@ export async function getCatalogByCode(
 ): Promise<CatalogDetailsModel> {
   const response = (await apiClient(`app/catalog/show/${catalogCode}`, {
     method: 'POST',
-  })) as Record<string, any>;
+  })) as Record<string, unknown>;
 
-  return {
-    catalogModel: response?.options?.catalog ? mapCatalog(response?.options?.catalog) : undefined,
-    sections: mapSections(response?.options?.catalogSections),
-    images: mapCatalogImages(response?.options?.catalogImages),
-      shopInformation: response?.options?.shopInformations ? mapShopInformation({
-          id: response.options.shopInformations.id,
-          fa_name: response?.options?.shopInformations.faName,
-          en_name: response?.options?.shopInformations.enName,
-          avatar:response?.options?.shopInformations.avatar,
-      }) : undefined,
-  };
+  return mapCatalogDetails(response);
 }

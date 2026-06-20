@@ -15,22 +15,54 @@ export type CatalogModel = {
 };
 
 export const mapCatalog = (data: any): CatalogModel => {
+  const catalogId =
+    typeof data?.id === 'number'
+      ? data.id
+      : typeof data?.code === 'number'
+        ? data.code
+        : typeof data?.code === 'string' && /^\d+$/.test(data.code)
+          ? Number(data.code)
+          : null;
+
   return {
-    id: typeof data?.id === 'number' ? data.id : null,
+    id: catalogId,
     title: typeof data?.title === 'string' ? data.title : '',
-    uri: typeof data?.uri === 'string' ? data.uri : null,
+    uri: typeof data?.uri === 'string' ? data.uri : typeof data?.url === 'string' ? data.url : null,
     image:
       typeof data?.image === 'string'
         ? data.image
         : typeof data?.primaryImage === 'string'
           ? data.primaryImage
-          : null,
+          : typeof data?.primary_image === 'string'
+            ? data.primary_image
+            : null,
     description: typeof data?.description === 'string' ? data.description : null,
-    createdAt: typeof data?.created_at === 'string' ? data.created_at : null,
-    updatedAt: typeof data?.updated_at === 'string' ? data.updated_at : null,
-    orderingStatus: typeof data?.ordering_status === 'string' ? data.ordering_status : null,
+    createdAt:
+      typeof data?.created_at === 'string'
+        ? data.created_at
+        : typeof data?.createdAt === 'string'
+          ? data.createdAt
+          : null,
+    updatedAt:
+      typeof data?.updated_at === 'string'
+        ? data.updated_at
+        : typeof data?.updatedAt === 'string'
+          ? data.updatedAt
+          : null,
+    orderingStatus:
+      typeof data?.ordering_status === 'string'
+        ? data.ordering_status
+        : typeof data?.orderingStatus === 'string'
+          ? data.orderingStatus
+          : null,
     showProductPriceStatus:
-      typeof data?.show_product_price_status === 'string' ? data.show_product_price_status : null,
+      typeof data?.show_product_price_status === 'string'
+        ? data.show_product_price_status
+        : typeof data?.showProductPriceStatus === 'string'
+          ? data.showProductPriceStatus
+          : typeof data?.showPriceStatus === 'string'
+            ? data.showPriceStatus
+            : null,
     language: typeof data?.language === 'string' ? data.language : null,
   };
 };

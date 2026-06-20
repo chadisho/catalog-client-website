@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { slugifyTitle } from '../../../core/lib/slugify';
 import { appendNavigationContextToHref } from '../../navigation/lib/navigationContextQuery';
 import type { CatalogModel } from '../model/catalogModel';
 
@@ -9,21 +10,6 @@ type CatalogCardProps = {
   contextShopSlug?: string;
   catalogTrail?: string;
 };
-
-function slugifyTitle(value: string): string {
-  const trimmedValue = value.trim();
-
-  if (!trimmedValue) {
-    return 'catalog';
-  }
-
-  return trimmedValue
-    .replace(/\s+/g, '-')
-    .replace(/[^\p{L}\p{N}-]/gu, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .toLowerCase();
-}
 
 function normalizeCatalogCode(value: string): string {
   return value.trim().replace(/^chc-/i, '');
@@ -46,7 +32,7 @@ function resolveCatalogHref(catalog: CatalogModel): string | null {
           .map((segment) => decodeURIComponent(segment))
           .join('-')
           .trim();
-        const safeCatalogTitle = routeCatalogTitle || slugifyTitle(catalog.title);
+        const safeCatalogTitle = routeCatalogTitle || slugifyTitle(catalog.title, 'catalog');
 
         if (routeCatalogCode && safeCatalogTitle) {
           return `/catalog/chc-${encodeURIComponent(routeCatalogCode)}/${encodeURIComponent(safeCatalogTitle)}`;
@@ -58,7 +44,7 @@ function resolveCatalogHref(catalog: CatalogModel): string | null {
   }
 
   const fallbackCatalogCode = typeof catalog.id === 'number' ? `${catalog.id}` : null;
-  const fallbackCatalogTitle = slugifyTitle(catalog.title);
+  const fallbackCatalogTitle = slugifyTitle(catalog.title, 'catalog');
 
   if (!fallbackCatalogCode || !fallbackCatalogTitle) {
     return null;

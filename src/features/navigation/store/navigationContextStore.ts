@@ -336,7 +336,29 @@ export const useNavigationContextStore = create<NavigationContextStore>()(
     }),
     {
       name: 'navigation-context-store',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => ({
+        getItem: (name) => {
+          try {
+            return localStorage.getItem(name);
+          } catch {
+            return null;
+          }
+        },
+        setItem: (name, value) => {
+          try {
+            localStorage.setItem(name, value);
+          } catch {
+            // Ignore quota / privacy errors.
+          }
+        },
+        removeItem: (name) => {
+          try {
+            localStorage.removeItem(name);
+          } catch {
+            // Ignore storage errors.
+          }
+        },
+      })),
       partialize: (state) => ({
         recentProducts: state.recentProducts,
         recentCatalogs: state.recentCatalogs,

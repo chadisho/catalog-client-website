@@ -74,8 +74,10 @@ function includesQuery(value: string | null | undefined, normalizedQuery: string
 }
 
 function filterSectionByQuery(section: AnySectionModel, normalizedQuery: string): AnySectionModel {
+  const sectionValues = Array.isArray(section.values) ? section.values : [];
+
   if (section.sectionable_type === 'product') {
-    const filteredValues = section.values.filter((item) => {
+    const filteredValues = sectionValues.filter((item) => {
       const title = item.title ?? '';
       const description = item.description ?? '';
       return includesQuery(title, normalizedQuery) || includesQuery(description, normalizedQuery);
@@ -87,7 +89,7 @@ function filterSectionByQuery(section: AnySectionModel, normalizedQuery: string)
     } as ProductSectionModel;
   }
 
-  const filteredValues = section.values.filter((item) => {
+  const filteredValues = sectionValues.filter((item) => {
     const title = item.title ?? '';
     const description = item.description ?? '';
     return includesQuery(title, normalizedQuery) || includesQuery(description, normalizedQuery);

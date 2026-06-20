@@ -115,10 +115,14 @@ export type CatalogTranslations = {
   backToLastContext: string;
 };
 
+export function resolveCatalogLocaleFromLanguage(language?: string | null): CatalogLocale {
+  return language?.toLowerCase().startsWith('fa') ? 'fa' : 'en';
+}
+
 export function resolveCatalogLocale(language?: string | null): CatalogLocale {
-    const catalogLocal = language?.toLowerCase().startsWith('fa') ? 'fa' : 'en';
-    setCatalogLocalToCookie(catalogLocal);
-    return catalogLocal;
+  const catalogLocal = resolveCatalogLocaleFromLanguage(language);
+  setCatalogLocalToCookie(catalogLocal);
+  return catalogLocal;
 }
 
 function getCatalogLocaleFromCookie(): CatalogLocale | undefined {

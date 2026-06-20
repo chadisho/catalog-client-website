@@ -19,7 +19,12 @@ export const mapShopInformation = (data: any): ShopInformationModel => {
   const social = data?.shopSocialAccounts ?? data?.shop_social_accounts ?? data ?? {};
 
     return {
-      id: typeof shop?.id === 'number' ? shop.id : null,
+      id:
+        typeof shop?.id === 'number'
+          ? shop.id
+          : typeof shop?.id === 'string' && /^\d+$/.test(shop.id)
+            ? Number(shop.id)
+            : null,
     faName:
       typeof shop?.fa_name === 'string'
         ? shop.fa_name
