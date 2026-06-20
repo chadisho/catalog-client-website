@@ -3,12 +3,9 @@
  * Handles all HTTP requests with automatic apiToken + bearer token injection
  */
 
+import { getApiToken } from './config/apiEnv';
 import { parseUnknownResponseBody } from './lib/http';
-
-const API_BASE_URL =
-  process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || '';
-const API_TOKEN =
-  process.env.API_TOKEN || process.env.NEXT_PUBLIC_API_TOKEN || '';
+import { buildApiUrl } from './lib/serverApi';
 
 const INTERNAL_PROXY_BASE = '/api/proxy';
 
@@ -42,7 +39,7 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
   const isServer = typeof window === 'undefined';
 
   const url = isServer
-    ? `${API_BASE_URL}${normalizedEndpoint}`
+    ? buildApiUrl(normalizedEndpoint)
     : `${INTERNAL_PROXY_BASE}/${normalizedEndpoint}`;
 
   const headers = new Headers(options.headers ?? {});
@@ -51,8 +48,9 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
     headers.set('Content-Type', 'application/json');
   }
 
-  if (isServer && API_TOKEN && !headers.has('apiKey')) {
-    headers.set('apiKey', API_TOKEN);
+  const apiToken = getApiToken();
+  if (isServer && apiToken && !headers.has('apiKey')) {
+    headers.set('apiKey', apiToken);
   }
 
   if (isServer) {

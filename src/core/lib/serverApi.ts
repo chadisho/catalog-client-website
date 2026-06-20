@@ -1,7 +1,7 @@
-const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || '';
-const API_TOKEN = process.env.API_TOKEN || process.env.NEXT_PUBLIC_API_TOKEN || '';
+import { getApiBaseUrl, getApiToken } from '../config/apiEnv';
 
 export function buildApiUrl(pathname: string, search = ''): string {
+  const API_BASE_URL = getApiBaseUrl();
   const normalizedBase = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
   const normalizedPath = pathname.replace(/^\/+/, '');
 
@@ -10,6 +10,7 @@ export function buildApiUrl(pathname: string, search = ''): string {
 
 export function buildApiHeaders(authToken?: string): Headers {
   const headers = new Headers();
+  const API_TOKEN = getApiToken();
 
   headers.set('Content-Type', 'application/json');
 
