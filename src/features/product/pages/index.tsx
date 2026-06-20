@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import ProductGallery from '../components/ProductGallery';
 import ProductPurchasePanel from '../components/ProductPurchasePanel';
 import ProductSpecs from '../components/ProductSpecs';
@@ -83,12 +84,14 @@ export default function ProductPage({
               shopId={data.shopInformation?.id ?? undefined} />
 
       <main className="mx-auto w-full max-w-[1126px] space-y-4 px-4 pb-24 pt-4 lg:space-y-6 lg:px-6 lg:py-6">
-        <ProductNavigationTracker
-          productCode={productCode}
-          productTitle={data.productModel.title ?? undefined}
-          shopSlug={data.shopInformation?.enName ?? undefined}
-        />
-        <NavigationBreadcrumbs className="mb-4" />
+        <Suspense fallback={null}>
+          <ProductNavigationTracker
+            productCode={productCode}
+            productTitle={data.productModel.title ?? undefined}
+            shopSlug={data.shopInformation?.enName ?? undefined}
+          />
+          <NavigationBreadcrumbs className="mb-4" />
+        </Suspense>
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
           <div className="lg:col-span-8 lg:sticky lg:top-4 lg:self-start">
             <ProductGallery mediaItems={mediaItems} />

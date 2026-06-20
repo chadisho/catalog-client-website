@@ -1,25 +1,20 @@
 import { cache } from 'react';
 import type { Metadata } from 'next';
-import ProductPage from '../../../../features/product/pages';
+import ProductPage from '../../../features/product/pages';
 import { cookies } from 'next/headers';
 import {
   getProductByCode,
   type ProductDetailsModel,
-} from '../../../../features/product/api/productApi';
-import { LOCALE_COOKIE_KEY, resolveAppLocale, DEFAULT_APP_LOCALE } from '../../../../core/i18n/globalLocale';
+} from '../../../features/product/api/productApi';
+import { LOCALE_COOKIE_KEY, resolveAppLocale, DEFAULT_APP_LOCALE } from '../../../core/i18n/globalLocale';
+import { getSearchParam } from '../../../core/lib/searchParams';
 
 const SITE_URL = 'https://chadisho.com';
 
 const getCachedProduct = cache(getProductByCode);
 
-interface ProductRouteParams {
-  productCode: string;
-  productTitle: string;
-}
-
-interface ProductRoutePageProps {
-  params: Promise<ProductRouteParams>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+interface ProductViewPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 function toMetaDescription(html: string | null | undefined, maxLen = 160): string {
@@ -27,15 +22,16 @@ function toMetaDescription(html: string | null | undefined, maxLen = 160): strin
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maxLen);
 }
 
-function resolveShouldShowPrice(searchParams?: Record<string, string | string[] | undefined>): boolean {
-  const rawValue = searchParams?.shouldShowPrice;
+function resolveShouldShowPrice(searchParams: Record<string, string | string[] | undefined>): boolean {
+  const rawValue = searchParams.shouldShowPrice;
   const value = Array.isArray(rawValue) ? rawValue[0] : rawValue;
 
   return value !== 'false';
 }
 
-export async function generateMetadata({ params }: ProductRoutePageProps): Promise<Metadata> {
-  const { productCode } = await params;
+export async function generateMetadata({ searchParams }: ProductViewPageProps): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams;
+  const productCode = getSearchParam(resolvedSearchParams, 'productCode');
   const normalizedProductCode = productCode.replace('chp-', '');
 
   try {
@@ -86,14 +82,13 @@ export async function generateMetadata({ params }: ProductRoutePageProps): Promi
   }
 }
 
-export default async function Page({ params, searchParams }: ProductRoutePageProps) {
-  const resolvedParams = await params;
-  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+export default async function Page({ searchParams }: ProductViewPageProps) {
+  const resolvedSearchParams = await searchParams;
   const cookieStore = await cookies();
   const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value) ?? DEFAULT_APP_LOCALE;
   const shouldShowPrice = resolveShouldShowPrice(resolvedSearchParams);
 
-  const { productCode } = resolvedParams;
+  const productCode = getSearchParam(resolvedSearchParams, 'productCode');
   const normalizedProductCode = productCode.replace('chp-', '');
 
   let data: ProductDetailsModel | undefined;

@@ -1,6 +1,6 @@
 'use client';
 
-import ErrorState from '../../../../core/components/feedback/ErrorState';
+import ErrorState from '../../../core/components/feedback/ErrorState';
 
 interface ProductErrorPageProps {
   reset: () => void;

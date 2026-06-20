@@ -5,17 +5,14 @@ import { cookies } from 'next/headers';
 import { getShopBySlug } from '../../../features/shop/api/shopApi';
 import type { ShopInformationModel } from '../../../features/shop/model/shopInformationModel';
 import { LOCALE_COOKIE_KEY, resolveAppLocale } from '../../../core/i18n/globalLocale';
+import { getSearchParam } from '../../../core/lib/searchParams';
 
 const SITE_URL = 'https://chadisho.com';
 
 const getCachedShop = cache(getShopBySlug);
 
-interface ShopRouteParams {
-  shopUsername: string;
-}
-
-interface ShopRoutePageProps {
-  params: Promise<ShopRouteParams>;
+interface ShopViewPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 function toMetaDescription(html: string | null | undefined, maxLen = 160): string {
@@ -23,8 +20,9 @@ function toMetaDescription(html: string | null | undefined, maxLen = 160): strin
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maxLen);
 }
 
-export async function generateMetadata({ params }: ShopRoutePageProps): Promise<Metadata> {
-  const { shopUsername } = await params;
+export async function generateMetadata({ searchParams }: ShopViewPageProps): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams;
+  const shopUsername = getSearchParam(resolvedSearchParams, 'shopUsername');
 
   try {
     const data = await getCachedShop(shopUsername);
@@ -71,8 +69,9 @@ export async function generateMetadata({ params }: ShopRoutePageProps): Promise<
   }
 }
 
-export default async function Page({ params }: ShopRoutePageProps) {
-  const { shopUsername } = await params;
+export default async function Page({ searchParams }: ShopViewPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const shopUsername = getSearchParam(resolvedSearchParams, 'shopUsername');
   const cookieStore = await cookies();
   const localeOverride = resolveAppLocale(cookieStore.get(LOCALE_COOKIE_KEY)?.value);
 
