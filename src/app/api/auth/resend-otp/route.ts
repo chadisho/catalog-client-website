@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   }
 
   const params = new URLSearchParams({ loginToken });
-  const upstreamResponse = await requestAuthEndpoint('auth/resend-otp', params);
+  const upstreamResponse = await requestAuthEndpoint('app/auth/resend-otp', params);
   const parsed = await parseAuthResponse(upstreamResponse);
 
   if (parsed instanceof NextResponse) {
