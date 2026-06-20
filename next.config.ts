@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     disableStaticImages: true,
   },
+  async rewrites() {
+    return [
+      { source: '/index.html', destination: '/' },
+      { source: '/index.htm', destination: '/' },
+    ];
+  },
 };
 
 export default nextConfig;

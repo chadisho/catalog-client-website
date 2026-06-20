@@ -14,7 +14,7 @@ export function buildApiHeaders(authToken?: string): Headers {
   headers.set('Content-Type', 'application/json');
 
   if (API_TOKEN) {
-    headers.set('apiToken', API_TOKEN);
+    headers.set('apiKey', API_TOKEN);
   }
 
   if (authToken) {
