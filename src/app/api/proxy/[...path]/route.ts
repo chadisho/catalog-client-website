@@ -4,6 +4,9 @@ import { AUTH_TOKEN_COOKIE_KEY } from '../../../../core/constants/auth';
 import { parseUnknownResponseBody } from '../../../../core/lib/http';
 import { buildApiHeaders, buildApiUrl } from '../../../../core/lib/serverApi';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 type RouteContext = {
   params: Promise<{
     path: string[];

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { normalizeIranianCellphone } from '../../../../features/auth/model/phone';
 import { parseAuthResponse, requestAuthEndpoint } from '../_lib';
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 type LoginApiSuccess = {
   options?: {

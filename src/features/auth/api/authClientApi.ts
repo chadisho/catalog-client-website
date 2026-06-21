@@ -1,3 +1,5 @@
+import { fetchAuthRoute } from '../../../core/lib/authRouteClient';
+
 export type AuthSessionModel = {
   isAuthenticated: boolean;
 };
@@ -27,7 +29,7 @@ function extractValidationErrorsMessage(errors: unknown): string | null {
 
 async function parseMessage(response: Response): Promise<string> {
   const payload = (await response.json().catch(() => null)) as MessageResponse | null;
-    let message = payload?.message ?? `HTTP ${response.status}`;
+  let message = payload?.message ?? `HTTP ${response.status}`;
 
   const validationMessage = extractValidationErrorsMessage(payload?.errors);
   if (validationMessage) {
@@ -47,14 +49,11 @@ function normalizeCellphone(cellphone: string): string {
   return trimmed;
 }
 
-
 export async function requestLogin(cellphone: string): Promise<LoginOtpRequestModel> {
   const normalizedCellphone = normalizeCellphone(cellphone);
 
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cellphone: normalizedCellphone }),
+  const response = await fetchAuthRoute('login', {
+    body: { cellphone: normalizedCellphone },
   });
 
   if (!response.ok) {
@@ -65,10 +64,8 @@ export async function requestLogin(cellphone: string): Promise<LoginOtpRequestMo
 }
 
 export async function verifyOtp(otp: string, loginToken: string): Promise<void> {
-  const response = await fetch('/api/auth/check-otp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ otp, loginToken }),
+  const response = await fetchAuthRoute('check-otp', {
+    body: { otp, loginToken },
   });
 
   if (!response.ok) {
@@ -77,10 +74,8 @@ export async function verifyOtp(otp: string, loginToken: string): Promise<void> 
 }
 
 export async function resendOtp(loginToken: string): Promise<string> {
-  const response = await fetch('/api/auth/resend-otp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ loginToken }),
+  const response = await fetchAuthRoute('resend-otp', {
+    body: { loginToken },
   });
 
   if (!response.ok) {
@@ -92,9 +87,7 @@ export async function resendOtp(loginToken: string): Promise<string> {
 }
 
 export async function logout(): Promise<void> {
-  const response = await fetch('/api/auth/logout', {
-    method: 'POST',
-  });
+  const response = await fetchAuthRoute('logout');
 
   if (!response.ok) {
     throw new Error(await parseMessage(response));
@@ -102,7 +95,7 @@ export async function logout(): Promise<void> {
 }
 
 export async function getAuthSession(): Promise<AuthSessionModel> {
-  const response = await fetch('/api/auth/session', { cache: 'no-store' });
+  const response = await fetchAuthRoute('session', { method: 'GET' });
 
   if (!response.ok) {
     throw new Error(await parseMessage(response));

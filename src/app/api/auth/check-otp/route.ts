@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { parseAuthResponse, requestAuthEndpoint, setAuthCookie } from '../_lib';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 type CheckOtpApiSuccess = {
   options?: {
     token?: string;

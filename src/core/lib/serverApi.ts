@@ -16,11 +16,6 @@ export function applyUpstreamApiCredentials(headers: Headers): void {
   }
 
   headers.set('apiKey', apiToken);
-
-  // Some upstream endpoints still accept this legacy header name.
-  if (!headers.has('apiToken')) {
-    headers.set('apiToken', apiToken);
-  }
 }
 
 export function buildApiHeaders(authToken?: string): Headers {
