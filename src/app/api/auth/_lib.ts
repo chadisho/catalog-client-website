@@ -1,11 +1,38 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { AUTH_COOKIE_MAX_AGE_SECONDS, AUTH_TOKEN_COOKIE_KEY } from '../../../core/constants/auth';
+import { getApiToken, hasServerApiToken } from '../../../core/config/apiEnv';
 import { parseUnknownResponseBody } from '../../../core/lib/http';
-import { requestUpstreamPost } from '../../../core/lib/serverApi';
+import { buildApiHeaders, buildApiUrl } from '../../../core/lib/serverApi';
 
 export async function requestAuthEndpoint(path: string, searchParams: URLSearchParams): Promise<Response> {
-  return requestUpstreamPost(path, searchParams);
+  if (!hasServerApiToken()) {
+    console.error('[upstream] Missing API_TOKEN in server environment');
+    return new Response(
+      JSON.stringify({ message: 'service_configuration_error' }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const headers = buildApiHeaders();
+  const apiToken = getApiToken();
+
+  // Keep auth proxies tolerant while the upstream still mixes header naming.
+  if (apiToken) {
+    if (!headers.has('apiKey')) {
+      headers.set('apiKey', apiToken);
+    }
+
+    if (!headers.has('apiToken')) {
+      headers.set('apiToken', apiToken);
+    }
+  }
+
+  return fetch(buildApiUrl(path, `?${searchParams.toString()}`), {
+    method: 'POST',
+    headers,
+    cache: 'no-store',
+  });
 }
 
 export async function parseAuthResponse(response: Response) {
