@@ -6,7 +6,7 @@
 import { parseUnknownResponseBody } from './lib/http';
 import { applyUpstreamApiCredentials, buildApiUrl } from './lib/serverApi';
 
-const INTERNAL_PROXY_BASE = '/api/proxy';
+const INTERNAL_PROXY_BASE = '/bff/proxy';
 
 function extractValidationErrorsMessage(data: unknown): string | null {
   if (typeof data !== 'object' || data === null || !('errors' in data)) {
