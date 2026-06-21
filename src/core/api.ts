@@ -3,9 +3,8 @@
  * Handles all HTTP requests with automatic apiToken + bearer token injection
  */
 
-import { getApiToken } from './config/apiEnv';
 import { parseUnknownResponseBody } from './lib/http';
-import { buildApiUrl } from './lib/serverApi';
+import { applyUpstreamApiCredentials, buildApiUrl } from './lib/serverApi';
 
 const INTERNAL_PROXY_BASE = '/api/proxy';
 
@@ -48,12 +47,8 @@ export async function apiClient(endpoint: string, options: RequestInit = {}) {
     headers.set('Content-Type', 'application/json');
   }
 
-  const apiToken = getApiToken();
-  if (isServer && apiToken && !headers.has('apiKey')) {
-    headers.set('apiKey', apiToken);
-  }
-
   if (isServer) {
+    applyUpstreamApiCredentials(headers);
     const { cookies } = await import('next/headers');
     const { AUTH_TOKEN_COOKIE_KEY } = await import('./constants/auth');
 
