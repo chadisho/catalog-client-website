@@ -9,6 +9,11 @@ const CELLPHONE_HREF = 'tel:+989352101030';
 const EMAIL = 'softbaran@gmail.com';
 const EMAIL_HREF = 'mailto:softbaran@gmail.com';
 const WHATSAPP = 'https://wa.me/+989352101030';
+const ENAMAD_HREF =
+  'https://trustseal.enamad.ir/?id=6634095&Code=reiM3hL6NexiS9uSv0SPwvTzmrhUEQrx';
+const ENAMAD_LOGO =
+  'https://trustseal.enamad.ir/logo.aspx?id=6634095&Code=reiM3hL6NexiS9uSv0SPwvTzmrhUEQrx';
+const ENAMAD_CODE = 'reiM3hL6NexiS9uSv0SPwvTzmrhUEQrx';
 
 interface HomeFooterProps {
   t: HomeTranslations;
@@ -139,18 +144,28 @@ export default function HomeFooter({ t, locale = 'fa' }: HomeFooterProps) {
      
           </div>
 
-          {/* Right Column: e-nemad Placeholder */}
+          {/* Right Column: e-nemad */}
           <div className="flex items-start justify-center md:justify-end">
-            <div className="w-24 h-24 bg-neutral-content/10 rounded-lg flex items-center justify-center">
-              <span className="text-xs text-neutral-content/40 text-center px-2">
-                {/*e-nemad*/}
-              </span>
-            </div>
+            <a
+              href={ENAMAD_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              referrerPolicy="origin"
+            >
+              <img
+                referrerPolicy="origin"
+                src={ENAMAD_LOGO}
+                alt=""
+                className="cursor-pointer"
+                {...{ code: ENAMAD_CODE }}
+              />
+            </a>
           </div>
-              </div>
-                     <p className="text-xs text-neutral-content/50 mt-8 pt-6 border-t border-neutral-content/10 text-center">
-              {t.footer.copyright}
-            </p>
+        </div>
+
+        <p className="text-xs text-neutral-content/50 mt-8 pt-6 border-t border-neutral-content/10 text-center">
+          {t.footer.copyright}
+        </p>
       </div>
     </footer>
   );
