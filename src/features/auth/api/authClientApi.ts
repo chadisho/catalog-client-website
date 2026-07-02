@@ -1,4 +1,5 @@
 import { fetchAuthRoute } from '../../../core/lib/authRouteClient';
+import { getLastVisitedCatalogCode } from '../../navigation/lib/getLastVisitedCatalogCode';
 
 export type AuthSessionModel = {
   isAuthenticated: boolean;
@@ -51,9 +52,18 @@ function normalizeCellphone(cellphone: string): string {
 
 export async function requestLogin(cellphone: string): Promise<LoginOtpRequestModel> {
   const normalizedCellphone = normalizeCellphone(cellphone);
+  const referralCatalogCode = getLastVisitedCatalogCode();
+
+  const body: { cellphone: string; referral_catalog_code?: string } = {
+    cellphone: normalizedCellphone,
+  };
+
+  if (referralCatalogCode) {
+    body.referral_catalog_code = referralCatalogCode;
+  }
 
   const response = await fetchAuthRoute('login', {
-    body: { cellphone: normalizedCellphone },
+    body,
   });
 
   if (!response.ok) {

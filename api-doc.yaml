@@ -22,6 +22,12 @@ paths:
           schema:
             type: string
           description: Mobile phone number (Farsi numbers converted to English)
+        - name: referral_catalog_code
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Catalog code from the last catalog the user visited before login
       responses:
         '200':
           description: Success

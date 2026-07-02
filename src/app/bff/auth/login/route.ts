@@ -12,7 +12,10 @@ type LoginApiSuccess = {
 };
 
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as { cellphone?: string } | null;
+  const body = (await request.json().catch(() => null)) as {
+    cellphone?: string;
+    referral_catalog_code?: string;
+  } | null;
 //  const normalizedCellphone = normalizeIranianCellphone(body?.cellphone ?? '');
     const normalizedCellphone = body?.cellphone;
 
@@ -21,6 +24,10 @@ export async function POST(request: Request) {
   }
 
   const params = new URLSearchParams({ cellphone: normalizedCellphone });
+  const referralCatalogCode = body?.referral_catalog_code?.trim();
+  if (referralCatalogCode) {
+    params.set('referral_catalog_code', referralCatalogCode);
+  }
   const upstreamResponse = await requestAuthEndpoint('app/auth/login', params);
   const parsed = await parseAuthResponse(upstreamResponse);
 
